@@ -30,20 +30,24 @@ export default class Lobby extends React.Component {
 	}
 
 	render() {
-		const classes = c({ ready: this.state.ready });
+		const inputClasses = c({ input: true });
+		const buttonClasses = c({ btn: true, ready: this.state.ready });
 
 		return (
 			<div className={styles.lobby}>
 				<div>
-					Do not refresh the page without un-hitting ready
+					<input
+						type='text'
+						placeholder='Enter your name'
+						value={this.state.name}
+						onChange={this.changeName}
+						className={inputClasses}
+						autoFocus
+					/>
 				</div>
 
 				<div>
-					<input type='text' placeholder='Enter your name' value={this.state.name} onChange={this.changeName} />
-				</div>
-
-				<div>
-					<button onClick={this.onReady} className={classes}>Ready</button>
+					<button onClick={this.onReady} className={buttonClasses}>Ready</button>
 				</div>
 			</div>
 		);

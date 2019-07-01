@@ -37,7 +37,6 @@ class Hand {
 		let minCard = null;
 
 		this.cards.forEach(c => {
-			console.log('c', c);
 			if(minCard === null || c.getValue() < minCard.getValue()) {
 				minCard = c;
 			}
@@ -106,10 +105,15 @@ class Hand {
 	// Additionally, our 2s will be converted to As and every other rank will be 'moved 1 down'
 	toString() {
 		const pokerForm = this.cards.map(c => {
-			const rank =
-				(c.rank === '2')
-					? 'A'
-					: Card.Ranks[Card.Ranks.indexOf(c.rank) - 1];
+			let rank;
+
+			if(c.rank === '2') {
+				rank = 'A';
+			} else if(c.rank === '3') {
+				rank = '2';
+			} else {
+				rank = Card.Ranks[Card.Ranks.indexOf(c.rank) - 1];
+			}
 			
 			return `${rank}${c.suit}`;
 		});

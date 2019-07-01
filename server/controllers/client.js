@@ -22,6 +22,8 @@ function handleClient(client) {
 			sockets.push(client);
 		}
 
+		sendLobbyUpdate();
+
 		// Start the game if there are enough ready players
 		const readyPlayers = clients.filter(c => c.ready).length;
 		
@@ -33,6 +35,23 @@ function handleClient(client) {
 			game.start();
 		}
 	});
+
+	// Disconnect handler
+	client.on('disconnect', () => {
+		const idx = sockets.indexOf(client);
+		clients.splice(idx, 1);
+		sockets.splice(idx, 1);
+		sendLobbyUpdate();
+	});
+}
+
+// Update the lobby state to all clients
+function sendLobbyUpdate() {
+	emitToAll('update_lobby', clients);
+}
+
+function emitToAll(message, data) {
+	sockets.forEach(s => s.emit(message, data));
 }
 
 // Updates an existing client's ready state

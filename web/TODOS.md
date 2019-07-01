@@ -5,6 +5,7 @@
 * pile
 * other opponents and their cards
 * sort cards in player's hand
+	* or give them buttons to re-arrange/sort them
 * > 2 player support (proper rules)
 * errors
 * multiple games going on at once (server)
@@ -14,3 +15,6 @@
 * chat (rocket league style)
 * win, confirm, reset
 * crazy animations
+* choosing first player isn't (always) calculated correctly
+	* (possibly just fixed this)
+* handle cases with pairs where diamond+spade should be > club+heart

@@ -13,7 +13,7 @@ class Card {
 
 	getRankValue() {
 		const rankIdx = Card.Ranks.indexOf(this.rank);
-		return (rankIdx * Card.Suits.length)
+		return rankIdx * Card.Suits.length;
 	}
 
 	getSuitValue() {

@@ -3,6 +3,8 @@ const Hand = require("./hand");
 
 const GameState = {
 	WAITING: 0,
+	PLAYING: 1,
+	FINISHED: 2, // Generally this is when someone won
 };
 
 // Number of cards players are dealt at the start
@@ -45,8 +47,11 @@ class Game {
 		// Pick the starting player
 		this.turn = this.getPlayerWithMinCard();
 
-		// Reset the current run
+		// Reset the game state
 		this.run = [];
+		this.winner = null;
+		this.state = GameState.FINISHED;
+		// this.state = GameState.PLAYING;
 
 		// Update all players
 		this.updateAllClients();
@@ -58,8 +63,8 @@ class Game {
 
 	// Returns the player with the minimum value card
 	getPlayerWithMinCard() {
-		let minPlayer = 0;
-		let minCardValue = 0;
+		let minPlayer = null;
+		let minCardValue = null;
 
 		for(let i = 0; i < this.clients.length; i++) {
 			const c = this.clients[i];
@@ -67,7 +72,7 @@ class Game {
 			c.cards.forEach(card => {
 				const value = card.getValue();
 
-				if(value < minCardValue) {
+				if(minPlayer === null || value < minCardValue) {
 					minPlayer = i;
 					minCardValue = value;
 				}
@@ -133,6 +138,27 @@ class Game {
 		this.run.push(cards);
 
 		// 		Take away the played cards
+		this.playCards(client, cards);
+
+		// 		Check if the player won
+		if(client.cards.length === 0) {
+			this.state = GameState.FINISHED;
+			this.winner = client.name;
+		}
+
+		//		Go to the next player
+		this.nextTurn();
+
+		// 		Update the game state
+		this.updateAllClients();
+	}
+
+	nextTurn() {
+		this.turn = (this.turn + 1) % this.clients.length;
+	}
+
+	// Takes away the cards from the client's hand
+	playCards(client, cards) {
 		const newCards = [];
 
 		for(let i = 0; i < client.cards.length; i++) {
@@ -153,16 +179,6 @@ class Game {
 		}
 
 		client.cards = newCards;
-
-		//		Go to the next player
-		this.nextTurn();
-
-		// 		Update the game state
-		this.updateAllClients();
-	}
-
-	nextTurn() {
-		this.turn = (this.turn + 1) % this.clients.length;
 	}
 
 	// Update the game state to all clients over the socket
