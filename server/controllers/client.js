@@ -24,7 +24,7 @@ function handleClient(client) {
 
 		// Start the game if there are enough ready players
 		const readyPlayers = clients.filter(c => c.ready).length;
-
+		
 		if(readyPlayers === clientsToStartGame) {
 			// Initialize the game
 			const game = new Game(clients, sockets);

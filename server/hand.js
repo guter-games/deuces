@@ -21,10 +21,7 @@ class Hand {
 	}
 
 	isValid() {
-		const val = this.getValue();
-		console.log('value', val);
-		return val !== 0;
-		// return this.getValue() !== 0;
+		return this.getValue() !== 0;
 	}
 
 	getValue() {

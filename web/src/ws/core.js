@@ -15,13 +15,18 @@ class Client {
 		this.socket.on(evt, action);
 	}
 
-	ready(name, ready) {
+	ready(ready, name) {
+		console.log('rdy');
 		this.socket.emit('ready', { name, ready });
 	}
 
 	playCards(cards) {
 		console.log('emit');
 		this.socket.emit('play_cards', cards);
+	}
+
+	pass() {
+		this.socket.emit('pass');
 	}
 }
 

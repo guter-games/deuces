@@ -21,6 +21,7 @@ class Game {
 			const client = this.clients[i];
 
 			s.on('play_cards', cards => this.onPlayCards(client, s, cards));
+			s.on('pass', () => this.onPass(client, s));
 		});
 	}
 
@@ -37,7 +38,7 @@ class Game {
 		// Deal cards to each player
 		this.clients.forEach(c => {
 			for(let i = 0; i < numCardsToDeal; i++) {
-				c.cards.push(this.popRandomFromPool());
+				this.dealCardTo(c);
 			}
 		});
 
@@ -49,6 +50,10 @@ class Game {
 
 		// Update all players
 		this.updateAllClients();
+	}
+
+	dealCardTo(client) {
+		client.cards.push(this.popRandomFromPool());
 	}
 
 	// Returns the player with the minimum value card
@@ -77,6 +82,13 @@ class Game {
 		const numCards = this.pool.length;
 		const randIdx = Math.floor(Math.random() * numCards);
 		return this.pool.splice(randIdx, 1)[0];
+	}
+
+	onPass(client, socket) {
+		this.run = [];
+		this.nextTurn();
+		this.dealCardTo(client);
+		this.updateAllClients();
 	}
 
 	onPlayCards(client, socket, clientCards) {
@@ -143,10 +155,14 @@ class Game {
 		client.cards = newCards;
 
 		//		Go to the next player
-		this.turn = (this.turn + 1) % this.clients.length;
+		this.nextTurn();
 
 		// 		Update the game state
 		this.updateAllClients();
+	}
+
+	nextTurn() {
+		this.turn = (this.turn + 1) % this.clients.length;
 	}
 
 	// Update the game state to all clients over the socket
@@ -161,6 +177,9 @@ class Game {
 
 			// Additional 'me' properties
 			game.me.isMyTurn = (game.turn === i);
+
+			// Additional properties
+			game.playerTurnName = this.clients[game.turn].name;
 
 			// Send the data
 			s.emit('update', game);

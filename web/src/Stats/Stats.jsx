@@ -4,11 +4,11 @@ const Stats = props => {
 	return (
 		<div>
 			<div>
-				player { props.turn }'s turn
+				{ props.turn }'s turn
 			</div>
 
 			<div>
-				# cards in pile: { props.poolSize }
+				# cards in pool: { props.poolSize }
 			</div>
 		</div>
 	);

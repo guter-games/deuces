@@ -28,6 +28,10 @@ export default class Me extends React.Component {
 		client.playCards(cards);
 	}
 
+	pass() {
+		client.pass();
+	}
+
 	render() {
 		// Render individual cards
 		const cards = this.props.me.cards.map((c, i) => {
@@ -47,12 +51,19 @@ export default class Me extends React.Component {
 		
 		if(this.props.me.isMyTurn) {
 			play = (
-				<button onClick={ this.playCards }>Play</button>
+				<div>
+					<button onClick={ this.playCards }>Play</button>
+					<button onClick={ this.pass }>Pass</button>
+				</div>
 			);
 		}
 	
 		return (
 			<div>
+				<div>
+					You:
+				</div>
+				
 				<div>
 					{ cards }
 				</div>
