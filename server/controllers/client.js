@@ -1,7 +1,7 @@
 const Client = require('../client');
 const Game = require('../game');
 
-const clientsToStartGame = 1;
+const clientsToStartGame = 2;
 
 // Parallel arrays
 const clients = [];

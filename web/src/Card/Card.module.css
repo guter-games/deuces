@@ -1,12 +1,25 @@
 .card {
 	display: inline-block;
-	border: 1px solid lightgray;
-	border-radius: 15px;
+	position: relative;
 	background: white;
 	height: 100px;
-	padding: 10px;
 }
 
-.selected {
-	background: lightgreen;
+.card:not(.static) {
+	opacity: 0.2;
+	transition: all 0.3s;
+}
+
+.card:hover:not(.selected):not(.static) {
+	top: -10px;
+	opacity: 0.6;
+}
+
+.selected:not(.static) {
+	top: -20px;
+	opacity: 1;
+}
+
+.img {
+	
 }

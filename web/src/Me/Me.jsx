@@ -1,5 +1,6 @@
 import React from 'react';
 import autoBind from 'react-autobind';
+import styles from '../Player/Player.module.css';
 import Card from '../Card';
 import client from '../ws';
 
@@ -60,11 +61,11 @@ export default class Me extends React.Component {
 	
 		return (
 			<div>
-				<div>
-					You:
+				<div className={styles.name}>
+					{ this.props.me.name } (you, { cards.length } cards)
 				</div>
 				
-				<div>
+				<div className={styles.cards}>
 					{ cards }
 				</div>
 

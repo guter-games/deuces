@@ -50,8 +50,7 @@ class Game {
 		// Reset the game state
 		this.run = [];
 		this.winner = null;
-		this.state = GameState.FINISHED;
-		// this.state = GameState.PLAYING;
+		this.state = GameState.PLAYING;
 
 		// Update all players
 		this.updateAllClients();
@@ -186,6 +185,17 @@ class Game {
 		this.sockets.forEach((s, i) => {
 			const game = Object.assign({}, this);
 			delete game.sockets; // Can't send socket references over a socket
+
+			// Information about other players
+			game.others = [];
+
+			for(let j = 0; j < game.clients.length; j++) {
+				if(i !== j) {
+					const name = game.clients[j].name;
+					const numCards = game.clients[j].cards.length;
+					game.others.push({ name, numCards });
+				}
+			}
 
 			// Only send this person's cards
 			game.me = game.clients[i];
