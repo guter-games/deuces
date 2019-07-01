@@ -50,6 +50,7 @@ function handleClient(client) {
 		const readyPlayers = clients.filter(c => c.ready).length;
 		const startPlayers = clients.filter(c => c.start).length;
 
+		// XXX if someone idles in ready, this screws the whole server
 		if(startPlayers >= clientsToStartGame && startPlayers === readyPlayers) {
 			// Initialize the game
 			const game = new Game(clients, sockets);
@@ -70,7 +71,6 @@ function handleClient(client) {
 function syncLobby() {
 	for (const sock of sockets) {
 		sock.emit('lobby_players', clients);
-		console.log('syncing state to ', sock.id)
 	}
 }
 

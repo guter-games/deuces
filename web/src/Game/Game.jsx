@@ -27,7 +27,7 @@ export default class Game extends React.Component {
 					<Player player={ game.others[1] } />
 				</div>)
 			: null;
-		
+
 		const right =
 			game.others.length >= 3
 				?	(<div className={ c("player", "right") }>
