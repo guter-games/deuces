@@ -10,53 +10,73 @@ const sockets = [];
 function handleClient(client) {
 	console.log('client connected');
 
-	// Ready handler
-	client.on('ready', ({ ready, name }) => {
-		console.log('client ready', name, ready);
+	// Update the clients list
+	const c = new Client(client.id);
 
-		// Update the clients list
-		const c = new Client(name, ready);
+	clients.push(c);
+	sockets.push(client);
 
-		if(!updateExistingClient(c)) {
-			clients.push(c);
-			sockets.push(client);
-		}
+	// On disconnect
+	client.on('disconnect', () => {
+      	      const i = clients.indexOf(c);
+      	      clients.splice(i, 1);
+      	      sockets.splice(i, 1);
+      	      syncLobby();
+    	})
 
-		sendLobbyUpdate();
+	client.emit('lobby_players', clients)
+
+	client.on('change_name', ({ name }) => {
+		console.log('changed name ', c.name, ' to ', name);
+		c.name = name;
+		syncLobby();
+	});
+
+	client.on('ready', ({ ready }) => {
+		console.log('client ready', c.name, ready);
+
+		c.ready = ready;
+
+		syncLobby();
+	})
+
+	// Start handler
+	client.on('start', ({ start }) => {
+		console.log('client start', c.name, start);
+
+		c.start = start;
 
 		// Start the game if there are enough ready players
 		const readyPlayers = clients.filter(c => c.ready).length;
-		
-		if(readyPlayers === clientsToStartGame) {
+		const startPlayers = clients.filter(c => c.start).length;
+
+		if(startPlayers >= clientsToStartGame && startPlayers === readyPlayers) {
 			// Initialize the game
 			const game = new Game(clients, sockets);
 
 			// Start the new game
 			game.start();
+
+			for (const client of clients) {
+				client.status = 'ingame';
+			}
 		}
+
+		syncLobby();
 	});
 
-	// Disconnect handler
-	client.on('disconnect', () => {
-		const idx = sockets.indexOf(client);
-		clients.splice(idx, 1);
-		sockets.splice(idx, 1);
-		sendLobbyUpdate();
-	});
 }
 
-// Update the lobby state to all clients
-function sendLobbyUpdate() {
-	emitToAll('update_lobby', clients);
-}
-
-function emitToAll(message, data) {
-	sockets.forEach(s => s.emit(message, data));
+function syncLobby() {
+	for (const sock of sockets) {
+		sock.emit('lobby_players', clients);
+		console.log('syncing state to ', sock.id)
+	}
 }
 
 // Updates an existing client's ready state
 // Returns whether or not an existing client was found
-function updateExistingClient(client) {
+function clientExists(client) {
 	for(let i = 0; i < clients.length; i++) {
 		if(clients[i].name === client.name) {
 			clients[i].ready = client.ready;

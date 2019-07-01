@@ -7,31 +7,64 @@ import client from '../ws';
 const c = classNames.bind(styles);
 
 export default class Lobby extends React.Component {
-	state = { ready: false, name: '' };
+	state = {
+		ready: false,
+		start: false,
+		name: '',
+		lobby_players: [],
+	};
 
 	constructor() {
 		super();
 		autoBind(this);
-	}
 
-	componentDidUpdate(_, prevState) {
-		if(this.state.ready !== prevState.ready) {
-			client.ready(this.state.ready, this.state.name);
-		}
+		client.on('lobby_players', lobby_players => {
+			console.log('lobby players', lobby_players);
+			this.setState({ lobby_players });
+		})
 	}
 
 	onReady() {
+		client.ready(!this.state.ready);
 		this.setState({ ready: !this.state.ready });
+	}
+
+	onStart() {
+		client.start(!this.state.start);
+		this.setState({ start: !this.state.start });
 	}
 
 	changeName(evt) {
 		const newName = evt.target.value;
 		this.setState({ name: newName });
+		client.changeName(newName);
+	}
+
+	nPlayersReady() {
+		return this.state.lobby_players.filter(player => player.ready).length;
 	}
 
 	render() {
 		const inputClasses = c({ input: true });
-		const buttonClasses = c({ btn: true, ready: this.state.ready });
+		const readyButtonClasses = c({
+			btn: true,
+			ready: this.state.ready,
+		});
+		const startButtonClasses = c({
+			btn: true,
+			ready: this.state.start,
+			hidden: !this.state.ready
+		});
+
+		const players = this.state.lobby_players.length > 0 ?
+			this.state.lobby_players.map(player =>
+			<div>
+					{player.name}
+					{player.id === client.id() && "(me)"} - {player.status}
+					{player.ready && " - ready"}
+					{player.start && " - start"} 
+			</div>)
+			: <div> No players online </div>
 
 		return (
 			<div className={styles.lobby}>
@@ -46,8 +79,15 @@ export default class Lobby extends React.Component {
 					/>
 				</div>
 
+
 				<div>
-					<button onClick={this.onReady} className={buttonClasses}>Ready</button>
+					<h1> Lobby </h1>
+					{players}
+				</div>
+
+				<div>
+					<button onClick={this.onReady} className={readyButtonClasses}>Ready</button>
+					<button onClick={this.onStart} className={startButtonClasses}>Start with {this.nPlayersReady()} players.</button>
 				</div>
 			</div>
 		);
