@@ -25,3 +25,7 @@
 .ready {
 	background: #2578CF;
 }
+
+.hidden {
+	display: none;
+}

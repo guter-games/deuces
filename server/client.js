@@ -1,7 +1,10 @@
 class Client {
-	constructor(name, ready) {
-		this.name = name;
-		this.ready = ready;
+	constructor(id) {
+		this.id = id;
+		this.name = 'anon';
+		this.ready = false;
+		this.start = false;
+		this.status = 'lobby';
 		
 		this.cards = [];
 	}

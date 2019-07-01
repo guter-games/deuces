@@ -50,8 +50,8 @@ class Game {
 		// Reset the game state
 		this.run = [];
 		this.winner = null;
-		this.state = GameState.FINISHED;
-		// this.state = GameState.PLAYING;
+		//this.state = GameState.FINISHED;
+		this.state = GameState.PLAYING;
 
 		// Update all players
 		this.updateAllClients();
