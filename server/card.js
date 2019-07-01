@@ -6,7 +6,9 @@ class Card {
 
 	// Returns the numeric value of this card, [0, 51]
 	getValue() {
-		return this.getRankValue() + this.getSuitValue();
+		// Add 1 so that 3 of diamonds doesn't have value 0
+		// Reserve 0 for error states
+		return 1 + this.getRankValue() + this.getSuitValue();
 	}
 
 	getRankValue() {
@@ -18,9 +20,13 @@ class Card {
 		const suitIdx = Card.Suits.indexOf(this.suit);
 		return suitIdx;
 	}
+
+	equals(other) {
+		return this.suit === other.suit && this.rank === other.rank;
+	}
 }
 
-Card.Suits = ["dime", "club", "heart", "spade"];
+Card.Suits = ["D", "C", "H", "S"];
 Card.Ranks = ["3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2"];
 
 module.exports = Card;

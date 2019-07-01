@@ -79,7 +79,8 @@ class Game {
 		return this.pool.splice(randIdx, 1)[0];
 	}
 
-	onPlayCards(client, socket, cards) {
+	onPlayCards(client, socket, clientCards) {
+		const cards = clientCards.map(c => new Card(c.suit, c.rank));
 		// TODO: verify that the client actually has these cards
 
 		const oldCards = this.run[this.run.length - 1];
@@ -118,6 +119,28 @@ class Game {
 		// Allow the play
 		// 		Record the play
 		this.run.push(cards);
+
+		// 		Take away the played cards
+		const newCards = [];
+
+		for(let i = 0; i < client.cards.length; i++) {
+			const cardInHand = client.cards[i];
+			let played = false;
+
+			for(let j = 0; j < cards.length; j++) {
+				const cardPlayed = cards[j];
+
+				if(cardInHand.equals(cardPlayed)) {
+					played = true;
+				}
+			}
+
+			if(!played) {
+				newCards.push(client.cards[i]);
+			}
+		}
+
+		client.cards = newCards;
 
 		//		Go to the next player
 		this.turn = (this.turn + 1) % this.clients.length;

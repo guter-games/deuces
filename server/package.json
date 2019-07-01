@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "poker-hands": "^1.0.2",
     "socket.io": "^2.2.0"
   }
 }
