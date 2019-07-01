@@ -1,0 +1,30 @@
+version: '3.5'
+
+services:
+  # Backend API
+  server:
+    image: deuces/server
+    container_name: deuces-server
+    build: ./server
+    network_mode: "host"
+    volumes:
+      - "./server:/opt/server/"
+    ports:
+      - "3012:3012"
+    environment:
+      - TBD=for_later
+
+  # Frontend website
+  web:
+    image: deuces/web
+    container_name: deuces-web
+    build: ./web
+    network_mode: "host"
+    depends_on:
+      - server
+    volumes:
+      - "./web:/opt/web/"
+    ports:
+      - "3000:3000"
+    environment:
+      - TBD=for_later

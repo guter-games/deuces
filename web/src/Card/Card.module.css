@@ -1,0 +1,12 @@
+.card {
+	display: inline-block;
+	border: 1px solid lightgray;
+	border-radius: 15px;
+	background: white;
+	height: 100px;
+	padding: 10px;
+}
+
+.selected {
+	background: lightgreen;
+}
