@@ -1,12 +1,4 @@
 steps:
-- name: 'ubuntu'
-  id: Set the right .env
-  args:
-  - mv
-  - .envprod
-  - .env
-  dir: web
-
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
