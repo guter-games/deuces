@@ -1,0 +1,37 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/portfolio-239904/deuces-web:$COMMIT_SHA'
+  - '-f'
+  - 'Dockerfile-prod'
+  - '.'
+  dir: web
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - "push"
+  - "gcr.io/portfolio-239904/deuces-web:$COMMIT_SHA"
+
+- name: 'ubuntu'
+  id: Set image tag in k8s Deployment
+  args:
+  - 'sed'
+  - '-i'
+  - "s#image: gcr.*#image: gcr.io/portfolio-239904/deuces-web:$COMMIT_SHA#"
+  - 'k8s/deuces-web.yaml'
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args:
+  - 'apply'
+  - '-f'
+  - 'k8s/deuces-web.yaml'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-west2-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=your-first-cluster-1'
+
+images: [
+  'gcr.io/portfolio-239904/deuces-web:$COMMIT_SHA',
+]
