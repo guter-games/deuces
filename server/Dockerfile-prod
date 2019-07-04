@@ -7,6 +7,5 @@ WORKDIR /opt/server
 COPY . .
 
 RUN yarn install
-RUN npm install -g nodemon
 
-CMD ["nodemon", "server.js"]
+CMD yarn start
