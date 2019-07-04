@@ -1,6 +1,7 @@
 {
   "name": "web",
   "version": "0.1.0",
+  "homepage": "https://gregoryguterman.com/deuces/",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",

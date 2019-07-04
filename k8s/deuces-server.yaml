@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deuces-server
+  labels:
+    app: deuces-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deuces-server
+  template:
+    metadata:
+      labels:
+        app: deuces-server
+    spec:
+      containers:
+      - name: deuces-server
+        image: gcr.io/portfolio-239904/deuces-server:90a6f354b5134424b9b3dc4edff4a61d6a32e2d3
+        ports:
+        - containerPort: 3012
+        resources:
+          requests:
+            ephemeral-storage: "1Gi"
+          limits:
+            ephemeral-storage: "2Gi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxUnavailable: 100%
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: deuces-server
+spec:
+  selector:
+    app: deuces-server
+  ports:
+  - protocol: TCP
+    port: 3012
+    targetPort: 3012

@@ -1,11 +1,12 @@
 import io from 'socket.io-client';
 
 // const socketURL = 'http://tener.serveo.net/';
-const socketURL = process.env.SERVER_URI || 'http://localhost:3012';
+const socketURL = process.env.REACT_APP_SERVER_URI || 'http://localhost:3012';
+const socketPath = process.env.REACT_APP_SERVER_PATH || '/';
 
 class Client {
 	connect() {
-		this.socket = io(socketURL);
+		this.socket = io(socketURL, { path: socketPath });
 
 		return new Promise((resolve, reject) => {
 			this.socket.on('connect', resolve);
