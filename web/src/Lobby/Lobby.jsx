@@ -81,7 +81,7 @@ export default class Lobby extends React.Component {
 
 
 				<div>
-					<h1> Lobby </h1>
+					<h1> Lobby test deploy </h1>
 					{players}
 				</div>
 

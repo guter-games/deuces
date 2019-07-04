@@ -55,7 +55,7 @@ function renderBunched(cards) {
 	});
 
 	return (
-		<div className={ handClasses } style={}>
+		<div className={ handClasses }>
 			{ cardElems }
 		</div>
 	);
