@@ -11,14 +11,14 @@ const Card = props => {
 	const classes = c({ card: true, selected: props.selected, static: isBlankCard });
 
 	const style = {
-		marginLeft: props.left || 0,
+		left: props.left || 0,
 	};
 
 	// Get image asset URL
 	const fileName =
-		(props.rank && props.suit)
-			? `${ props.rank }${ props.suit }`
-			: 'BLUE_BACK';
+		isBlankCard
+			? 'BLUE_BACK'
+			: `${ props.rank }${ props.suit }`;
 
 	const src = `/cards/${ fileName }.svg`;
 

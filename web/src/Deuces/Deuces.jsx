@@ -59,7 +59,7 @@ export default class Deuces extends React.Component {
 
 		setTimeout(() => {
 			// ENABLE THE FOLLOWING LINE FOR TESTING:
-			//this.setState({ game: testData, screen: Screen.GAME });
+			this.setState({ game: testData, screen: Screen.GAME });
 		}, 1000);
 	}
 
