@@ -28,6 +28,14 @@ build-server:
 build-web:
 	@docker-compose build web
 
+# Clears the build cache and rebuilds the container
+build-server-fresh:
+	@docker-compose build --no-cache server
+
+# Clears the build cache and rebuilds the container
+build-web-fresh:
+	@docker-compose build --no-cache web
+
 # SSH into a container
 # EXAMPLE: make ssh tar=web
 ssh:
