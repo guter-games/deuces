@@ -10,19 +10,20 @@ const bunchedOffset = 20;
 
 // layout is one of ["flat", "bunched", "stacked"]
 const Hand = ({ cards, layout }) => {
-	sort(cards)
+	const sortedCards = [...cards]
+	sort(sortedCards);
 
 	switch(layout) {
 		case "bunched": {
-			return renderBunched(cards);
+			return renderBunched(sortedCards);
 		}
 
 		case "stacked": {
-			return renderStacked(cards);
+			return renderStacked(sortedCards);
 		}
 
 		default: {
-			return renderFlat(cards);
+			return renderFlat(sortedCards);
 		}
 	}
 };
