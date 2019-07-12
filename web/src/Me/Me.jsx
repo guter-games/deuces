@@ -27,6 +27,9 @@ export default class Me extends React.Component {
 	playCards() {
 		const cards = this.props.me.cards.filter((c, i) => this.isCardSelected(i));
 		client.playCards(cards);
+
+		// Deselect cards
+		this.setState({ selected: {} });
 	}
 
 	pass() {
