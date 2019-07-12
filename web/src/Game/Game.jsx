@@ -36,25 +36,25 @@ export default class Game extends React.Component {
 				: null;
 
 		return (
-			<div className={styles.game}>
+			<div className={ styles.game }>
 				<div className={ c("player", "bottom") }>
 					<Me me={ game.me } />
 				</div>
 
-				{top}
-				{left}
-				{right}
+				{ top }
+				{ left }
+				{ right }
 
-				<div className={styles.center}>
-					<div className={styles.pool}>
+				<div className={ styles.center }>
+					<div className={ styles.pool }>
 						<Pool poolSize={ game.pool.length } />
 					</div>
 
-					<div className={styles.pile}>
+					<div className={ styles.pile }>
 						<Pile run={ game.run } />
 					</div>
 
-					<div className={styles.stats}>
+					<div className={ styles.stats }>
 						<Stats poolSize={ game.pool.length } turn={ game.playerTurnName } />
 					</div>
 				</div>

@@ -8,7 +8,11 @@ const Card = props => {
 	const isBlankCard = !(props.rank && props.suit);
 	
 	// Compute styles
-	const classes = c({ card: true, selected: props.selected, static: isBlankCard });
+	const classes = c({
+		card: true,
+		selected: props.selected,
+		static: isBlankCard || props.static
+	});
 
 	const style = {
 		left: props.left || 0,

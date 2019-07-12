@@ -64,13 +64,13 @@ export default class Me extends React.Component {
 			<div>
 				<div className={ styles.name }>
 					{ this.props.me.name } (you, { cards.length } cards)
+
+					{ play }
 				</div>
 				
 				<div className={ styles.cards }>
 					<Hand cards={ cards } layout="flat" />
 				</div>
-
-				{ play }
 			</div>
 		);
 	}

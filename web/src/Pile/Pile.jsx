@@ -9,7 +9,7 @@ const Pile = ({ run }) => {
 	const lastPlay = run[run.length - 1];
 
 	const cards = lastPlay.map((c, i) => {
-		return <Card key={i} suit={c.suit} rank={c.rank} />;
+		return <Card key={i} suit={c.suit} rank={c.rank} static />;
 	});
 
 	return (

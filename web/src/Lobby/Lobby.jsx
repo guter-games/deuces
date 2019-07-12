@@ -3,6 +3,7 @@ import autoBind from 'react-autobind';
 import classNames from 'classnames/bind';
 import styles from './Lobby.module.css';
 import client from '../ws';
+import LobbyPlayer from '../LobbyPlayer';
 
 const c = classNames.bind(styles);
 
@@ -51,7 +52,6 @@ export default class Lobby extends React.Component {
 		return this.state.lobby_players.filter(player => player.ready).length;
 	}
 
-
 	render() {
 		const inputClasses = c({ input: true });
 		const readyButtonClasses = c({
@@ -59,16 +59,23 @@ export default class Lobby extends React.Component {
 			ready: this.state.ready,
 		});
 
-		const players = this.state.lobby_players.length > 0 ?
-			this.state.lobby_players.map(player =>
-			<div>
-					{player.name}
-					{player.id === client.id() && "(me)"}
-					- {player.status}
-					- {player.wantNPlayers} player game
-					{player.ready && " - ready"}
-			</div>)
-			: <div> No players online </div>
+		const players = this.state.lobby_players.length > 0
+			? this.state.lobby_players.map(player => <LobbyPlayer player={player} />)
+			: <div> No players online </div>;
+
+		const numPlayersRadios = [4, 3, 2, 1].map(n => `${n}`).map(n => (
+			<label key={ n }>
+				<input
+					type='radio'
+					name='nPlayers'
+					value={ n }
+					checked={ this.state.wantsNPlayers === n }
+					onChange={ this.changeNPlayers }
+				/>
+
+				{ n }
+			</label>
+		));
 
 		return (
 			<div className={styles.lobby}>
@@ -85,15 +92,14 @@ export default class Lobby extends React.Component {
 
 
 				<div>
-					<h1> Lobby test deploy </h1>
+					<h1> Lobby </h1>
 					{players}
 				</div>
 
 				<div>
 					<h1> How many players do you want? </h1>
-					<label><input type='radio' name='nPlayers' value='4' checked={this.state.wantsNPlayers === '4'} onChange={this.changeNPlayers} /> 4</label>
-					<label><input type='radio' name='nPlayers' value='3' checked={this.state.wantsNPlayers === '3'} onChange={this.changeNPlayers} /> 3</label>
-					<label><input type='radio' name='nPlayers' value='2' checked={this.state.wantsNPlayers === '2'} onChange={this.changeNPlayers} /> 2</label>
+
+					{ numPlayersRadios }
 				</div>
 
 				<div>
