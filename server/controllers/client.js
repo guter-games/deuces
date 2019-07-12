@@ -1,5 +1,6 @@
 const Client = require('../client');
 const Game = require('../game');
+const DummySocket = require('../ai/dummySocket');
 
 const clientsToStartGame = 2;
 
@@ -125,6 +126,36 @@ function matchClients(newReady) {
 	}
 
 	return null;
+}
+
+// Returns a list of clients to match or null if no match possible
+function matchWithAI(newReady) {
+	const readyClients = clients.filter(c => c.ready);
+	const wantThis = readyClients.filter(c => c.wantNPlayers === newReady.wantNPlayers);
+
+	let match = { clients: [], sockets: [] };
+	for (let i = 0; i < clients.length; i++) {
+		if(clients[i].ready && clients[i].wantNPlayers === newReady.wantNPlayers) {
+			match.clients.push(clients[i])
+			match.sockets.push(sockets[i])
+
+			if (match.clients.length === newReady.wantNPlayers) {
+				break;
+			}
+		}
+	}
+
+	const aiPlayers = newReady.wantNPlayers - match.clients.length;
+	if (aiPlayers > 0) {
+		for (let i = 0; i < aiPlayers; i++) {
+			const aiClient = new Client('ai' + i); // XXX not globally unique id
+			aiClient.isAI = true;
+			match.clients.push(aiClient)
+			match.sockets.push(new DummySocket())
+		}
+	}
+
+	return match;
 }
 
 module.exports = handleClient;

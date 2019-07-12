@@ -1,5 +1,6 @@
 const Card = require("./card");
 const Hand = require("./hand");
+const aiTurn = require("./ai/play");
 
 const GameState = {
 	WAITING: 0,
@@ -54,6 +55,9 @@ class Game {
 
 		// Update all players
 		this.updateAllClients();
+
+		// If it's ai's turn, then go.
+		this.aiMove();
 	}
 
 	dealCardTo(client) {
@@ -214,6 +218,12 @@ class Game {
 			// Send the data
 			s.emit('update', game);
 		});
+	}
+
+	aiMove() {
+		if (this.clients[this.turn].isAI) {
+			const aiPlay = aiMove(this.clients[this.turn].cards, this.run, this.pool); 
+		}
 	}
 }
 

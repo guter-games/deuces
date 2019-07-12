@@ -5,6 +5,7 @@ class Client {
 		this.ready = false;
 		this.wantNPlayers = 4;
 		this.status = 'lobby';
+		this.isAI = false;
 		
 		this.cards = [];
 	}
