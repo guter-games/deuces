@@ -10,6 +10,8 @@ const bunchedOffset = 20;
 
 // layout is one of ["flat", "bunched", "stacked"]
 const Hand = ({ cards, layout }) => {
+	sort(cards)
+
 	switch(layout) {
 		case "bunched": {
 			return renderBunched(cards);
@@ -24,6 +26,16 @@ const Hand = ({ cards, layout }) => {
 		}
 	}
 };
+
+function sort(cards) {
+	const rankOrder = ["3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2"];
+	const suitOrder = ["D", "C", "H", "S"];
+	const compare = (a, b) =>
+		(suitOrder.indexOf(a.suit) - suitOrder.indexOf(b.suit)) * 100 +
+		(rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank))
+
+	cards.sort(compare);
+}
 
 function renderFlat(cards) {
 	const handClasses = c({ hand: true, flat: true });
