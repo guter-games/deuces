@@ -18,13 +18,13 @@ function handleClient(client) {
 
 	// On disconnect
 	client.on('disconnect', () => {
-      	      const i = clients.indexOf(c);
-      	      clients.splice(i, 1);
-      	      sockets.splice(i, 1);
-      	      syncLobbyClients();
-    	})
+		const i = clients.indexOf(c);
+		clients.splice(i, 1);
+		sockets.splice(i, 1);
+		syncLobbyClients();
+	});
 
-	client.emit('lobby_players', clients)
+	syncLobbyClients();
 
 	client.on('change_name', ({ name }) => {
 		console.log('changed name ', c.name, ' to ', name);

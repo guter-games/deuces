@@ -7,6 +7,10 @@ import LobbyPlayer from '../LobbyPlayer';
 
 const c = classNames.bind(styles);
 
+function isDevelopment() {
+	return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+}
+
 export default class Lobby extends React.Component {
 	state = {
 		ready: false,
@@ -63,7 +67,13 @@ export default class Lobby extends React.Component {
 			? this.state.lobby_players.map(player => <LobbyPlayer player={player} />)
 			: <div> No players online </div>;
 
-		const numPlayersRadios = [4, 3, 2, 1].map(n => `${n}`).map(n => (
+		const numPlayers = [4, 3, 2];
+
+		if(isDevelopment()) {
+			numPlayers.push(1);
+		}
+
+		const numPlayersRadios = numPlayers.map(n => `${n}`).map(n => (
 			<label key={ n }>
 				<input
 					type='radio'
