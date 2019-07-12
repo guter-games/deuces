@@ -101,35 +101,11 @@ class Game {
 
 		const oldCards = this.run[this.run.length - 1];
 
-		// Check that the # of cards played was right
-		if(this.run.length > 0) {
-			const lastNumCardsPlayed = oldCards.length;
-
-			if(cards.length !== lastNumCardsPlayed) {
-				// WRONG NUMBER OF CARDS
-				socket.emit('bad_play', 'Wrong number of cards');
-				return;
-			}
-		}
-
-		// Check that the cards themselves can be played together
-		const hand = new Hand(cards);
-
-		if(!hand.isValid()) {
-			// INVALID HAND
-			socket.emit('bad_play', 'That is not a valid hand');
+		// Check valid play
+		const error = this.playIsValid(cards, oldCards, this.run);
+		if (error) {
+			socket.emit('bad_play', error);
 			return;
-		}
-
-		// Check that the cards are higher than those last played
-		if(this.run.length > 0) {
-			const oldHand = new Hand(oldCards);
-
-			if(oldHand.getValue() > hand.getValue()) {
-				// THE HAND PLAYED IS WORSE THAN THE LAST HAND
-				socket.emit('bad_play', 'This is not higher than the last-played hand');
-				return;
-			}
 		}
 
 		// Allow the play
@@ -150,6 +126,34 @@ class Game {
 
 		// 		Update the game state
 		this.updateAllClients();
+	}
+
+	// Returns an error if there is one
+	playIsValid(cards, oldCards, run) {
+		// Check that the cards themselves can be played together
+		const hand = new Hand(cards);
+
+		if(!hand.isValid()) {
+			return 'That is not a valid hand';
+		}
+
+		// Check that the # of cards played was right
+		if(run.length > 0) {
+			const lastNumCardsPlayed = oldCards.length;
+
+			if(cards.length !== lastNumCardsPlayed) {
+				return 'Wrong number of cards';
+			}
+
+			// Check that the cards are higher than those last played
+			const oldHand = new Hand(oldCards);
+
+			if(oldHand.getValue() > hand.getValue()) {
+				return 'This is not higher than the last-played hand';
+			}
+		}
+
+		return null;
 	}
 
 	nextTurn() {

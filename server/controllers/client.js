@@ -109,12 +109,15 @@ function matchClients(newReady) {
 
 	console.log(`want ${newReady.wantNPlayers} got ${wantThis.length}`);
 	if (wantThis.length >= newReady.wantNPlayers) {
-	debugger;
 		let match = { clients: [], sockets: [] };
 		for (let i = 0; i < clients.length; i++) {
 			if(clients[i].ready && clients[i].wantNPlayers === newReady.wantNPlayers) {
 				match.clients.push(clients[i])
 				match.sockets.push(sockets[i])
+
+				if (match.clients.length === newReady.wantNPlayers) {
+					break;
+				}
 			}
 		}
 
