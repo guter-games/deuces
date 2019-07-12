@@ -41,6 +41,11 @@ class Client {
 		this.socket.emit('change_name', { name });
 	}
 
+	changeNPlayers(wantNPlayers) {
+		console.log('change n players', wantNPlayers);
+		this.socket.emit('change_want_n_players', { wantNPlayers });
+	}
+
 	id() {
 		return this.socket.id;
 	}

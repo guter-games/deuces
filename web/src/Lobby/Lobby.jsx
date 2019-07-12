@@ -12,6 +12,7 @@ export default class Lobby extends React.Component {
 		start: false,
 		name: '',
 		lobby_players: [],
+		wantsNPlayers: '4',
 	};
 
 	constructor() {
@@ -40,9 +41,16 @@ export default class Lobby extends React.Component {
 		client.changeName(newName);
 	}
 
+	changeNPlayers(evt) {
+		const n = evt.target.value;
+		client.changeNPlayers(n);
+		this.setState({ wantsNPlayers: n });
+	}
+
 	nPlayersReady() {
 		return this.state.lobby_players.filter(player => player.ready).length;
 	}
+
 
 	render() {
 		const inputClasses = c({ input: true });
@@ -50,19 +58,15 @@ export default class Lobby extends React.Component {
 			btn: true,
 			ready: this.state.ready,
 		});
-		const startButtonClasses = c({
-			btn: true,
-			ready: this.state.start,
-			hidden: !this.state.ready
-		});
 
 		const players = this.state.lobby_players.length > 0 ?
 			this.state.lobby_players.map(player =>
 			<div>
 					{player.name}
-					{player.id === client.id() && "(me)"} - {player.status}
+					{player.id === client.id() && "(me)"}
+					- {player.status}
+					- {player.wantNPlayers} player game
 					{player.ready && " - ready"}
-					{player.start && " - start"} 
 			</div>)
 			: <div> No players online </div>
 
@@ -86,8 +90,14 @@ export default class Lobby extends React.Component {
 				</div>
 
 				<div>
+					<h1> How many players do you want? </h1>
+					<label><input type='radio' name='nPlayers' value='4' checked={this.state.wantsNPlayers === '4'} onChange={this.changeNPlayers} /> 4</label>
+					<label><input type='radio' name='nPlayers' value='3' checked={this.state.wantsNPlayers === '3'} onChange={this.changeNPlayers} /> 3</label>
+					<label><input type='radio' name='nPlayers' value='2' checked={this.state.wantsNPlayers === '2'} onChange={this.changeNPlayers} /> 2</label>
+				</div>
+
+				<div>
 					<button onClick={this.onReady} className={readyButtonClasses}>Ready</button>
-					<button onClick={this.onStart} className={startButtonClasses}>Start with {this.nPlayersReady()} players.</button>
 				</div>
 			</div>
 		);

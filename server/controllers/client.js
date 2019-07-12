@@ -21,7 +21,7 @@ function handleClient(client) {
       	      const i = clients.indexOf(c);
       	      clients.splice(i, 1);
       	      sockets.splice(i, 1);
-      	      syncLobby();
+      	      syncLobbyClients();
     	})
 
 	client.emit('lobby_players', clients)
@@ -29,7 +29,15 @@ function handleClient(client) {
 	client.on('change_name', ({ name }) => {
 		console.log('changed name ', c.name, ' to ', name);
 		c.name = name;
-		syncLobby();
+		syncLobbyClients();
+	});
+
+	client.on('change_want_n_players', ({ wantNPlayers }) => {
+		console.log('changed wantNPlayers ', c.wantNPlayers, ' to ', wantNPlayers);
+
+		c.wantNPlayers = parseInt(wantNPlayers);
+
+		tryToMatch(c);
 	});
 
 	client.on('ready', ({ ready }) => {
@@ -37,39 +45,45 @@ function handleClient(client) {
 
 		c.ready = ready;
 
-		syncLobby();
+		tryToMatch(c);
 	})
 
-	// Start handler
-	client.on('start', ({ start }) => {
-		console.log('client start', c.name, start);
+	client.on('start_with_ai', ({ start }) => {
+		console.log('client start with ai', c.name, start);
 
-		c.start = start;
+		// Initialize the game
+		const game = new Game(clients, sockets);
 
-		// Start the game if there are enough ready players
-		const readyPlayers = clients.filter(c => c.ready);
-		const startPlayers = clients.filter(c => c.start);
+		// Start the new game
+		game.start();
 
-		// XXX if someone idles in ready, this screws the whole server
-		if(startPlayers.length >= clientsToStartGame &&
-		   startPlayers.length >= Math.min(readyPlayers.length, 4)) {
-			// Initialize the game
-			const game = new Game(clients, sockets);
-
-			// Start the new game
-			game.start();
-
-			for (const client of startPlayers) {
-				client.status = 'ingame';
-			}
+		for (const client of clients) {
+			client.status = 'ingame';
 		}
 
-		syncLobby();
-	});
-
+		syncLobbyClients();
+	})
 }
 
-function syncLobby() {
+function tryToMatch(newClient) {
+        const match = matchClients(newClient);
+        if (match) {
+                console.log('found match')
+                // Initialize the game
+                const game = new Game(match.clients, match.sockets);
+
+                // Start the new game
+                game.start();
+
+                for (const client of match.clients) {
+                        client.status = 'ingame';
+                }
+        }
+
+	syncLobbyClients();
+}
+
+function syncLobbyClients() {
 	for (const sock of sockets) {
 		sock.emit('lobby_players', clients);
 	}
@@ -86,6 +100,28 @@ function clientExists(client) {
 	}
 
 	return false;
+}
+
+// Returns a list of clients to match or null if no match possible
+function matchClients(newReady) {
+	const readyClients = clients.filter(c => c.ready);
+	const wantThis = readyClients.filter(c => c.wantNPlayers === newReady.wantNPlayers);
+
+	console.log(`want ${newReady.wantNPlayers} got ${wantThis.length}`);
+	if (wantThis.length >= newReady.wantNPlayers) {
+	debugger;
+		let match = { clients: [], sockets: [] };
+		for (let i = 0; i < clients.length; i++) {
+			if(clients[i].ready && clients[i].wantNPlayers === newReady.wantNPlayers) {
+				match.clients.push(clients[i])
+				match.sockets.push(sockets[i])
+			}
+		}
+
+		return match;
+	}
+
+	return null;
 }
 
 module.exports = handleClient;

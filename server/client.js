@@ -3,7 +3,7 @@ class Client {
 		this.id = id;
 		this.name = 'anon';
 		this.ready = false;
-		this.start = false;
+		this.wantNPlayers = 4;
 		this.status = 'lobby';
 		
 		this.cards = [];
