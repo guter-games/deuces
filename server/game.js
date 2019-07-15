@@ -17,6 +17,7 @@ class Game {
 		this.state = GameState.WAITING;
 		this.run = [];
 		this.turn = 0; // Index of the player whose turn it is
+		this.ply = 0; // Number of turns taken since the start of the game
 
 		// Bind actions
 		this.sockets.forEach((s, i) => {
@@ -48,6 +49,7 @@ class Game {
 		this.turn = this.getPlayerWithMinCard();
 
 		// Reset the game state
+		this.ply = 0;
 		this.run = [];
 		this.winner = null;
 		this.state = GameState.PLAYING;
@@ -67,15 +69,12 @@ class Game {
 
 		for(let i = 0; i < this.clients.length; i++) {
 			const c = this.clients[i];
+			const value = new Hand(c.cards).getMinCardValue();
 
-			c.cards.forEach(card => {
-				const value = card.getValue();
-
-				if(minPlayer === null || value < minCardValue) {
-					minPlayer = i;
-					minCardValue = value;
-				}
-			});
+			if(minPlayer === null || value < minCardValue) {
+				minPlayer = i;
+				minCardValue = value;
+			}
 		}
 
 		return minPlayer;
@@ -97,39 +96,46 @@ class Game {
 
 	onPlayCards(client, socket, clientCards) {
 		const cards = clientCards.map(c => new Card(c.suit, c.rank));
-		// TODO: verify that the client actually has these cards
-
-		const oldCards = this.run[this.run.length - 1];
 
 		// Check valid play
-		const error = this.playIsValid(cards, oldCards, this.run);
+		const error = this.playIsValid(client.cards, cards, this.run);
+
 		if (error) {
 			socket.emit('bad_play', error);
 			return;
 		}
 
-		// Allow the play
-		// 		Record the play
+		// Record the play
 		this.run.push(cards);
+		this.ply++;
 
-		// 		Take away the played cards
+		// Take away the played cards
 		this.playCards(client, cards);
 
-		// 		Check if the player won
+		// Check if the player won
 		if(client.cards.length === 0) {
 			this.state = GameState.FINISHED;
 			this.winner = client.name;
 		}
 
-		//		Go to the next player
+		// Go to the next player
 		this.nextTurn();
 
-		// 		Update the game state
+		// Update the game state
 		this.updateAllClients();
 	}
 
 	// Returns an error if there is one
-	playIsValid(cards, oldCards, run) {
+	playIsValid(playersCards, cards, run) {
+		// Check that the player has all the cards
+		const fullPlayerHand = new Hand(playersCards);
+
+		for(let i = 0; i < cards.length; i++) {
+			if(!fullPlayerHand.contains(cards[i])) {
+				return 'Tried to play cards not in hand';
+			}
+		}
+
 		// Check that the cards themselves can be played together
 		const hand = new Hand(cards);
 
@@ -137,8 +143,19 @@ class Game {
 			return 'That is not a valid hand';
 		}
 
+		// First move must include that player's lowest card
+		if(this.ply === 0) {
+			const minValuePlayed = hand.getMinCardValue();
+			const minValueInHand = new Hand(playersCards).getMinCardValue();
+
+			if(minValuePlayed !== minValueInHand) {
+				return 'You must play your lowest card on the first turn';
+			}
+		}
+
 		// Check that the # of cards played was right
 		if(run.length > 0) {
+			const oldCards = this.run[this.run.length - 1];
 			const lastNumCardsPlayed = oldCards.length;
 
 			if(cards.length !== lastNumCardsPlayed) {

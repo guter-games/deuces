@@ -20,6 +20,15 @@ class Hand {
 		this.cards = cards;
 	}
 
+	getMinCardValue() {
+		const values = this.cards.map(c => c.getValue());
+		return Math.min(...values);
+	}
+
+	contains(card) {
+		return this.cards.some(c => c.equals(card));
+	}
+
 	isValid() {
 		return this.getValue() !== 0;
 	}

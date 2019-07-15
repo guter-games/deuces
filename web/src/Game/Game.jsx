@@ -7,10 +7,18 @@ import Player from '../Player';
 
 import classNames from 'classnames/bind';
 import styles from './Game.module.css';
+import audio from "../audio";
 
 const c = classNames.bind(styles);
+const myTurnSound = './boop.mp3';
 
 export default class Game extends React.Component {
+	componentDidUpdate(prevProps, prevState) {
+		if(this.props.game.me.isMyTurn && !prevProps.game.me.isMyTurn) {
+			audio.play(myTurnSound);
+		}
+	}
+
 	render() {
 		const game = this.props.game;
 

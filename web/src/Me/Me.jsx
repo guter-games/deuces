@@ -48,6 +48,8 @@ export default class Me extends React.Component {
 			};
 		});
 
+		cards.sort(comparator);
+
 		// Render the play button if it's your turn
 		let play = null;
 		
@@ -75,3 +77,14 @@ export default class Me extends React.Component {
 		);
 	}
 };
+
+function comparator(a, b) {
+	const rankOrder = ["3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2"];
+	const suitOrder = ["D", "C", "H", "S"];
+
+	if(a.rank === b.rank) {
+		return suitOrder.indexOf(a.suit) - suitOrder.indexOf(b.suit);
+	}
+
+	return rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank);
+}

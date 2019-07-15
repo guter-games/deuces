@@ -11,33 +11,20 @@ const cardWidth = 70;
 
 // layout is one of ["flat", "bunched", "stacked"]
 const Hand = ({ cards, layout }) => {
-	const sortedCards = [...cards]
-	sort(sortedCards);
-
 	switch(layout) {
 		case "bunched": {
-			return renderBunched(sortedCards);
+			return renderBunched(cards);
 		}
 
 		case "stacked": {
-			return renderStacked(sortedCards);
+			return renderStacked(cards);
 		}
 
 		default: {
-			return renderFlat(sortedCards);
+			return renderFlat(cards);
 		}
 	}
 };
-
-function sort(cards) {
-	const rankOrder = ["3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2"];
-	const suitOrder = ["D", "C", "H", "S"];
-	const compare = (a, b) =>
-		(suitOrder.indexOf(a.suit) - suitOrder.indexOf(b.suit)) * 100 +
-		(rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank))
-
-	cards.sort(compare);
-}
 
 function renderFlat(cards) {
 	const handClasses = c({ hand: true, flat: true });
