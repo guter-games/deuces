@@ -1,8 +1,11 @@
 import React from 'react';
 import autoBind from 'react-autobind';
+import classNames from 'classnames/bind';
 import styles from '../Player/Player.module.css';
 import Hand from '../Hand';
 import client from '../ws';
+
+const c = classNames.bind(styles);
 
 export default class Me extends React.Component {
 	state = { selected: {} };
@@ -61,9 +64,12 @@ export default class Me extends React.Component {
 				</div>
 			);
 		}
+
+		// Highlight the card area if it's your turn
+		let meClasses = c({ player: true, highlighted: this.props.me.isMyTurn });
 	
 		return (
-			<div>
+			<div className={ meClasses }>
 				<div className={ styles.name }>
 					{ this.props.me.name } (you, { cards.length } cards)
 

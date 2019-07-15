@@ -1,5 +1,9 @@
 .player {
+	
+}
 
+.player.highlighted {
+	background: #F9F8CD;
 }
 
 .name {
