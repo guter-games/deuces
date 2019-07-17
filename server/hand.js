@@ -80,18 +80,6 @@ class Hand {
 				score += this.cards[0].getRankValue();
 				break;
 
-			case 'Five of a Kind':
-			case 'Four of a Kind with Pair or Better':
-			case 'Four Wild Cards':
-			case 'Three of a Kind with Two Pair':
-			case 'Two Three of a Kind':
-			case 'Three Pair':
-			case 'Two Pair':
-				// Keeping this here in case these come up in an actual games, we know w
-				score = 0;
-				console.log('WARNING: strange hand', arr, handType);
-				break;
-
 			case 'High Card':
 				break;
 
