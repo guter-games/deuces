@@ -92,7 +92,6 @@ class Hand {
 				break;
 		}
 
-		console.log(arr, handType, score);
 		return score;
 	}
 
