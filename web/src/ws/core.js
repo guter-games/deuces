@@ -8,6 +8,7 @@ class Client {
 	connect() {
 		this.socket = io(socketURL, { path: socketPath });
 
+		this.socket.on('disconnect', this.onDisconnect.bind(this));
 		return new Promise((resolve, reject) => {
 			this.socket.on('connect', resolve);
 		});
@@ -15,6 +16,10 @@ class Client {
 
 	on(evt, action) {
 		this.socket.on(evt, action);
+	}
+
+	onDisconnect() {
+		// TODO: show some kind of message to the user that they're currently disconnected?
 	}
 
 	ready(ready) {

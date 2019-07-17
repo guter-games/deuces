@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import styles from '../Player/Player.module.css';
 import Hand from '../Hand';
 import client from '../ws';
+import card_comparator from '../card_comparator';
 
 const c = classNames.bind(styles);
 
@@ -51,7 +52,7 @@ export default class Me extends React.Component {
 			};
 		});
 
-		cards.sort(comparator);
+		cards.sort(card_comparator);
 
 		// Render the play button if it's your turn
 		let play = null;
@@ -77,20 +78,9 @@ export default class Me extends React.Component {
 				</div>
 				
 				<div className={ styles.cards }>
-					<Hand cards={ cards } layout="flat" />
+					<Hand cards={ cards } layout='flat' />
 				</div>
 			</div>
 		);
 	}
 };
-
-function comparator(a, b) {
-	const rankOrder = ["3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2"];
-	const suitOrder = ["D", "C", "H", "S"];
-
-	if(a.rank === b.rank) {
-		return suitOrder.indexOf(a.suit) - suitOrder.indexOf(b.suit);
-	}
-
-	return rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank);
-}

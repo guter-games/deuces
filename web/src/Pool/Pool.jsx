@@ -1,8 +1,6 @@
 import React from 'react';
 import Hand from '../Hand';
 
-const foldAmount = 0;
-
 const Pool = ({ poolSize }) => {
 	const cards = [];
 

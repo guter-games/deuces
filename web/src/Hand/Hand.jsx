@@ -88,7 +88,7 @@ function renderStacked(cards) {
 	});
 
 	return (
-		<div className={handClasses}>
+		<div className={ handClasses } style={ handStyle }>
 			{ cardElems }
 		</div>
 	);

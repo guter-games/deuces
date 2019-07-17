@@ -16,15 +16,15 @@ function handleClient(client) {
 	clients.push(c);
 	sockets.push(client);
 
-	// On disconnect
+	syncLobbyClients();
+
+	// Bind socket message handlers
 	client.on('disconnect', () => {
 		const i = clients.indexOf(c);
 		clients.splice(i, 1);
 		sockets.splice(i, 1);
 		syncLobbyClients();
 	});
-
-	syncLobbyClients();
 
 	client.on('change_name', ({ name }) => {
 		console.log('changed name ', c.name, ' to ', name);

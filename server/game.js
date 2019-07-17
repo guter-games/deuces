@@ -29,6 +29,9 @@ class Game {
 	}
 
 	start() {
+		// Mark all players as not-ready
+		this.clients.forEach(c => c.ready = false);
+
 		// Put all 52 cards into the pool
 		this.pool = [];
 
@@ -88,6 +91,13 @@ class Game {
 	}
 
 	onPass(client, socket) {
+		// Can't pass if the run is empty (this also covers passing on the first turn)
+		if(this.run.length === 0) {
+			socket.emit('bad_play', 'You cannot pass on a free turn');
+			return;
+		}
+
+		// Do the pass
 		this.run = [];
 		this.nextTurn();
 		this.dealCardTo(client);
@@ -95,6 +105,11 @@ class Game {
 	}
 
 	onPlayCards(client, socket, clientCards) {
+		// Do nothing if they played no cards
+		if(clientCards.length === 0) {
+			return;
+		}
+
 		const cards = clientCards.map(c => new Card(c.suit, c.rank));
 
 		// Check valid play

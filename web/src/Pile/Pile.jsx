@@ -1,5 +1,6 @@
 import React from 'react';
-import Card from '../Card';
+import Hand from '../Hand';
+import card_comparator from '../card_comparator';
 
 const Pile = ({ run }) => {
 	if(!run || run.length === 0) {
@@ -7,16 +8,13 @@ const Pile = ({ run }) => {
 	}
 
 	const lastPlay = run[run.length - 1];
-
-	const cards = lastPlay.map((c, i) => {
-		return <Card key={i} suit={c.suit} rank={c.rank} static />;
-	});
+	lastPlay.sort(card_comparator);
 
 	return (
 		<div>
 			<div>Last played:</div>
 
-			<div>{ cards }</div>
+			<Hand cards={ lastPlay } layout='flat' />
 		</div>
 	);
 };

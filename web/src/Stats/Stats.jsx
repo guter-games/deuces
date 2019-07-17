@@ -6,10 +6,6 @@ const Stats = props => {
 			<div>
 				{ props.turn }'s turn
 			</div>
-
-			<div>
-				# cards in pool: { props.poolSize }
-			</div>
 		</div>
 	);
 };

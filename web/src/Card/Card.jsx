@@ -18,6 +18,8 @@ const Card = props => {
 		left: props.left || 0,
 	};
 
+	const altText = `${ props.rank } of ${ props.suit }`;
+
 	// Get image asset URL
 	const fileName =
 		isBlankCard
@@ -27,8 +29,8 @@ const Card = props => {
 	const src = `./cards/${ fileName }.svg`;
 
 	return (
-		<div onClick={ props.onClick && props.onClick } className={classes} style={style}>
-			<img src={src} className={styles.img} />
+		<div onClick={ props.onClick && props.onClick } className={ classes } style={ style }>
+			<img src={ src } alt={ altText } className={ styles.img } />
 		</div>
 	);
 };

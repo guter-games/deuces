@@ -8,7 +8,7 @@ const Winner = ({ game }) => {
 				<div>{ game.winner } has won the game!</div>
 
 				<div>
-					<a href=''>
+					<a href='.'>
 						<button>New Game</button>
 					</a>
 				</div>
