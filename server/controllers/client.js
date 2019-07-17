@@ -16,6 +16,8 @@ function handleClient(client) {
 	clients.push(c);
 	sockets.push(client);
 
+	syncLobbyClients();
+
 	// On disconnect
 	client.on('disconnect', () => {
 		const i = clients.indexOf(c);
@@ -23,8 +25,6 @@ function handleClient(client) {
 		sockets.splice(i, 1);
 		syncLobbyClients();
 	});
-
-	syncLobbyClients();
 
 	client.on('change_name', ({ name }) => {
 		console.log('changed name ', c.name, ' to ', name);

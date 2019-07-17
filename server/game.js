@@ -214,7 +214,7 @@ class Game {
 				if(i !== j) {
 					const name = game.clients[j].name;
 					const numCards = game.clients[j].cards.length;
-					game.others.push({ name, numCards });
+					game.others.push({ name, numCards, cards: game.clients[j].cards });
 				}
 			}
 

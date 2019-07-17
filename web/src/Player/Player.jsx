@@ -16,7 +16,7 @@ const Player = ({ player }) => {
 			</div>
 
 			<div className={ styles.cards }>
-				<Hand cards={ cards } layout="bunched" />
+				<Hand cards={ player.cards } layout="flat" />
 			</div>
 		</div>
 	);
