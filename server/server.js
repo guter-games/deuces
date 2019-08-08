@@ -4,7 +4,10 @@ const handleConnections = require('./controllers/core');
 
 const port = 3012;
 
-const io = socketIO(server, {});
+const io = socketIO(server, {
+	path: '/',
+});
+
 server.listen(port);
 
 console.log(`Server started on port ${port}`);

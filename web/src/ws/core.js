@@ -22,14 +22,8 @@ class Client {
 		// TODO: show some kind of message to the user that they're currently disconnected?
 	}
 
-	ready(ready) {
-		console.log('rdy');
-		this.socket.emit('ready', { ready });
-	}
-
-	start(start) {
-		console.log('start');
-		this.socket.emit('start', { start });
+	createGame(numPlayers) {
+		this.socket.emit('create_game', numPlayers);
 	}
 
 	playCards(cards) {
