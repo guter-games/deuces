@@ -26,7 +26,7 @@ class Card {
 	}
 }
 
-Card.Suits = ["D", "C", "H", "S"];
-Card.Ranks = ["3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A", "2"];
+Card.Suits = ['D', 'C', 'H', 'S'];
+Card.Ranks = ['3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A', '2'];
 
 module.exports = Card;

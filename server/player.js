@@ -1,6 +1,5 @@
 class Player {
-	constructor(id) {
-		this.id = id;
+	constructor() {
 		this.name = 'anon';
 		this.cards = [];
 	}

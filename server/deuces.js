@@ -1,6 +1,7 @@
 const Player = require("./player");
 const Card = require("./card");
 const Hand = require("./hand");
+const { without } = require('./array_util');
 
 const GameState = {
 	WAITING: 0,
@@ -9,11 +10,16 @@ const GameState = {
 };
 
 // Number of cards players are dealt at the start
-const numCardsToDeal = 17;
+function numCardsToDeal(numPlayers) {
+	return (numPlayers === 4) ? 13 : 17;
+}
 
 class Deuces {
-	constructor(numPlayers, onUpdate) {
-		this.onUpdate = onUpdate;
+	constructor(numPlayers, emitter) {
+		this.emitter = emitter;
+		this.resetGame();
+
+		// Setup players
 		this.players = [];
 
 		for(let i = 0; i < numPlayers; i++) {
@@ -22,13 +28,20 @@ class Deuces {
 		}
 	}
 
+	resetGame() {
+		this.state = GameState.WAITING;
+		this.run = [];
+		this.pool = [];
+		this.turn = 0; // Index of the player whose turn it is
+		this.ply = 0; // Number of turns taken since the start of the game
+		this.winner = null;
+	}
+
 	start() {
-		// Mark all players as not-ready
-		this.clients.forEach(c => c.ready = false);
+		// Reset the game state
+		this.resetGame();
 
 		// Put all 52 cards into the pool
-		this.pool = [];
-
 		Card.Suits.forEach(suit => {
 			Card.Ranks.forEach(rank => {
 				this.pool.push(new Card(suit, rank));
@@ -36,8 +49,8 @@ class Deuces {
 		});
 
 		// Deal cards to each player
-		this.clients.forEach(c => {
-			for(let i = 0; i < numCardsToDeal; i++) {
+		this.players.forEach(c => {
+			for(let i = 0; i < numCardsToDeal(this.players.length); i++) {
 				this.dealCardTo(c);
 			}
 		});
@@ -45,18 +58,14 @@ class Deuces {
 		// Pick the starting player
 		this.turn = this.getPlayerWithMinCard();
 
-		// Reset the game state
-		this.ply = 0;
-		this.run = [];
-		this.winner = null;
-		this.state = GameState.PLAYING;
-
 		// Update all players
 		this.onUpdate();
 	}
 
 	dealCardTo(client) {
-		client.cards.push(this.popRandomFromPool());
+		if(this.pool.length > 0) {
+			client.cards.push(this.popRandomFromPool());
+		}
 	}
 
 	// Returns the player with the minimum value card
@@ -64,8 +73,8 @@ class Deuces {
 		let minPlayer = null;
 		let minCardValue = null;
 
-		for(let i = 0; i < this.clients.length; i++) {
-			const c = this.clients[i];
+		for(let i = 0; i < this.players.length; i++) {
+			const c = this.players[i];
 			const value = new Hand(c.cards).getMinCardValue();
 
 			if(minPlayer === null || value < minCardValue) {
@@ -174,7 +183,7 @@ class Deuces {
 			// Check that the cards are higher than those last played
 			const oldHand = new Hand(oldCards);
 
-			if(oldHand.getValue() > hand.getValue()) {
+			if(!hand.isBetterThan(oldHand)) {
 				return 'This is not higher than the last-played hand';
 			}
 		}
@@ -183,7 +192,7 @@ class Deuces {
 	}
 
 	nextTurn() {
-		this.turn = (this.turn + 1) % this.clients.length;
+		this.turn = (this.turn + 1) % this.players.length;
 	}
 
 	// Takes away the cards from the client's hand
@@ -208,6 +217,30 @@ class Deuces {
 		}
 
 		client.cards = newCards;
+	}
+
+	onUpdate() {
+		this.emitter.emit('update');
+	}
+
+	getGameStateForPlayer(playerIdx) {
+		const game = {
+			poolSize: this.pool.length,
+			isMyTurn: (this.turn === playerIdx),
+			playerTurnName: this.players[this.turn].name,
+			me: this.players[playerIdx],
+		};
+
+		// Information about other players
+		game.others = without(this.players, playerIdx)
+			.map(player => {
+				return {
+					name: player.name,
+					numCards: player.cards.length,
+				};
+			});
+
+		return game;
 	}
 }
 

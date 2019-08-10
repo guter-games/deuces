@@ -32,6 +32,25 @@ class Hand {
 		return this.getValue() !== 0;
 	}
 
+	isBetterThan(other) {
+		if(other.getValue() > this.getValue()) {
+			return false;
+		}
+
+		// The hand values should only be equal when each hand is a pair of the same rank
+		// In this case, the better hand is the one with a spade
+		if(other.getValue() === this.getValue() && this.containsSpade()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	containsSpade() {
+		const suits = this.cards.map(c => c.suit);
+		return suits.includes('S');
+	}
+
 	getValue() {
 		let score = 0;
 
@@ -71,6 +90,10 @@ class Hand {
 				break;
 
 			case 'Four of a Kind':
+				if(this.cards.length !== 5) {
+					score = 0;
+					break;
+				}
 			case 'Full House':
 				score += this.getMajorityRankValue();
 				break;

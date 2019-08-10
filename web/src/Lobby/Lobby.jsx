@@ -2,7 +2,6 @@ import React from "react";
 import autoBind from 'react-autobind';
 import classNames from 'classnames/bind';
 import styles from './Lobby.module.css';
-import LobbyConnection from '../sockets/lobby';
 
 const c = classNames.bind(styles);
 
@@ -15,27 +14,25 @@ export default class Lobby extends React.Component {
 		numPlayers: 4,
 	};
 
-	client = new LobbyConnection();
-
 	constructor() {
 		super();
 		autoBind(this);
 	}
 
-	componentDidMount() {
-		this.client.connect();
-	}
-
-	componentWillUnmount() {
-		this.client.disconnect();
-	}
-
 	onCreateGame() {
-		this.client.createGame(this.state.numPlayers)
+		const opts = {
+			method: 'POST',
+			body: JSON.stringify({ numPlayers: this.state.numPlayers }),
+			headers: { 'Content-Type': 'application/json' },
+		};
+
+		fetch('//localhost:3012/create_game', opts)
+			.then(res => res.text())
+			.then(gameID => this.props.enterGame(parseInt(gameID, 10)));
 	}
 
 	changeNumPlayers({ target: { value: numPlayers } }) {
-		this.setState({ numPlayers });
+		this.setState({ numPlayers: parseInt(numPlayers, 10) });
 	}
 
 	render() {

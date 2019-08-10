@@ -9,6 +9,10 @@ class NetClient {
 	on(evt, action) {
 		this.socket.on(evt, action);
 	}
+
+	emit(uri, params) {
+		this.socket.emit(uri, params);
+	}
 }
 
 module.exports = NetClient;
