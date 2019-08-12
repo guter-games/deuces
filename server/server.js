@@ -1,12 +1,61 @@
-const server = require('http').createServer();
 const socketIO = require('socket.io');
-const handleConnections = require('./controllers/core');
+const http = require('http');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
+const Game = require('./game');
+const loudSocket = require('./loud_socket');
+const shortid = require('shortid');
+
+const games = new Map();
 const port = 3012;
 
-const io = socketIO(server, {});
-server.listen(port);
+(function main() {
+	// Listen for clients
+	const app = express();
+	app.use(bodyParser.urlencoded({ extended: true }));
+	app.use(bodyParser.json());
+	app.use(cors());
 
-console.log(`Server started on port ${port}`);
+	const server = http.createServer(app);
+	server.listen(port);
+	
+	// Setup the lobby route
+	app.post('/create_game', onCreateGame);
 
-handleConnections(io);
+	const io = socketIO(server, { path: '/socket.io' });
+	io.on('connection', onClientConnect);
+
+	// Send status message
+	console.log(`Server started on port ${port}`);
+})();
+
+function getNextGameID() {
+	return shortid.generate();
+}
+
+function onCreateGame(req, res) {
+	const numPlayers = parseInt(req.body.numPlayers, 10);
+	const id = getNextGameID();
+	const game = new Game(id, numPlayers);
+	games.set(id, game);
+	res.send(`${id}`);
+}
+
+function onClientConnect(socket) {
+	loudSocket(socket);
+	routeToGame(socket);
+}
+
+function routeToGame(socket) {
+	const gameID = socket.handshake.query.gameID;
+	const game = games.get(gameID);
+
+	if(!game) {
+		socket.disconnect();
+		return;
+	}
+
+	game.onClientConnect(socket);
+}

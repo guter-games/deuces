@@ -2,6 +2,9 @@
 * typescript
 
 # NEED:
+* cat cards
+* turn time limit
+* write own poker hand scoring system
 * pile
 	* view history
 * show valid cards to pick as they pick them out

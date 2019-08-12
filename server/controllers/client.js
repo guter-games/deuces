@@ -16,37 +16,19 @@ function handleClient(client) {
 	clients.push(c);
 	sockets.push(client);
 
-	syncLobbyClients();
-
+	
 	// Bind socket message handlers
+	attachDebugger(client);
+
 	client.on('disconnect', () => {
 		const i = clients.indexOf(c);
 		clients.splice(i, 1);
 		sockets.splice(i, 1);
-		syncLobbyClients();
 	});
 
-	client.on('change_name', ({ name }) => {
-		console.log('changed name ', c.name, ' to ', name);
-		c.name = name;
-		syncLobbyClients();
+	client.on('create_game', numPlayers => {
+		
 	});
-
-	client.on('change_want_n_players', ({ wantNPlayers }) => {
-		console.log('changed wantNPlayers ', c.wantNPlayers, ' to ', wantNPlayers);
-
-		c.wantNPlayers = parseInt(wantNPlayers);
-
-		tryToMatch(c);
-	});
-
-	client.on('ready', ({ ready }) => {
-		console.log('client ready', c.name, ready);
-
-		c.ready = ready;
-
-		tryToMatch(c);
-	})
 
 	client.on('start_with_ai', ({ start }) => {
 		console.log('client start with ai', c.name, start);
@@ -60,46 +42,31 @@ function handleClient(client) {
 		for (const client of clients) {
 			client.status = 'ingame';
 		}
+	});
+}
 
-		syncLobbyClients();
-	})
+function attachDebugger(client) {
+	client.use((packet, next) => {
+		console.log('client wants to', packet[0], ':', packet.slice(1));
+		next();
+	});
 }
 
 function tryToMatch(newClient) {
-        const match = matchClients(newClient);
-        if (match) {
-                console.log('found match')
-                // Initialize the game
-                const game = new Game(match.clients, match.sockets);
+	const match = matchClients(newClient);
 
-                // Start the new game
-                game.start();
+	if (match) {
+		console.log('found match')
+		// Initialize the game
+		const game = new Game(match.clients, match.sockets);
 
-                for (const client of match.clients) {
-                        client.status = 'ingame';
-                }
-        }
+		// Start the new game
+		game.start();
 
-	syncLobbyClients();
-}
-
-function syncLobbyClients() {
-	for (const sock of sockets) {
-		sock.emit('lobby_players', clients);
-	}
-}
-
-// Updates an existing client's ready state
-// Returns whether or not an existing client was found
-function clientExists(client) {
-	for(let i = 0; i < clients.length; i++) {
-		if(clients[i].name === client.name) {
-			clients[i].ready = client.ready;
-			return true;
+		for (const client of match.clients) {
+				client.status = 'ingame';
 		}
 	}
-
-	return false;
 }
 
 // Returns a list of clients to match or null if no match possible

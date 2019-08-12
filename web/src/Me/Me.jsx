@@ -3,8 +3,8 @@ import autoBind from 'react-autobind';
 import classNames from 'classnames/bind';
 import styles from '../Player/Player.module.css';
 import Hand from '../Hand';
-import client from '../ws';
 import card_comparator from '../card_comparator';
+import client from '../game_connection';
 
 const c = classNames.bind(styles);
 
