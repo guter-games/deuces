@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 
 const c = classNames.bind(styles);
 
-const stackedOffset = 2
+const stackedOffset = 1;
 const bunchedOffset = 20;
 const cardWidth = 70;
 
@@ -29,8 +29,8 @@ const Hand = ({ cards, layout }) => {
 function renderFlat(cards) {
 	const handClasses = c({ hand: true, flat: true });
 
-	const cardElems = cards.map((c, i) => {
-		return <Card key={i} suit={c.suit} rank={c.rank} selected={c.selected} onClick={c.onClick} />;
+	const cardElems = cards.map((card, i) => {
+		return <Card key={i} suit={card.suit} rank={card.rank} selected={card.selected} onClick={card.onClick} />;
 	});
 
 	return (
@@ -48,14 +48,14 @@ function renderBunched(cards) {
 		width: `${handWidth}px`,
 	};
 
-	const cardElems = cards.map((c, i) => {
+	const cardElems = cards.map((card, i) => {
 		const style = {
 			left: `${i * bunchedOffset}px`,
 		};
 
 		return (
 			<div key={i} className={ styles.card } style={ style }>
-				<Card suit={c.suit} rank={c.rank} selected={c.selected} onClick={c.onClick} />
+				<Card suit={card.suit} rank={card.rank} selected={card.selected} onClick={card.onClick} />
 			</div>
 		);
 	});
@@ -75,14 +75,14 @@ function renderStacked(cards) {
 		width: `${handWidth}px`,
 	};
 
-	const cardElems = cards.map((c, i) => {
+	const cardElems = cards.map((card, i) => {
 		const style = {
 			left: `${i * stackedOffset}px`,
 		};
 
 		return (
 			<div key={i} className={ styles.card } style={ style }>
-				<Card suit={c.suit} rank={c.rank} selected={c.selected} onClick={c.onClick} />
+				<Card suit={card.suit} rank={card.rank} selected={card.selected} onClick={card.onClick} />
 			</div>
 		);
 	});

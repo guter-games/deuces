@@ -14,7 +14,7 @@ const Pool = ({ poolSize }) => {
 				<Hand cards={ cards } layout="stacked" />
 			</div>
 			
-			<div>Deck: { poolSize }cards</div>
+			<div>Deck</div>
 		</div>
 	);
 };

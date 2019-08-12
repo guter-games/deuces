@@ -12,7 +12,7 @@ const Pile = ({ run }) => {
 
 	return (
 		<div>
-			<div>Last played:</div>
+			<div>Play:</div>
 
 			<Hand cards={ lastPlay } layout='flat' />
 		</div>

@@ -36,6 +36,7 @@
 
 .center {
 	display: flex;
+	z-index: -1;
 }
 
 .pool, .pile, .stats {
@@ -43,7 +44,7 @@
 }
 
 .pool {
-
+	
 }
 
 .pile {

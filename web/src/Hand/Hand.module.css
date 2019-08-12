@@ -1,6 +1,6 @@
 .hand {
 	position: relative;
-	height: 100px;
+	min-height: 100px;
 }
 
 .hand.stacked {
@@ -14,9 +14,4 @@
 .card {
 	position: absolute;
 	top: 0;
-	/* width: 100%; */
 }
-
-/* .hand.flat .card {
-	margin-right: 3px;
-} */

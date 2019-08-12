@@ -89,7 +89,9 @@ export default class Game extends React.Component {
 		if('playerIdx' in data) {
 			client.identifyAs(data.playerIdx);
 		} else {
-			client.requestNewIdentity('drew').then(playerIdx => {
+			const name = prompt('Player name:');
+
+			client.requestNewIdentity(name).then(playerIdx => {
 				this.store('playerIdx', playerIdx);
 				this.identify();
 			});

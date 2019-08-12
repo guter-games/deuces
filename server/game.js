@@ -16,7 +16,6 @@ class Game {
 	}
 
 	onClientConnect(socket) {
-		console.log('connected');
 		const client = new NetClient(socket);
 		this.netClients.push(client);
 		this.attachNetClientEvents(client);

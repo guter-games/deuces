@@ -17,3 +17,4 @@
 * chat (rocket league/hearthstone style)
 * win, confirm, reset
 * crazy animations
+	* animate drawing card!!!

@@ -1,15 +1,19 @@
 import React from 'react';
 import autoBind from 'react-autobind';
 import classNames from 'classnames/bind';
-import styles from '../Player/Player.module.css';
+import styles from './Me.module.css';
 import Hand from '../Hand';
+import ExpandableHand from '../ExpandableHand';
 import card_comparator from '../card_comparator';
 import client from '../game_connection';
+import isMobile from '../is_mobile';
 
 const c = classNames.bind(styles);
 
 export default class Me extends React.Component {
-	state = { selected: {} };
+	state = {
+		selected: {},
+	};
 
 	constructor(props) {
 		super(props);
@@ -40,6 +44,15 @@ export default class Me extends React.Component {
 		client.pass();
 	}
 
+	expandHand(event) {
+		if(!this.state.expandedHand) {
+			// Don't select the card when expanding the hand
+			event.stopPropagation();
+		}
+
+		this.setState({ expandedHand: true });
+	}
+
 	render() {
 		// Render individual cards
 		const cards = this.props.me.cards.map((c, i) => {
@@ -59,12 +72,17 @@ export default class Me extends React.Component {
 		
 		if(this.props.me.isMyTurn) {
 			play = (
-				<div>
+				<div className={ styles.actions }>
 					<button onClick={ this.playCards }>Play</button>
 					<button onClick={ this.pass }>Pass</button>
 				</div>
 			);
 		}
+
+		// Expandable vs. non-expandable hand
+		const hand = isMobile()
+			? <ExpandableHand cards={ cards } eventTypes='click' />
+			: <Hand cards={ cards } layout='flat' />;
 
 		// Highlight the card area if it's your turn
 		let meClasses = c({ player: true, highlighted: this.props.me.isMyTurn });
@@ -78,7 +96,7 @@ export default class Me extends React.Component {
 				</div>
 				
 				<div className={ styles.cards }>
-					<Hand cards={ cards } layout='flat' />
+					{ hand }
 				</div>
 			</div>
 		);

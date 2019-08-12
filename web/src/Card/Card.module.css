@@ -10,14 +10,22 @@
 	transition: all 0.3s;
 }
 
-.card:hover:not(.selected):not(.static) {
-	top: -10px;
-	opacity: 0.6;
+@media screen and (max-width: 1024px) {
+	.selected:not(.static) {
+		box-shadow: 0px 0px 5px 5px #2578CF;
+	}
 }
 
-.selected:not(.static) {
-	top: -20px;
-	opacity: 1;
+@media screen and (min-width: 1025px) {
+	.card:hover:not(.selected):not(.static) {
+		top: -10px;
+		opacity: 0.6;
+	}
+
+	.selected:not(.static) {
+		top: -20px;
+		opacity: 1;
+	}
 }
 
 .img {
