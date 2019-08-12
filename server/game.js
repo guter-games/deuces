@@ -16,25 +16,61 @@ class Game {
 	}
 
 	onClientConnect(socket) {
+		console.log('connected');
 		const client = new NetClient(socket);
 		this.netClients.push(client);
 		this.attachNetClientEvents(client);
 	}
 
 	attachNetClientEvents(client) {
-		client.on('disconnect', () => this.onDisconnect(client));
-		client.on('identify_as', data => this.onIdentifyAs(client, data));
-		client.on('play_cards', cards => this.onPlayCards(client, s, cards));
-		client.on('pass', () => this.onPass(client, s));
+		this.attachEvent(client, 'disconnect', this.onDisconnect);
+		this.attachEvent(client, 'new_identity', this.onNewIdentity);
+		this.attachEvent(client, 'identify_as', this.onIdentifyAs);
+		this.attachEvent(client, 'play_cards', this.onPlayCards);
+		this.attachEvent(client, 'pass', this.onPass);
+	}
+
+	attachEvent(client, event, handler) {
+		client.on(event, data => handler.bind(this)(client, data));
 	}
 
 	onDisconnect(netClient) {
 		remove(this.netClients, netClient);
 	}
 
+	onNewIdentity(netClient, { name }) {
+		const playerIdx = this.deuces.getUnusedPlayerIdx();
+
+		if(playerIdx !== -1) {
+			this.deuces.setPlayerName(playerIdx, name);
+		}
+
+		netClient.emit('new_identity', playerIdx);
+	}
+
 	onIdentifyAs(netClient, { player }) {
 		netClient.player = player;
 		this.updateAllClients();
+	}
+
+	onPlayCards(netClient, { cards }) {
+		const error = this.deuces.onPlayCards(netClient.player, cards);
+
+		if(error) {
+			this.badPlay(netClient, error);
+		}
+	}
+
+	onPass(netClient) {
+		const success = this.deuces.onPass(netClient.player);
+
+		if(!success) {
+			this.badPlay(netClient, 'You cannot pass on a free turn');
+		}
+	}
+
+	badPlay(netClient, error) {
+		netClient.emit('bad_play', error);
 	}
 
 	updateAllClients() {

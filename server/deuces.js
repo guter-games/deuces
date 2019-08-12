@@ -93,11 +93,13 @@ class Deuces {
 		return this.pool.splice(randIdx, 1)[0];
 	}
 
-	onPass(client, socket) {
+	onPass(playerIdx) {
+		const client = this.players[playerIdx];
+
 		// Can't pass if the run is empty (this also covers passing on the first turn)
 		if(this.run.length === 0) {
-			socket.emit('bad_play', 'You cannot pass on a free turn');
-			return;
+			// socket.emit('bad_play', 'You cannot pass on a free turn');
+			return false;
 		}
 
 		// Do the pass
@@ -105,9 +107,13 @@ class Deuces {
 		this.nextTurn();
 		this.dealCardTo(client);
 		this.onUpdate();
+
+		return true;
 	}
 
-	onPlayCards(client, socket, clientCards) {
+	onPlayCards(playerIdx, clientCards) {
+		const client = this.players[playerIdx];
+
 		// Do nothing if they played no cards
 		if(clientCards.length === 0) {
 			return;
@@ -119,8 +125,7 @@ class Deuces {
 		const error = this.playIsValid(client.cards, cards, this.run);
 
 		if (error) {
-			socket.emit('bad_play', error);
-			return;
+			return error;
 		}
 
 		// Record the play
@@ -141,6 +146,8 @@ class Deuces {
 
 		// Update the game state
 		this.onUpdate();
+
+		return null;
 	}
 
 	// Returns an error if there is one
@@ -226,9 +233,15 @@ class Deuces {
 	getGameStateForPlayer(playerIdx) {
 		const game = {
 			poolSize: this.pool.length,
-			isMyTurn: (this.turn === playerIdx),
 			playerTurnName: this.players[this.turn].name,
-			me: this.players[playerIdx],
+			run: this.run,
+			state: this.state,
+		};
+
+		// Information about this player
+		game.me = {
+			...this.players[playerIdx],
+			isMyTurn: (this.turn === playerIdx),
 		};
 
 		// Information about other players
@@ -241,6 +254,15 @@ class Deuces {
 			});
 
 		return game;
+	}
+
+	getUnusedPlayerIdx() {
+		const names = this.players.map(player => player.name);
+		return names.indexOf(Player.NO_NAME);
+	}
+
+	setPlayerName(playerIdx, name) {
+		this.players[playerIdx].name = name;
 	}
 }
 

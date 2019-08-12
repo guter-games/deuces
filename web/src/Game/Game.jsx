@@ -7,9 +7,10 @@ import Player from '../Player';
 
 import autoBind from 'react-autobind';
 import classNames from 'classnames/bind';
+import store from 'store';
 import styles from './Game.module.css';
 import audio from '../audio';
-import GameConnection from '../game_connection';
+import client from '../game_connection';
 
 const c = classNames.bind(styles);
 const myTurnSound = './boop.mp3';
@@ -20,11 +21,11 @@ const GameState = {
 	FINISHED: 2, // Generally this is when someone won
 };
 
-const testGame = `{"others":[],"state":0,"turn":0,"pool":[{"suit":"D","rank":"3"},{"suit":"D","rank":"5"},{"suit":"D","rank":"6"},{"suit":"D","rank":"7"},{"suit":"D","rank":"8"},{"suit":"D","rank":"J"},{"suit":"C","rank":"3"},{"suit":"C","rank":"4"},{"suit":"C","rank":"5"},{"suit":"C","rank":"7"},{"suit":"C","rank":"8"},{"suit":"C","rank":"9"},{"suit":"C","rank":"10"},{"suit":"C","rank":"Q"},{"suit":"C","rank":"A"},{"suit":"C","rank":"2"},{"suit":"H","rank":"3"},{"suit":"H","rank":"6"},{"suit":"H","rank":"7"},{"suit":"H","rank":"9"},{"suit":"H","rank":"10"},{"suit":"H","rank":"J"},{"suit":"H","rank":"Q"},{"suit":"H","rank":"K"},{"suit":"H","rank":"A"},{"suit":"S","rank":"3"},{"suit":"S","rank":"4"},{"suit":"S","rank":"5"},{"suit":"S","rank":"7"},{"suit":"S","rank":"9"},{"suit":"S","rank":"10"},{"suit":"S","rank":"J"},{"suit":"S","rank":"K"},{"suit":"S","rank":"A"},{"suit":"S","rank":"2"}],"me":{"name":true,"ready":"we","cards":[{"suit":"D","rank":"2"},{"suit":"H","rank":"8"},{"suit":"D","rank":"9"},{"suit":"D","rank":"Q"},{"suit":"C","rank":"K"},{"suit":"H","rank":"5"},{"suit":"C","rank":"J"},{"suit":"S","rank":"6"},{"suit":"H","rank":"2"},{"suit":"C","rank":"6"},{"suit":"D","rank":"10"},{"suit":"S","rank":"8"},{"suit":"D","rank":"K"},{"suit":"H","rank":"4"},{"suit":"S","rank":"Q"},{"suit":"D","rank":"A"},{"suit":"D","rank":"4"}]}}`;
+function isMyTurn(state) {
+	return state && state.game && state.game.me && state.game.me.isMyTurn;
+}
 
 export default class Game extends React.Component {
-	client = new GameConnection(this.props.id);
-
 	state = {
 		game: null,
 	};
@@ -34,28 +35,74 @@ export default class Game extends React.Component {
 		autoBind(this);
 	}
 
+	getGameID() {
+		return this.props.match.params.id;
+	}
+
 	componentDidMount() {
-		this.client.connect();
-		this.client.on('connect', this.onConnect);
-		this.client.on('game_update', this.onGameUpdate);
+		client.setGameID(this.getGameID());
+		client.connect();
+		client.on('connect', this.onConnect);
+		client.on('game_update', this.onGameUpdate);
+		client.on('bad_play', error => alert(error));
 	}
 
 	componentWillUnmount() {
-		this.client.disconnect();
+		client.disconnect();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if(this.state.game.me.isMyTurn && !prevState.game.me.isMyTurn) {
+		if(isMyTurn(this.state) && !isMyTurn(prevState)) {
 			audio.play(myTurnSound);
 		}
 	}
 
 	onConnect() {
-		this.client.identifyAs(0);
+		console.log('connected');
+		this.identify();
+	}
+
+	storeKey() {
+		return `game/${this.getGameID()}`;
+	}
+
+	storedData() {
+		const key = this.storeKey();
+
+		if(!store.get(key)) {
+			store.set(key, {});
+		}
+
+		return store.get(this.storeKey());
+	}
+
+	store(key, value) {
+		const data = this.storedData();
+		data[key] = value;
+		store.set(this.storeKey(), data);
+	}
+
+	identify() {
+		const data = this.storedData();
+		console.log('storedData', data);
+
+		if('playerIdx' in data) {
+			client.identifyAs(data.playerIdx);
+		} else {
+			client.requestNewIdentity('drew').then(playerIdx => {
+				this.store('playerIdx', playerIdx);
+				this.identify();
+			});
+		}
 	}
 
 	onGameUpdate(game) {
 		console.log('onGameUpdate', game);
+
+		if(game.state === GameState.FINISHED) {
+			console.log('game finished');
+		}
+
 		this.setState({ game });
 	}
 

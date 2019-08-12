@@ -6,9 +6,9 @@ const cors = require('cors');
 
 const Game = require('./game');
 const loudSocket = require('./loud_socket');
+const shortid = require('shortid');
 
 const games = new Map();
-let nextGameID = 1;
 const port = 3012;
 
 (function main() {
@@ -31,9 +31,13 @@ const port = 3012;
 	console.log(`Server started on port ${port}`);
 })();
 
+function getNextGameID() {
+	return shortid.generate();
+}
+
 function onCreateGame(req, res) {
 	const numPlayers = parseInt(req.body.numPlayers, 10);
-	const id = nextGameID++;
+	const id = getNextGameID();
 	const game = new Game(id, numPlayers);
 	games.set(id, game);
 	res.send(`${id}`);
@@ -45,7 +49,7 @@ function onClientConnect(socket) {
 }
 
 function routeToGame(socket) {
-	const gameID = parseInt(socket.handshake.query.gameID, 10);
+	const gameID = socket.handshake.query.gameID;
 	const game = games.get(gameID);
 
 	if(!game) {

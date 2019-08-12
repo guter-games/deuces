@@ -11,12 +11,16 @@ function isDevelopment() {
 
 export default class Lobby extends React.Component {
 	state = {
-		numPlayers: 4,
+		numPlayers: isDevelopment() ? 1 : 4,
 	};
 
 	constructor() {
 		super();
 		autoBind(this);
+	}
+
+	enterGame(gameID) {
+		this.props.history.push(`/${gameID}`);
 	}
 
 	onCreateGame() {
@@ -28,7 +32,7 @@ export default class Lobby extends React.Component {
 
 		fetch('//localhost:3012/create_game', opts)
 			.then(res => res.text())
-			.then(gameID => this.props.enterGame(parseInt(gameID, 10)));
+			.then(this.enterGame);
 	}
 
 	changeNumPlayers({ target: { value: numPlayers } }) {
