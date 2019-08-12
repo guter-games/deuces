@@ -39,7 +39,7 @@ class Hand {
 
 		// The hand values should only be equal when each hand is a pair of the same rank
 		// In this case, the better hand is the one with a spade
-		if(other.getValue() === this.getValue() && this.containsSpade()) {
+		if(other.getValue() === this.getValue() && !this.containsSpade()) {
 			return false;
 		}
 
@@ -136,7 +136,7 @@ class Hand {
 		let majRank = '3';
 
 		for(const rank in rankCounts) {
-			if(rankCounts[rank] > rankCounts[majRank]) {
+			if(!rankCounts[majRank] || rankCounts[rank] > rankCounts[majRank]) {
 				majRank = rank;
 			}
 		}
