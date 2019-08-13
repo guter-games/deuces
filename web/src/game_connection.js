@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
-// const socketURL = process.env.REACT_APP_SERVER_URI || 'http://localhost:3012';
-const socketURL = 'http://192.168.1.6:3012';
+// const socketURL = 'http://192.168.1.6:3012';
+const socketURL = process.env.REACT_APP_SERVER_URI || 'http://localhost:3012';
 const socketPath = process.env.REACT_APP_SERVER_PATH || '/';
 
 class GameConnection {
