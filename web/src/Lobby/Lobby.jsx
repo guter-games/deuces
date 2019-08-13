@@ -30,7 +30,7 @@ export default class Lobby extends React.Component {
 			headers: { 'Content-Type': 'application/json' },
 		};
 
-		fetch('//192.168.1.6:3012/create_game', opts)
+		fetch(`${process.env.REACT_APP_SERVER_URI}/deuces/create_game`, opts)
 			.then(res => res.text())
 			.then(this.enterGame);
 	}
