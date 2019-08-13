@@ -22,7 +22,7 @@ const port = 3012;
 	server.listen(port);
 	
 	// Setup the lobby route
-	app.post('/deuces/socket.io/create_game', onCreateGame);
+	app.post('/create_game', onCreateGame);
 
 	const io = socketIO(server, { path: '/socket.io' });
 	io.on('connection', onClientConnect);
