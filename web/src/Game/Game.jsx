@@ -13,7 +13,7 @@ import audio from '../audio';
 import client from '../game_connection';
 
 const c = classNames.bind(styles);
-const myTurnSound = './boop.mp3';
+const myTurnSound = `${process.env.PUBLIC_URL}/boop.mp3`;
 
 const GameState = {
 	WAITING: 0,

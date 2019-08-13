@@ -26,7 +26,7 @@ const Card = props => {
 			? 'BLUE_BACK'
 			: `${ props.rank }${ props.suit }`;
 
-	const src = `./cards/${ fileName }.svg`;
+	const src = `${process.env.PUBLIC_URL}/cards/${ fileName }.svg`;
 
 	return (
 		<div onClick={ props.onClick && props.onClick } className={ classes } style={ style }>
