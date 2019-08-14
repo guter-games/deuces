@@ -1,12 +1,8 @@
 # deuces
 
-## dev
+## development
 ```
-cd web
-npm install
-cd ../server
-npm install
-cd ..
-docker-compose build
-docker-compose up
+make start
 ```
+
+See **Makefile** for more commands.

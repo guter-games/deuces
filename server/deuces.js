@@ -104,7 +104,8 @@ class Deuces {
 		}
 
 		this.passes++;
-		if(this.passes == this.players.length - 1) {
+
+		if(this.hasEveryonePassed()) {
 			this.run = [];
 			this.passes = 0;
 		}
@@ -115,6 +116,10 @@ class Deuces {
 		this.onUpdate();
 
 		return true;
+	}
+
+	hasEveryonePassed() {
+		return this.passes == this.players.length - 1;
 	}
 
 	onPlayCards(playerIdx, clientCards) {
@@ -137,6 +142,7 @@ class Deuces {
 		// Record the play
 		this.run.push(cards);
 		this.ply++;
+		this.passes = 0;
 
 		// Take away the played cards
 		this.playCards(client, cards);
