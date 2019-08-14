@@ -124,7 +124,7 @@ class Deuces {
 	}
 
 	hasEveryonePassed() {
-		return this.passes == this.players.length - 1;
+		return this.passes == this.players.length;
 	}
 
 	onPlayCards(playerIdx, clientCards) {

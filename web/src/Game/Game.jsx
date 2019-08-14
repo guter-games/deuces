@@ -2,7 +2,6 @@ import React from "react";
 import Stats from '../Stats';
 import Me from '../Me';
 import Pile from '../Pile';
-import Pool from '../Pool';
 import Player from '../Player';
 
 import autoBind from 'react-autobind';
@@ -151,10 +150,6 @@ export default class Game extends React.Component {
 				{ right }
 
 				<div className={ styles.center }>
-					<div className={ styles.pool }>
-						<Pool poolSize={ game.poolSize } />
-					</div>
-
 					<div className={ styles.pile }>
 						<Pile run={ game.run } />
 					</div>
