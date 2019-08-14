@@ -59,6 +59,11 @@ class Deuces {
 		// Pick the starting player
 		this.turn = this.getPlayerWithMinCard();
 
+		// For 3 player games, the player who goes first draws the last card
+		if(this.players.length === 3) {
+			this.dealCardTo(this.turn);
+		}
+
 		// Update all players
 		this.onUpdate();
 	}
