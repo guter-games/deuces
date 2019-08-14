@@ -35,6 +35,7 @@ class Deuces {
 		this.turn = 0; // Index of the player whose turn it is
 		this.ply = 0; // Number of turns taken since the start of the game
 		this.winner = null;
+		this.passes = 0;
 	}
 
 	start() {
@@ -102,13 +103,23 @@ class Deuces {
 			return false;
 		}
 
+		this.passes++;
+
+		if(this.hasEveryonePassed()) {
+			this.run = [];
+			this.passes = 0;
+		}
+
 		// Do the pass
-		this.run = [];
 		this.nextTurn();
 		this.dealCardTo(client);
 		this.onUpdate();
 
 		return true;
+	}
+
+	hasEveryonePassed() {
+		return this.passes == this.players.length - 1;
 	}
 
 	onPlayCards(playerIdx, clientCards) {
@@ -131,6 +142,7 @@ class Deuces {
 		// Record the play
 		this.run.push(cards);
 		this.ply++;
+		this.passes = 0;
 
 		// Take away the played cards
 		this.playCards(client, cards);
