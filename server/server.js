@@ -4,11 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const db = require('./sequelize');
+const { findByPk } = require('./model_util');
 const Game = require('./game');
 const loudSocket = require('./loud_socket');
-const shortid = require('shortid');
 
-const games = new Map();
 const port = 3012;
 
 (function main() {
@@ -31,16 +31,11 @@ const port = 3012;
 	console.log(`Server started on port ${port}`);
 })();
 
-function getNextGameID() {
-	return shortid.generate();
-}
-
-function onCreateGame(req, res) {
+async function onCreateGame(req, res) {
 	const numPlayers = parseInt(req.body.numPlayers, 10);
-	const id = getNextGameID();
-	const game = new Game(id, numPlayers);
-	games.set(id, game);
-	res.send(`${id}`);
+	const game = await Game.make({ numPlayers });
+	console.log(await game.getDeuces());
+	res.send(`${game.id}`);
 }
 
 function onClientConnect(socket) {
@@ -50,12 +45,13 @@ function onClientConnect(socket) {
 
 function routeToGame(socket) {
 	const gameID = socket.handshake.query.gameID;
-	const game = games.get(gameID);
-
-	if(!game) {
-		socket.disconnect();
-		return;
-	}
-
-	game.onClientConnect(socket);
+	console.log('finding by ', gameID);
+	// findByPk.bind(Game)(Game, gameID)
+	Game.findByPk(gameID)
+		.then(game => {
+			console.log('game', game);
+			// console.log('game.id = ', game.id);
+			game.onClientConnect(socket);
+		})
+		.catch(() => socket.disconnect());
 }

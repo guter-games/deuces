@@ -1,9 +1,7 @@
-class Card {
-	constructor(suit, rank) {
-		this.suit = suit;
-		this.rank = rank;
-	}
+const { Model, STRING } = require('sequelize');
+const { init } = require('./model_util');
 
+class Card extends Model {
 	// Returns the numeric value of this card, [0, 51]
 	getValue() {
 		// Add 1 so that 3 of diamonds doesn't have value 0
@@ -28,5 +26,10 @@ class Card {
 
 Card.Suits = ['D', 'C', 'H', 'S'];
 Card.Ranks = ['3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A', '2'];
+
+init(Card, {
+	suit: STRING,
+	rank: STRING,
+});
 
 module.exports = Card;

@@ -1,7 +1,11 @@
+const { Model, INTEGER } = require('sequelize');
+const { init } = require('./model_util');
+const { without } = require('./array_util');
+
 const Player = require("./player");
 const Card = require("./card");
 const Hand = require("./hand");
-const { without } = require('./array_util');
+const Run = require("./run");
 
 const GameState = {
 	WAITING: 0,
@@ -14,73 +18,59 @@ function numCardsToDeal(numPlayers) {
 	return (numPlayers === 4) ? 13 : 17;
 }
 
-class Deuces {
-	constructor(numPlayers, emitter) {
-		this.emitter = emitter;
-		this.resetGame();
+class Deuces extends Model {
+	async start(numPlayers) {
+		await this.setRuns([]);
 
-		// Setup players
-		this.players = [];
-
-		for(let i = 0; i < numPlayers; i++) {
-			const player = new Player();
-			this.players.push(player);
-		}
-	}
-
-	resetGame() {
-		this.state = GameState.WAITING;
-		this.run = [];
-		this.pool = [];
-		this.turn = 0; // Index of the player whose turn it is
-		this.ply = 0; // Number of turns taken since the start of the game
-		this.winner = null;
-		this.passes = 0;
-	}
-
-	start() {
-		// Reset the game state
-		this.resetGame();
+		const players = Array(numPlayers).fill().map(async () => await Player.create());
+		await this.setPlayers(players);
 
 		// Put all 52 cards into the pool
-		Card.Suits.forEach(suit => {
-			Card.Ranks.forEach(rank => {
-				this.pool.push(new Card(suit, rank));
+		const pool = [];
+
+		Card.Suits.forEach(async suit => {
+			Card.Ranks.forEach(async rank => {
+				// const card = await Card.create({ suit, rank });
+				// pool.push(card);
 			});
 		});
 
+		await this.setPool(pool);
+
 		// Deal cards to each player
-		this.players.forEach(c => {
-			for(let i = 0; i < numCardsToDeal(this.players.length); i++) {
-				this.dealCardTo(c);
+		players.forEach(async c => {
+			for(let i = 0; i < numCardsToDeal(players.length); i++) {
+				await this.dealCardTo(c);
 			}
 		});
 
 		// Pick the starting player
-		this.turn = this.getPlayerWithMinCard();
+		this.turn = await this.getPlayerWithMinCard();
 
 		// For 3 player games, the player who goes first draws the last card
-		if(this.players.length === 3) {
-			this.dealCardTo(this.turn);
+		if(players.length === 3) {
+			await this.dealCardTo(this.turn);
 		}
-
-		// Update all players
-		this.onUpdate();
 	}
 
-	dealCardTo(client) {
-		if(this.pool.length > 0) {
+	async dealCardTo(client) {
+		const pool = await this.getPool();
+		
+		if(pool.length > 0) {
 			client.cards.push(this.popRandomFromPool());
+			client.save();
 		}
 	}
 
 	// Returns the player with the minimum value card
-	getPlayerWithMinCard() {
+	async getPlayerWithMinCard() {
+		const players = await this.getPlayers();
+
 		let minPlayer = null;
 		let minCardValue = null;
 
-		for(let i = 0; i < this.players.length; i++) {
-			const c = this.players[i];
+		for(let i = 0; i < players.length; i++) {
+			const c = players[i];
 			const value = new Hand(c.cards).getMinCardValue();
 
 			if(minPlayer === null || value < minCardValue) {
@@ -94,6 +84,7 @@ class Deuces {
 
 	// Pop a random card from the pool of remaining cards
 	popRandomFromPool() {
+		// const pool = await this.getPool();
 		const numCards = this.pool.length;
 		const randIdx = Math.floor(Math.random() * numCards);
 		return this.pool.splice(randIdx, 1)[0];
@@ -104,7 +95,6 @@ class Deuces {
 
 		// Can't pass if the run is empty (this also covers passing on the first turn)
 		if(this.run.length === 0) {
-			// socket.emit('bad_play', 'You cannot pass on a free turn');
 			return false;
 		}
 
@@ -124,7 +114,7 @@ class Deuces {
 	}
 
 	hasEveryonePassed() {
-		return this.passes == this.players.length;
+		return this.passes >= this.players.length - 1;
 	}
 
 	onPlayCards(playerIdx, clientCards) {
@@ -244,7 +234,7 @@ class Deuces {
 	}
 
 	onUpdate() {
-		this.emitter.emit('update');
+		this.game.onUpdate();
 	}
 
 	getGameStateForPlayer(playerIdx) {
@@ -281,6 +271,38 @@ class Deuces {
 	setPlayerName(playerIdx, name) {
 		this.players[playerIdx].name = name;
 	}
+
+	static async make(game) {
+		const deuces = await Deuces.create({
+			state: GameState.WAITING,
+			turn: 0,
+			ply: 0,
+			winner: null,
+			passes: 0,
+		});
+
+		await deuces.start(game.numPlayers);
+		await deuces.save();
+		return deuces;
+	}
 }
+
+init(Deuces, {
+	state: {
+		type: INTEGER,
+		defaultValue: GameState.WAITING,
+	},
+	turn: INTEGER,
+	ply: INTEGER,
+	winner: {
+		type: INTEGER,
+		defaultValue: null,
+	},
+	passes: INTEGER,
+});
+
+Deuces.hasMany(Player);
+Deuces.hasMany(Run);
+Deuces.hasMany(Card, { as: 'Pool' });
 
 module.exports = Deuces;
