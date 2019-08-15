@@ -87,6 +87,8 @@ class Game extends Model {
 	}
 
 	async getDeuces() {
+		await this.reload();
+		console.log('this.deuces_id', this.deuces_id);
 		return await Deuces.findByPk(this.deuces_id);
 	}
 
@@ -95,7 +97,7 @@ class Game extends Model {
 		const deuces = await Deuces.make(game);
 		// await game.setDeuces(deuces);
 		game.deuces_id = deuces.id;
-		game.save();
+		await game.save();
 		return game;
 	}
 }
@@ -106,7 +108,7 @@ init(Game, {
 });
 
 // Game.hasOne(Deuces, { as: 'Deuces' });
-Deuces.hasOne(Game, { constraints: false, foreign_key: 'GameId' });
+// Deuces.hasOne(Game, { constraints: false });
 
 // Game.belongsTo(Deuces);
 // Deuces.belongsTo(Game, { constraints: false });
