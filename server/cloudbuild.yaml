@@ -1,4 +1,14 @@
 steps:
+- name: gcr.io/cloud-builders/gcloud
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=.env.prod.enc
+  - --plaintext-file=.env
+  - --location=global
+  - --keyring=codestory
+  - --key=codestory-key
+  dir: server
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
