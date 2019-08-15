@@ -7,12 +7,16 @@ services:
     container_name: deuces-server
     build: ./server
     network_mode: "host"
+    depends_on:
+      - postgres
     volumes:
       - "./server:/opt/server/"
     ports:
       - "3012:3012"
     environment:
-      - TBD=for_later
+      POSTGRES_USER: deuces_dev
+      POSTGRES_PASSWORD: deuces_dev
+      POSTGRES_DB: deuces
 
   # Frontend website
   web:
@@ -28,3 +32,14 @@ services:
       - "3000:3000"
     environment:
       - TBD=for_later
+
+  postgres:
+    image: postgres:10.4
+    container_name: deuces-postgres
+    network_mode: "host"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: deuces_dev
+      POSTGRES_PASSWORD: deuces_dev
+      POSTGRES_DB: deuces

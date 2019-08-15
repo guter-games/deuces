@@ -5,7 +5,7 @@ import styles from './Stats.module.css';
 const Stats = props => {
 	return (
 		<div>
-			<div class={ styles.turn }>
+			<div className={ styles.turn }>
 				{ props.turn }'s turn
 			</div>
 

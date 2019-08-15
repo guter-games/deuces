@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const theDbToConnect = require('./db');
 const Game = require('./game');
 const loudSocket = require('./loud_socket');
 const shortid = require('shortid');
@@ -11,7 +12,10 @@ const shortid = require('shortid');
 const games = new Map();
 const port = 3012;
 
-(function main() {
+(async function main() {
+	global.db = await theDbToConnect;
+	recoverGames(db);
+
 	// Listen for clients
 	const app = express();
 	app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,6 +43,7 @@ function onCreateGame(req, res) {
 	const numPlayers = parseInt(req.body.numPlayers, 10);
 	const id = getNextGameID();
 	const game = new Game(id, numPlayers);
+	game.createDBRecord();
 	games.set(id, game);
 	res.send(`${id}`);
 }
@@ -58,4 +63,15 @@ function routeToGame(socket) {
 	}
 
 	game.onClientConnect(socket);
+}
+
+async function recoverGames(db) {
+	const activeGames = await db.games.find({ active: true });
+	activeGames.forEach(recoverGame);
+}
+
+function recoverGame(gameRecord) {
+	// console.log('recoverGame', gameRecord);
+	const game = Game.fromDBRecord(gameRecord);
+	games.set(game.id, game);
 }

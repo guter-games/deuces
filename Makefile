@@ -1,7 +1,7 @@
-.PHONY: start stop restart up-server up-web ssh logs
+.PHONY: start stop restart up-server up-web up-postgres ssh logs
 
 # Start all services
-start: | up-web up-server
+start: | up-web up-server up-postgres
 
 # Kill all services
 stop:
@@ -18,15 +18,9 @@ up-server:
 up-web:
 	@docker-compose up -d web
 
-# Rebuilds the container
-# NOTE: This does not clear the Docker cache
-build-server:
-	@docker-compose build server
-
-# Rebuilds the container
-# NOTE: This does not clear the Docker cache
-build-web:
-	@docker-compose build web
+# Start the postgres container
+up-postgres:
+	@docker-compose up -d postgres
 
 # Clears the build cache and rebuilds the container
 build-server-fresh:
@@ -35,6 +29,10 @@ build-server-fresh:
 # Clears the build cache and rebuilds the container
 build-web-fresh:
 	@docker-compose build --no-cache web
+
+# Clears the build cache and rebuilds the container
+build-postgres-fresh:
+	@docker-compose build --no-cache postgres
 
 # SSH into a container
 # EXAMPLE: make ssh tar=web
@@ -51,3 +49,7 @@ logs:
 # Same as "logs" but with timestamps
 logst:
 	@docker logs -t -f deuces-$${tar} --tail ${tail}
+
+# Enter Postgres console
+psql:
+	@docker exec -it deuces-postgres psql -U deuces_dev deuces

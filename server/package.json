@@ -12,7 +12,9 @@
   "homepage": "https://gregoryguterman.com/deuces/server/",
   "dependencies": {
     "cors": "^2.8.5",
+    "deasync": "^0.1.15",
     "express": "^4.17.1",
+    "massive": "^5.11.2",
     "pokersolver": "^2.1.3",
     "shortid": "^2.2.14",
     "socket.io": "^2.2.0"

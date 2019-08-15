@@ -24,6 +24,17 @@ class Card {
 	equals(other) {
 		return this.suit === other.suit && this.rank === other.rank;
 	}
+
+	serialize() {
+		return {
+			suit: this.suit,
+			rank: this.rank,
+		};
+	}
+
+	static deserialize({ suit, rank }) {
+		return new Card(suit, rank);
+	}
 }
 
 Card.Suits = ['D', 'C', 'H', 'S'];

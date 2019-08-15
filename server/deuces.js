@@ -1,7 +1,7 @@
 const Player = require("./player");
 const Card = require("./card");
 const Hand = require("./hand");
-const { without } = require('./array_util');
+const { without, times } = require('./array_util');
 
 const GameState = {
 	WAITING: 0,
@@ -28,6 +28,10 @@ class Deuces {
 		}
 	}
 
+	hasWinner() {
+		return this.winner !== null;
+	}
+
 	resetGame() {
 		this.state = GameState.WAITING;
 		this.run = [];
@@ -50,10 +54,8 @@ class Deuces {
 		});
 
 		// Deal cards to each player
-		this.players.forEach(c => {
-			for(let i = 0; i < numCardsToDeal(this.players.length); i++) {
-				this.dealCardTo(c);
-			}
+		this.players.forEach((player, playerIdx) => {
+			times(numCardsToDeal(this.players.length), () => this.dealCardTo(playerIdx));
 		});
 
 		// Pick the starting player
@@ -61,16 +63,16 @@ class Deuces {
 
 		// For 3 player games, the player who goes first draws the last card
 		if(this.players.length === 3) {
-			this.dealCardTo(this.turn);
+			this.dealCardTo(this.players[this.turn]);
 		}
 
 		// Update all players
 		this.onUpdate();
 	}
 
-	dealCardTo(client) {
+	dealCardTo(playerIdx) {
 		if(this.pool.length > 0) {
-			client.cards.push(this.popRandomFromPool());
+			this.players[playerIdx].cards.push(this.popRandomFromPool());
 		}
 	}
 
@@ -104,7 +106,6 @@ class Deuces {
 
 		// Can't pass if the run is empty (this also covers passing on the first turn)
 		if(this.run.length === 0) {
-			// socket.emit('bad_play', 'You cannot pass on a free turn');
 			return false;
 		}
 
@@ -280,6 +281,22 @@ class Deuces {
 
 	setPlayerName(playerIdx, name) {
 		this.players[playerIdx].name = name;
+	}
+
+	load(data) {
+		Object.assign(this, data);
+		this.players = this.players.map(Player.deserialize);
+	}
+
+	serialize() {
+		const data = Object.assign(
+			{},
+			this,
+			{ players: this.players.map(player => player.serialize()) },
+		);
+
+		delete data.emitter;
+		return data;
 	}
 }
 
