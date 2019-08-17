@@ -14,6 +14,18 @@ const port = 3012;
 
 (async function main() {
 	global.db = await theDbToConnect;
+
+	if(typeof db.games === 'undefined') {
+		await db.query(`CREATE TABLE IF NOT EXISTS games(
+			id VARCHAR(100) PRIMARY KEY,
+			numPlayers INTEGER,
+			active BOOLEAN,
+			deuces jsonb
+		)`);
+
+		global.db = await db.reload();
+	}
+
 	recoverGames(db);
 
 	// Listen for clients
@@ -66,10 +78,6 @@ function routeToGame(socket) {
 }
 
 async function recoverGames(db) {
-	if(typeof db.games === 'undefined') {
-		return;
-	}
-	
 	const activeGames = await db.games.find({ active: true });
 	activeGames.forEach(recoverGame);
 }
