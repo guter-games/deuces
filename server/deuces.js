@@ -63,7 +63,7 @@ class Deuces {
 
 		// For 3 player games, the player who goes first draws the last card
 		if(this.players.length === 3) {
-			this.dealCardTo(this.players[this.turn]);
+			this.dealCardTo(this.turn);
 		}
 
 		// Update all players
@@ -118,7 +118,7 @@ class Deuces {
 
 		// Do the pass
 		this.nextTurn();
-		this.dealCardTo(client);
+		this.dealCardTo(playerIdx);
 		this.onUpdate();
 
 		return true;
