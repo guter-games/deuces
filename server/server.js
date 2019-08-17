@@ -66,6 +66,10 @@ function routeToGame(socket) {
 }
 
 async function recoverGames(db) {
+	if(typeof db.games === 'undefined') {
+		return;
+	}
+	
 	const activeGames = await db.games.find({ active: true });
 	activeGames.forEach(recoverGame);
 }
