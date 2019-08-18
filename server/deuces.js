@@ -295,7 +295,8 @@ class Deuces {
 			{ players: this.players.map(player => player.serialize()) },
 		);
 
-		delete data.emitter;
+		// delete data.emitter;
+		data.emitter = undefined;
 		return data;
 	}
 }
