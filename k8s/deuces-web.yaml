@@ -4,6 +4,8 @@ metadata:
   name: deuces-web
   labels:
     app: deuces-web
+  annotations:
+    co.elastic.logs/enabled: true
 spec:
   replicas: 1
   selector:
