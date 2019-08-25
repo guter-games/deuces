@@ -5,7 +5,7 @@ metadata:
   labels:
     app: deuces-server
   annotations:
-    co.elastic.logs/enabled: true
+    co.elastic.logs/enabled: "true"
 spec:
   replicas: 1
   selector:
