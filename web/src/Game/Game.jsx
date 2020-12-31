@@ -10,6 +10,7 @@ import store from 'store';
 import styles from './Game.module.css';
 import audio from '../audio';
 import client from '../game_connection';
+import Winner from "../Winner";
 
 const c = classNames.bind(styles);
 const myTurnSound = `${process.env.PUBLIC_URL}/boop.mp3`;
@@ -158,6 +159,8 @@ export default class Game extends React.Component {
 						<Stats poolSize={ game.poolSize } turn={ game.playerTurnName } />
 					</div>
 				</div>
+
+				{ game.winner && <Winner winner={game.winner} playAgainGameID={game.playAgainGameID} playerIdx={this.storedData().playerIdx} /> }
 			</div>
 		);
 	}

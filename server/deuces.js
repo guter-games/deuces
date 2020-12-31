@@ -15,8 +15,9 @@ function numCardsToDeal(numPlayers) {
 }
 
 class Deuces {
-	constructor(numPlayers, emitter) {
+	constructor(numPlayers, emitter, createSimilarGame) {
 		this.emitter = emitter;
+		this.createSimilarGame = createSimilarGame;
 		this.resetGame();
 
 		// Setup players
@@ -157,6 +158,9 @@ class Deuces {
 		if(client.cards.length === 0) {
 			this.state = GameState.FINISHED;
 			this.winner = client.name;
+			if(!this.playAgainGameID) {
+				this.playAgainGameID = this.createSimilarGame();
+			}
 		}
 
 		// Go to the next player
@@ -254,6 +258,8 @@ class Deuces {
 			playerTurnName: this.players[this.turn].name,
 			run: this.run,
 			state: this.state,
+			winner: this.winner,
+			playAgainGameID: this.playAgainGameID,
 		};
 
 		// Information about this player

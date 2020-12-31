@@ -36,7 +36,7 @@ const port = 3012;
 
 	const server = http.createServer(app);
 	server.listen(port);
-	
+
 	// Setup the lobby route
 	app.post('/create_game', onCreateGame);
 
@@ -51,12 +51,27 @@ function getNextGameID() {
 	return shortid.generate();
 }
 
-function onCreateGame(req, res) {
-	const numPlayers = parseInt(req.body.numPlayers, 10);
+function createGame(numPlayers) {
 	const id = getNextGameID();
-	const game = new Game(id, numPlayers);
+
+	// Returns a new game with the same players
+	function createSimilarGame() {
+		const newId = createGame(numPlayers);
+		for(let i = 0; i < numPlayers; i++) {
+			games.get(newId).deuces.players[i].name = games.get(id).deuces.players[i].name;
+		}
+		return newId;
+	}
+
+	const game = new Game(id, numPlayers, createSimilarGame);
 	game.createDBRecord();
 	games.set(id, game);
+	return id;
+}
+
+function onCreateGame(req, res) {
+	const numPlayers = parseInt(req.body.numPlayers, 10);
+	const id = createGame(numPlayers);
 	res.send(`${id}`);
 }
 

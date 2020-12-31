@@ -4,15 +4,15 @@ const Deuces = require('./deuces');
 const { remove } = require('./array_util');
 
 class Game {
-	constructor(id, numPlayers) {
+	constructor(id, numPlayers, createSimilarGame) {
 		this.id = id;
 		this.numPlayers = numPlayers;
 
 		this.emitter = new EventEmitter();
 		this.emitter.on('update', () => this.onUpdate());
-		
+
 		this.netClients = [];
-		this.deuces = new Deuces(numPlayers, this.emitter);
+		this.deuces = new Deuces(numPlayers, this.emitter, createSimilarGame);
 		this.deuces.start();
 	}
 
