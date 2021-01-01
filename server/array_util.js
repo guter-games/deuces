@@ -18,4 +18,20 @@ fns.remove = (arr, element) => {
 	arr.splice(idx, 1);
 };
 
+// Returns whether or not the elements in the array are consecutive, ie 1,2,3,4,5
+fns.isConsecutive = (arr) => {
+	if(arr.length === 0) {
+		return true;
+	}
+
+	let prev = arr[0];
+	for(let i = 1; i < arr.length; i++) {
+		if(arr[i] !== prev + 1) {
+			return false;
+		}
+		prev = arr[i];
+	}
+	return true;
+};
+
 module.exports = fns;

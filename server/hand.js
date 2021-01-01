@@ -1,7 +1,8 @@
-const poker = require('pokersolver').Hand;
 const Card = require('./card');
+const {isConsecutive} = require('./array_util');
 
 const HandValues = {
+	['High Card']: 0,
 	['Pair']: 100000000,
 	['Three of a Kind']: 200000000,
 	['Straight']: 300000000,
@@ -54,11 +55,6 @@ class Hand {
 	getValue() {
 		let score = 0;
 
-		// Calculate single card cost
-		if(this.cards.length === 1) {
-			return this.cards[0].getValue();
-		}
-
 		// Compute the min card
 		let minCard = null;
 
@@ -69,8 +65,7 @@ class Hand {
 		});
 
 		// Compute the score based on the type of hand
-		const arr = this.toPokerSolverArray();
-		const handType = poker.solve(arr).name;
+		const handType = this.getHandType();
 
 		// Add the fixed hand value
 		if(typeof HandValues[handType] !== 'undefined') {
@@ -104,6 +99,7 @@ class Hand {
 				break;
 
 			case 'High Card':
+				score += this.cards[0].getValue();
 				break;
 
 			default:
@@ -111,16 +107,16 @@ class Hand {
 				// 'Three of a Kind with Two Pair', 'Two Three of a Kind', 'Three Pair',
 				// 'Two Pair'
 				score = 0;
-				console.log('WARNING: strange hand', arr, handType);
+				console.log('WARNING: strange hand', this.cards, handType);
 				break;
 		}
 
 		return score;
 	}
 
-	// Gets the value of the majority rank in the hand
+	// Gets the majority rank in the hand
 	// If there is a tie, a random one is chosen (but don't use this with a tie, be purposeful)
-	getMajorityRankValue() {
+	getMajorityRank() {
 		// Compute the # occurrences of each rank
 		const rankCounts = {}; // Keep track of the # of cards with the given rank
 
@@ -141,26 +137,117 @@ class Hand {
 			}
 		}
 
-		// Return the majority rank's value
-		// The suit shouldn't affect the rank's value, so we specify a random one
-		return new Card('D', majRank).getRankValue();
+		return majRank;
 	}
 
-	// Converts our representation of the hand to the following array representation:
-	//		['2h', '3d', 'Ac', '9s']
-	// Additionally, our 2s will be converted to As and every other rank will be 'moved 1 down'
-	toPokerSolverArray() {
-		return this.cards.map(c => {
-			let rank;
+	// Gets the minority rank in the hand
+	// If there is a tie, a random one is chosen (but don't use this with a tie, be purposeful)
+	getMinorityRank() {
+		// Compute the # occurrences of each rank
+		const rankCounts = {}; // Keep track of the # of cards with the given rank
 
-			if(c.rank === '3') {
-				rank = '2';
-			} else {
-				rank = Card.Ranks[Card.Ranks.indexOf(c.rank) - 1];
+		this.cards.forEach(c => {
+			if(typeof rankCounts[c.rank] === 'undefined') {
+				rankCounts[c.rank] = 0;
 			}
-			
-			return `${rank}${c.suit.toLowerCase()}`;
+
+			rankCounts[c.rank]++;
 		});
+
+		// Choose the minority rank and return its value
+		let minRank = '3';
+
+		for(const rank in rankCounts) {
+			if(!rankCounts[minRank] || rankCounts[rank] < rankCounts[minRank]) {
+				minRank = rank;
+			}
+		}
+
+		return minRank;
+	}
+
+	// Gets the value of the majority rank in the hand
+	// If there is a tie, a random one is chosen (but don't use this with a tie, be purposeful)
+	getMajorityRankValue() {
+		// The suit shouldn't affect the rank's value, so we specify a random one
+		return new Card('D', this.getMajorityRank()).getRankValue();
+	}
+
+	getHandType() {
+		// Single card
+		if(this.cards.length === 1) {
+			return 'High Card';
+		}
+
+		// 2 of a kind
+		if(this.cards.length === 2) {
+			if(this.cards[0].rank === this.cards[1].rank) {
+				return 'Pair';
+			}
+		}
+
+		// 3 of a kind
+		if(this.cards.length === 3) {
+			if(this.cards[0].rank === this.cards[1].rank && this.cards[1].rank === this.cards[2].rank) {
+				return 'Three of a Kind';
+			}
+		}
+
+		// 5 card hands
+		if(this.cards.length === 5) {
+			const flush = this.cards.every(card => card.suit === this.cards[0].suit);
+
+			// Check if the hand has a straight
+			const rankIndexes = this.cards.map(card => Card.Ranks.indexOf(card.rank));
+			rankIndexes.sort((a, b) => a - b);
+			const straight = isConsecutive(rankIndexes);
+
+			// Royal Flush
+			if(straight && flush) {
+				if(
+					this.cards.some(card => card.rank === 'T') &&
+					this.cards.some(card => card.rank === 'J') &&
+					this.cards.some(card => card.rank === 'Q') &&
+					this.cards.some(card => card.rank === 'K') &&
+					this.cards.some(card => card.rank === 'A')
+				) {
+					return 'Royal Flush';
+				}
+			}
+
+			// Straight Flush
+			if(straight && flush) {
+				return 'Straight Flush';
+			}
+
+			// Straight
+			if(straight) {
+				return 'Straight';
+			}
+
+			// Flush
+			if(flush) {
+				return 'Flush';
+			}
+
+			// Full House
+			const majorityRank = this.getMajorityRank();
+			const minorityRank = this.getMinorityRank();
+			if(
+				this.cards.filter(card => card.rank === majorityRank).length === 3 &&
+				this.cards.filter(card => card.rank === minorityRank).length === 2
+			) {
+				return 'Full House';
+			}
+
+			// Four of a Kind
+			if(this.cards.filter(card => card.rank === majorityRank).length === 4) {
+				return 'Four of a Kind';
+			}
+		}
+
+		// There are no other valid hands
+		return '';
 	}
 }
 

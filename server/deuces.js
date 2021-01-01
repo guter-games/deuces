@@ -126,6 +126,9 @@ class Deuces {
 	}
 
 	hasEveryonePassed() {
+		if(this.players.length === 1) {
+			return this.passes > 0;
+		}
 		return this.passes == this.players.length - 1;
 	}
 
