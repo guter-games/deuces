@@ -92,10 +92,15 @@ export default class Game extends React.Component {
 			const name = prompt('Player name:');
 
 			if(!name) {
+				alert('You must enter a name');
 				return;
 			}
 
 			client.requestNewIdentity(name).then(playerIdx => {
+				if(playerIdx === -1) {
+					alert('Failed to get a new identity');
+					return;
+				}
 				this.store('playerIdx', playerIdx);
 				this.identify();
 			});
