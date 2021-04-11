@@ -291,23 +291,6 @@ class Deuces {
 	setPlayerName(playerIdx, name) {
 		this.players[playerIdx].name = name;
 	}
-
-	load(data) {
-		Object.assign(this, data);
-		this.players = this.players.map(Player.deserialize);
-	}
-
-	serialize() {
-		const data = Object.assign(
-			{},
-			this,
-			{ players: this.players.map(player => player.serialize()) },
-		);
-
-		// delete data.emitter;
-		data.emitter = undefined;
-		return data;
-	}
 }
 
 module.exports = Deuces;

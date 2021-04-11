@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const theDbToConnect = require('./db');
 const Game = require('./game');
 const loudSocket = require('./loud_socket');
 const shortid = require('shortid');
@@ -13,21 +12,6 @@ const games = new Map();
 const port = 3012;
 
 (async function main() {
-	global.db = await theDbToConnect;
-
-	if(typeof db.games === 'undefined') {
-		await db.query(`CREATE TABLE IF NOT EXISTS games(
-			id VARCHAR(100) PRIMARY KEY,
-			numPlayers INTEGER,
-			active BOOLEAN,
-			deuces jsonb
-		)`);
-
-		global.db = await db.reload();
-	}
-
-	recoverGames(db);
-
 	// Listen for clients
 	const app = express();
 	app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,7 +48,6 @@ function createGame(numPlayers) {
 	}
 
 	const game = new Game(id, numPlayers, createSimilarGame);
-	game.createDBRecord();
 	games.set(id, game);
 	return id;
 }
@@ -90,15 +73,4 @@ function routeToGame(socket) {
 	}
 
 	game.onClientConnect(socket);
-}
-
-async function recoverGames(db) {
-	const activeGames = await db.games.find({ active: true });
-	activeGames.forEach(recoverGame);
-}
-
-function recoverGame(gameRecord) {
-	// console.log('recoverGame', gameRecord);
-	const game = Game.fromDBRecord(gameRecord);
-	games.set(game.id, game);
 }

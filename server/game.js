@@ -74,7 +74,6 @@ class Game {
 	}
 
 	onUpdate() {
-		this.saveToDB();
 		this.updateAllClients();
 	}
 
@@ -82,36 +81,6 @@ class Game {
 		this.netClients.forEach(client => {
 			client.emit('game_update', this.deuces.getGameStateForPlayer(client.player));
 		});
-	}
-
-	loadFromDBRecord(record) {
-		this.deuces = Deuces.fromDBRecord(record.deuces);
-	}
-
-	async createDBRecord() {
-		await db.games.insert({
-			id: this.id,
-			numplayers: this.numPlayers,
-		});
-
-		this.saveToDB();
-	}
-
-	saveToDB() {
-		return db.games.update({
-			id: this.id,
-		}, {
-			active: !this.deuces.hasWinner(),
-			deuces: this.deuces,
-		});
-	}
-
-	static fromDBRecord(record) {
-		const { id, numplayers } = record;
-
-		const game = new Game(id, numplayers);
-		game.deuces.load(record.deuces);
-		return game;
 	}
 }
 
