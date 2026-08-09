@@ -52,11 +52,6 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
-bindings@~1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz"
-  integrity sha1-FK1hE4EtLTfXLme0ystLtyZQXxE=
-
 blob@0.0.5:
   version "0.0.5"
   resolved "https://registry.npmjs.org/blob/-/blob-0.0.5.tgz"
@@ -137,14 +132,6 @@ cors@^2.8.5:
   dependencies:
     object-assign "^4"
     vary "^1"
-
-deasync@^0.1.15:
-  version "0.1.15"
-  resolved "https://registry.npmjs.org/deasync/-/deasync-0.1.15.tgz"
-  integrity sha512-pxMaCYu8cQIbGkA4Y1R0PLSooPIpH1WgFBLeJ+zLxQgHfkZG86ViJSmZmONSjZJ/R3NjwkMcIWZAzpLB2G9/CA==
-  dependencies:
-    bindings "~1.2.1"
-    node-addon-api "^1.6.0"
 
 debug@~3.1.0:
   version "3.1.0"
@@ -407,11 +394,6 @@ negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.2.tgz"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
-
-node-addon-api@^1.6.0:
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-1.7.1.tgz"
-  integrity sha512-2+DuKodWvwRTrCfKOeR24KIc5unKjOh8mz17NCzVnHWfjAdDqbfbjqh7gUT+BkXBRQM52+xCHciKWonJ3CbJMQ==
 
 object-assign@^4:
   version "4.1.1"

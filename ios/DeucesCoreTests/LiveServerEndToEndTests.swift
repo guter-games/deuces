@@ -1,22 +1,22 @@
 import XCTest
 @testable import DeucesCore
 
-/// End-to-end against the real Node server over LAN (`ServerConfig.current`).
+/// End-to-end against the real Node server over LAN (`ServerConfig.lan`).
 /// Skips cleanly when the server is not reachable.
 @MainActor
 final class LiveServerEndToEndTests: XCTestCase {
 
     override func setUp() async throws {
         try await super.setUp()
-        let reachable = await LiveServerProbe.isReachable(config: .current)
+        let reachable = await LiveServerProbe.isReachable(config: .lan)
         try XCTSkipUnless(
             reachable,
-            "LAN server not reachable at \(ServerConfig.current.createGameURL.absoluteString). Run `make up-server`."
+            "LAN server not reachable at \(ServerConfig.lan.createGameURL.absoluteString). Run `make up-server`."
         )
     }
 
     func testCreateGameHTTP() async throws {
-        let backend = HTTPDeucesBackend(config: .current)
+        let backend = HTTPDeucesBackend(config: .lan)
         let id = try await backend.createGame(numPlayers: 2)
         XCTAssertFalse(id.isEmpty)
         XCTAssertLessThan(id.count, 32)
@@ -110,7 +110,7 @@ final class LiveServerEndToEndTests: XCTestCase {
     }
 
     func testInviteURLContainsOnlyGameId() async throws {
-        let backend = HTTPDeucesBackend(config: .current)
+        let backend = HTTPDeucesBackend(config: .lan)
         let id = try await backend.createGame(numPlayers: 3)
         let invite = GameInvite(gameID: id, numPlayers: 3)
         let url = try GameInviteURL.makeURL(invite)
@@ -151,14 +151,14 @@ final class LivePair {
     }
 
     static func connected(players: Int) async throws -> LivePair {
-        let backend = HTTPDeucesBackend(config: .current)
+        let backend = HTTPDeucesBackend(config: .lan)
         let phone = GameSessionController(
             backend: backend,
             seatStore: InMemorySeatStore(),
             identityStore: InMemoryIdentityStore()
         )
         let pad = GameSessionController(
-            backend: HTTPDeucesBackend(config: .current),
+            backend: HTTPDeucesBackend(config: .lan),
             seatStore: InMemorySeatStore(),
             identityStore: InMemoryIdentityStore()
         )

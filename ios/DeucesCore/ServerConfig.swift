@@ -12,8 +12,15 @@ public struct ServerConfig: Sendable, Equatable {
         self.socketPath = socketPath
     }
 
-    /// Production (same host the web client uses).
+    /// Production on Render (`deuces` web service).
     public static let production = ServerConfig(
+        createGameURL: URL(string: "https://deuces.onrender.com/create_game")!,
+        socketURL: URL(string: "https://deuces.onrender.com")!,
+        socketPath: "/socket.io"
+    )
+
+    /// Legacy production host (web behind gregoryguterman.com reverse proxy).
+    public static let legacyProduction = ServerConfig(
         createGameURL: URL(string: "https://gregoryguterman.com/deuces/server/create_game")!,
         socketURL: URL(string: "https://gregoryguterman.com")!,
         socketPath: "/deuces/socket.io"
@@ -37,6 +44,7 @@ public struct ServerConfig: Sendable, Equatable {
         )
     }
 
-    /// Active config for the Messages extension + host app.
-    public static var current: ServerConfig { .lan }
+    /// Active config for App Store / TestFlight / device builds.
+    /// Switch to `.lan` locally when testing against `make up-server`.
+    public static var current: ServerConfig { .production }
 }

@@ -9,7 +9,8 @@ const loudSocket = require('./loud_socket');
 const shortid = require('shortid');
 
 const games = new Map();
-const port = 3012;
+// Render (and most hosts) inject PORT; keep 3012 for local/LAN.
+const port = Number(process.env.PORT) || 3012;
 
 (async function main() {
 	// Listen for clients
@@ -17,6 +18,14 @@ const port = 3012;
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 	app.use(cors());
+
+	// Health check for Render / load balancers
+	app.get('/', (_req, res) => {
+		res.status(200).send('ok');
+	});
+	app.get('/health', (_req, res) => {
+		res.status(200).json({ ok: true });
+	});
 
 	const server = http.createServer(app);
 	// Bind all interfaces so phones/iPads on LAN can reach us (not just localhost).

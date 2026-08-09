@@ -17,17 +17,21 @@ Composer → POST create_game → insert invite bubble (game id only) → collap
 Tap bubble → connect socket ?gameID=… → name/join → play via socket
 ```
 
-### LAN device testing (default)
+### Production server (default)
+
+`ServerConfig.current` points at the Render service: `https://deuces.onrender.com`  
+(`POST /create_game`, Socket.IO path `/socket.io`).
+
+### LAN device testing
 
 ```bash
-make ios-e2e        # start server, point clients at this Mac's Wi‑Fi IP, run live Socket.IO e2e
+# In ServerConfig.swift temporarily set `current` to `.lan`, then:
+make ios-e2e        # start local server, run live Socket.IO e2e against LanHost
 make ios-install    # build + install on connected devices
 ```
 
-`ServerConfig.current` uses `LanHost` (`make ios-lan-config` refreshes the IP from `en0`).  
+`LanHost` is refreshed by `make ios-lan-config` from this Mac's Wi‑Fi IP.  
 Devices and this Mac must be on the same network; allow Local Network for Deuces when prompted.
-
-Production endpoints (web) remain available as `ServerConfig.production` if you switch `current` back.
 
 ## Project layout
 

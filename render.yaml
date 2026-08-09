@@ -1,0 +1,15 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: deuces
+    runtime: node
+    plan: free
+    region: oregon
+    branch: master
+    rootDir: server
+    buildCommand: yarn install --frozen-lockfile || yarn install
+    startCommand: yarn start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
