@@ -57,19 +57,51 @@ final class EngineTests: XCTestCase {
         XCTAssertNotEqual(state.players[state.turn].id, firstID)
     }
 
-    func testCannotPlayUntilAllJoined() throws {
+    func testCanPlayBeforeAllPlayersJoinWhenItIsYourTurn() throws {
         let host = UUID()
         var state = DeucesEngine.createGame(numPlayers: 2)
         state = try DeucesEngine.join(state: state, playerID: host, displayName: "Host")
-        // Force turn onto the joined seat for the assertion.
-        state.turn = state.playerIndex(for: host)!
-        let card = state.players[state.turn].hand.min()!
+        XCTAssertFalse(state.allSeatsClaimed)
+        XCTAssertEqual(state.playerIndex(for: host), state.turn)
 
-        XCTAssertThrowsError(
-            try DeucesEngine.playCards(state: state, playerID: host, cards: [card])
-        ) { error in
-            XCTAssertEqual(error as? DeucesError, .waitingForPlayers)
-        }
+        let card = state.players[state.turn].hand.min()!
+        state = try DeucesEngine.playCards(state: state, playerID: host, cards: [card])
+        XCTAssertEqual(state.ply, 1)
+        XCTAssertEqual(state.run.last, [card])
+    }
+
+    func testConcurrentJoinsMergeBothClaims() throws {
+        let andrew = UUID(uuidString: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")!
+        let sarah = UUID(uuidString: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")!
+        let base = DeucesEngine.createGame(numPlayers: 2)
+
+        let phoneOnly = try DeucesEngine.join(state: base, playerID: andrew, displayName: "Andrew")
+        let padOnly = try DeucesEngine.join(state: base, playerID: sarah, displayName: "Sarah")
+        XCTAssertEqual(phoneOnly.players.filter(\.claimed).count, 1)
+        XCTAssertEqual(padOnly.players.filter(\.claimed).count, 1)
+        XCTAssertEqual(phoneOnly.revision, padOnly.revision)
+
+        let merged = DeucesEngine.mergeRemote(local: phoneOnly, remote: padOnly)
+        let names = Set(merged.players.filter(\.claimed).map(\.displayName))
+        XCTAssertEqual(names, ["Andrew", "Sarah"])
+        XCTAssertTrue(merged.allSeatsClaimed)
+        XCTAssertGreaterThan(merged.revision, max(phoneOnly.revision, padOnly.revision))
+
+        // Symmetric merge must converge.
+        let mergedFlip = DeucesEngine.mergeRemote(local: padOnly, remote: phoneOnly)
+        XCTAssertEqual(
+            Set(merged.players.filter(\.claimed).map(\.id)),
+            Set(mergedFlip.players.filter(\.claimed).map(\.id))
+        )
+    }
+
+    func testPartialJoinIsStillYourTurn() throws {
+        let host = UUID()
+        var state = DeucesEngine.createGame(numPlayers: 2)
+        state = try DeucesEngine.join(state: state, playerID: host, displayName: "Host")
+        let view = DeucesEngine.view(for: state, localPlayerID: host)
+        XCTAssertTrue(view.isMyTurn)
+        XCTAssertFalse(state.allSeatsClaimed)
     }
 
     func testFirstPlayMustIncludeLowestCard() throws {

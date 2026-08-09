@@ -1,95 +1,104 @@
 import Foundation
 import Combine
 
-/// Coordinates local identity, rules, and a pluggable transport (Messages or in-memory).
+/// Coordinates the web-equivalent flow: create on HTTP, play over a socket,
+/// and (optionally) announce a one-shot invite bubble via Messages.
 @MainActor
 public final class GameSessionController: ObservableObject {
-    @Published public private(set) var state: GameState?
+    @Published public private(set) var invite: GameInvite?
+    @Published public private(set) var update: ServerGameUpdate?
+    @Published public var displayName: String
     @Published public var errorMessage: String?
-    @Published public var identity: PlayerIdentity?
-    /// Decode/open failures shown in the extension UI (not silent).
     @Published public var statusMessage: String?
+    @Published public private(set) var isConnecting = false
+    @Published public private(set) var needsToJoin = false
 
+    public let backend: DeucesBackend
+    public let seatStore: SeatStore
     public let identityStore: PlayerIdentityStore
-    public let membershipStore: GameMembershipStore
-    private let transport: GameTransport
+    private let inviteTransport: InviteTransport?
+
+    private var socket: (any GameSocket)?
+    private var playerIndex: Int?
 
     public init(
-        transport: GameTransport,
-        identityStore: PlayerIdentityStore = UserDefaultsIdentityStore(),
-        membershipStore: GameMembershipStore = GameMembershipStore()
+        backend: DeucesBackend,
+        inviteTransport: InviteTransport? = nil,
+        seatStore: SeatStore = UserDefaultsSeatStore(),
+        identityStore: PlayerIdentityStore = UserDefaultsIdentityStore()
     ) {
-        self.transport = transport
+        self.backend = backend
+        self.inviteTransport = inviteTransport
+        self.seatStore = seatStore
         self.identityStore = identityStore
-        self.membershipStore = membershipStore
-        self.identity = identityStore.load()
-
-        transport.onReceive = { [weak self] remote in
-            self?.applyRemote(remote)
-        }
+        self.displayName = identityStore.load()?.displayName ?? ""
     }
 
-    public var view: PlayerGameView? {
-        guard let state else { return nil }
-        return DeucesEngine.view(for: state, localPlayerID: identity?.id)
-    }
+    public var isInGame: Bool { invite != nil }
 
-    public var needsToJoin: Bool {
-        guard let state else { return false }
-        if let identity, state.playerIndex(for: identity.id) != nil {
-            return false
-        }
-        return state.players.contains(where: \.isEmptySeat)
-    }
-
-    public func setDisplayName(_ name: String) {
-        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        let id = identity?.id ?? UUID()
-        let next = PlayerIdentity(id: id, displayName: trimmed)
-        identity = next
-        identityStore.save(next)
-    }
-
-    /// Insert a new game bubble. Does not open the game locally — everyone joins
-    /// by tapping the bubble (including the sender).
+    /// Create a server game and optionally announce it.
+    /// - Parameters:
+    ///   - numPlayers: 1...4
+    ///   - openLocally: when true, connect this device immediately (Local 2P / tests).
+    ///     When false (Messages composer), only the invite bubble is sent.
     public func createGame(numPlayers: Int, openLocally: Bool = false) {
         errorMessage = nil
         statusMessage = nil
-        let state = DeucesEngine.createGame(numPlayers: numPlayers)
-        if openLocally {
-            self.state = state
-        } else {
-            // Keep composer until Messages dismisses; don't auto-open the board.
-            self.state = nil
-        }
-        transport.send(state, isNewGame: true)
-    }
-
-    public func open(state: GameState) {
-        errorMessage = nil
-        statusMessage = nil
-        self.state = DeucesEngine.normalized(state)
-
-        // Restore this device's membership if we have one for this game.
-        if let remembered = membershipStore.playerID(for: state.gameID),
-           state.playerIndex(for: remembered) != nil {
-            if var identity {
-                identity.id = remembered
-                self.identity = identity
-                identityStore.save(identity)
-            } else if let player = state.players.first(where: { $0.id == remembered }) {
-                let restored = PlayerIdentity(id: remembered, displayName: player.displayName)
-                self.identity = restored
-                identityStore.save(restored)
+        Task {
+            do {
+                let gameID = try await backend.createGame(numPlayers: numPlayers)
+                let invite = GameInvite(gameID: gameID, numPlayers: numPlayers)
+                inviteTransport?.sendInvite(invite)
+                if openLocally {
+                    await openInvite(invite)
+                } else {
+                    clearGame(keepName: true)
+                }
+            } catch {
+                errorMessage = Self.friendlyNetworkError(error)
             }
         }
     }
 
-    public func open(url: URL) -> Bool {
+    /// Open an invite (from a bubble URL) and connect to the server.
+    public func openInvite(_ invite: GameInvite) async {
+        errorMessage = nil
+        statusMessage = nil
+        disconnectSocket()
+        self.invite = invite
+        self.update = nil
+        self.playerIndex = seatStore.playerIndex(for: invite.gameID)
+        self.needsToJoin = (playerIndex == nil)
+        isConnecting = true
+
+        let socket = backend.openSocket(gameID: invite.gameID)
+        self.socket = socket
+        socket.onGameUpdate = { [weak self] update in
+            self?.update = update
+            self?.isConnecting = false
+            if update.me?.name != nil {
+                self?.needsToJoin = false
+            }
+        }
+        socket.onBadPlay = { [weak self] message in
+            self?.errorMessage = message
+        }
+        socket.onConnected = { [weak self] in
+            Task { @MainActor in
+                await self?.identifyAfterConnect()
+            }
+        }
+        socket.onDisconnected = { [weak self] in
+            self?.isConnecting = false
+            self?.statusMessage = "Disconnected from server"
+        }
+        socket.connect()
+    }
+
+    public func open(url: URL) async -> Bool {
         do {
-            let state = try GameStateCodec.parseURL(url)
-            open(state: state)
+            let invite = try GameInviteURL.parse(url)
+            await openInvite(invite)
             return true
         } catch {
             statusMessage = "Couldn't read this game bubble."
@@ -97,185 +106,97 @@ public final class GameSessionController: ObservableObject {
         }
     }
 
-    public func clearGame() {
-        errorMessage = nil
-        statusMessage = nil
-        state = nil
+    public func setDisplayName(_ name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        displayName = trimmed
+        let id = identityStore.load()?.id ?? UUID()
+        identityStore.save(PlayerIdentity(id: id, displayName: trimmed))
     }
 
     public func joinIfNeeded() {
         errorMessage = nil
-        statusMessage = nil
-        guard var state else { return }
-        guard let identity else {
+        guard let invite, needsToJoin else { return }
+        let name = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
             errorMessage = "Enter a display name first"
             return
         }
-
-        if state.playerIndex(for: identity.id) != nil {
-            membershipStore.remember(gameID: state.gameID, playerID: identity.id)
-            return
-        }
-
-        guard state.players.contains(where: { !$0.claimed }) else {
-            errorMessage = "No open seats left"
-            return
-        }
-
-        do {
-            state = try DeucesEngine.join(
-                state: state,
-                playerID: identity.id,
-                displayName: identity.displayName
-            )
-            membershipStore.remember(gameID: state.gameID, playerID: identity.id)
-            self.state = state
-            transport.send(state, isNewGame: false)
-        } catch {
-            errorMessage = error.localizedDescription
+        Task {
+            do {
+                guard let socket else { throw DeucesBackendError.notConnected }
+                let idx = try await socket.requestNewIdentity(name: name)
+                if idx < 0 {
+                    errorMessage = DeucesBackendError.seatUnavailable.errorDescription
+                    return
+                }
+                seatStore.remember(gameID: invite.gameID, playerIndex: idx)
+                playerIndex = idx
+                needsToJoin = false
+                socket.identifyAs(player: idx)
+            } catch {
+                errorMessage = Self.friendlyNetworkError(error)
+            }
         }
     }
 
     public func play(cards: [Card]) {
-        mutate { state, identity in
-            try DeucesEngine.playCards(state: state, playerID: identity.id, cards: cards)
-        }
+        errorMessage = nil
+        socket?.playCards(cards)
     }
 
     public func pass() {
-        mutate { state, identity in
-            try DeucesEngine.pass(state: state, playerID: identity.id)
-        }
+        errorMessage = nil
+        socket?.pass()
     }
 
-    public func applyRemote(_ remote: GameState) {
-        guard let local = state else {
-            state = DeucesEngine.normalized(remote)
+    /// Rematch = brand-new server game + new invite bubble (never reuse playAgainGameID).
+    public func startRematch() {
+        let players = invite?.numPlayers ?? 2
+        createGame(numPlayers: players)
+    }
+
+    public func clearGame(keepName: Bool = true) {
+        disconnectSocket()
+        invite = nil
+        update = nil
+        playerIndex = nil
+        needsToJoin = false
+        isConnecting = false
+        errorMessage = nil
+        statusMessage = nil
+        if !keepName { displayName = "" }
+    }
+
+    private func identifyAfterConnect() async {
+        guard let invite, let socket else { return }
+        if let idx = playerIndex {
+            needsToJoin = false
+            socket.identifyAs(player: idx)
             return
         }
-        state = DeucesEngine.mergeRemote(local: local, remote: remote)
+        needsToJoin = true
+        isConnecting = false
+        // Stay on join UI until the user submits a name.
+        _ = invite
     }
 
-    private func mutate(_ body: (GameState, PlayerIdentity) throws -> GameState) {
-        errorMessage = nil
-        guard let state, let identity else { return }
-        do {
-            let next = try body(state, identity)
-            self.state = next
-            transport.send(next, isNewGame: false)
-        } catch {
-            errorMessage = error.localizedDescription
+    private func disconnectSocket() {
+        socket?.disconnect()
+        socket = nil
+    }
+
+    private static func friendlyNetworkError(_ error: Error) -> String {
+        let ns = error as NSError
+        if ns.domain == NSURLErrorDomain, ns.code == NSURLErrorNotConnectedToInternet {
+            return "Local Network blocked. Open the Deuces app, allow Local Network, then retry in Messages."
         }
+        return error.localizedDescription
     }
 }
 
+/// One-shot Messages invite delivery. Never used for state sync.
 @MainActor
-public protocol GameTransport: AnyObject {
-    var onReceive: ((GameState) -> Void)? { get set }
-    var onNewGameInserted: (() -> Void)? { get set }
-    func send(_ state: GameState, isNewGame: Bool)
-}
-
-/// In-memory bus for host-app / unit testing without Messages.
-public final class LocalGameTransport: GameTransport {
-    public var onReceive: ((GameState) -> Void)?
-    public var onNewGameInserted: (() -> Void)?
-    private weak var peer: LocalGameTransport?
-    public private(set) var sent: [GameState] = []
-
-    public init() {}
-
-    public static func paired() -> (LocalGameTransport, LocalGameTransport) {
-        let a = LocalGameTransport()
-        let b = LocalGameTransport()
-        a.peer = b
-        b.peer = a
-        return (a, b)
-    }
-
-    public func send(_ state: GameState, isNewGame: Bool) {
-        sent.append(state)
-        peer?.onReceive?(state)
-        if isNewGame {
-            onNewGameInserted?()
-        }
-    }
-}
-
-/// Shared chat thread for `MessagesLikeTransport` pairs.
-public final class SimulatedMessageThread: @unchecked Sendable {
-    public struct Bubble {
-        public let url: URL
-        public let state: GameState
-    }
-
-    private let lock = NSLock()
-    private var _bubbles: [Bubble] = []
-
-    public init() {}
-
-    public var bubbles: [Bubble] {
-        lock.lock(); defer { lock.unlock() }
-        return _bubbles
-    }
-
-    public var latestBubbleURL: URL? {
-        lock.lock(); defer { lock.unlock() }
-        return _bubbles.last?.url
-    }
-
-    public func insert(_ state: GameState) throws -> URL {
-        let url = try GameStateCodec.makeURL(state: state)
-        lock.lock()
-        _bubbles.append(Bubble(url: url, state: state))
-        lock.unlock()
-        return url
-    }
-}
-
-/// Transport that mirrors Messages behavior for automated e2e tests:
-/// - new games become a tap-able bubble URL (no auto-open on either side)
-/// - updates only fan out to peers that already have that game open
-public final class MessagesLikeTransport: GameTransport {
-    public var onReceive: ((GameState) -> Void)?
-    public var onNewGameInserted: (() -> Void)?
-    public let thread: SimulatedMessageThread
-
-    private weak var peer: MessagesLikeTransport?
-    /// Controller using this transport (set by the test harness after construction).
-    public weak var controller: GameSessionController?
-
-    public init(thread: SimulatedMessageThread) {
-        self.thread = thread
-    }
-
-    public static func paired() -> (MessagesLikeTransport, MessagesLikeTransport) {
-        let thread = SimulatedMessageThread()
-        let a = MessagesLikeTransport(thread: thread)
-        let b = MessagesLikeTransport(thread: thread)
-        a.peer = b
-        b.peer = a
-        return (a, b)
-    }
-
-    public var latestBubbleURL: URL? { thread.latestBubbleURL }
-
-    public func send(_ state: GameState, isNewGame: Bool) {
-        do {
-            _ = try thread.insert(state)
-        } catch {
-            assertionFailure("Failed to encode bubble: \(error)")
-        }
-
-        if isNewGame {
-            onNewGameInserted?()
-        }
-
-        // Live updates only when the peer already has this game open
-        // (matches MessagesViewController.didReceive guard).
-        guard let peer,
-              let peerState = peer.controller?.state,
-              peerState.gameID == state.gameID else { return }
-        peer.onReceive?(state)
-    }
+public protocol InviteTransport: AnyObject {
+    func sendInvite(_ invite: GameInvite)
 }

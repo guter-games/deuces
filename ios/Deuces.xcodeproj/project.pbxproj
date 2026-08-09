@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		082CE90811295B8E967473D8 /* SeatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7302018673E1DFF42DFC487 /* SeatStore.swift */; };
+		0E015EBD8AC365F7E785FB1B /* InMemoryDeucesBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD345B5401EE45DE2959FA /* InMemoryDeucesBackend.swift */; };
 		179AAB289779A6B5A447482A /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */; };
+		1CD4F1B81D888CC69D79B395 /* ServerGameModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5B3481558F996B7500BC /* ServerGameModels.swift */; };
 		2988086F214FCDAAEF2E1FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15C74678CB19221BBE4655A /* Assets.xcassets */; };
 		2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */; };
 		2E32D98708852B4DA7655DA4 /* PlayerIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */; };
 		31EF5111672211B820AE853B /* JSParityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */; };
-		3713E007A5513F056147DB19 /* GameStateCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */; };
+		41695B8EC9D4AC0BEF5EE558 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 0251D4F1D41711FB3E16A7CB /* SocketIO */; };
 		4B066994F3BD2109D6F7887E /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9D892FE0322BAD0C98D67 /* CardView.swift */; };
 		4B121014C8F08C760E5BF5E4 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		4B53AE11E3B6C1BED69E33F2 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B7873F074C01EC1A70E974 /* Card.swift */; };
@@ -21,13 +24,18 @@
 		665AB2B8F4E6E97B22328D34 /* GameRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */; };
 		708A38925D132DD2825A7D1E /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124E0F8750F74ECA2EB6FA0 /* GameState.swift */; };
 		709795D1EF97474DA824A6AD /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B76FD218AF1F103530C141 /* EndToEndTests.swift */; };
+		72CB9C862A791838A4C7AD1C /* GameInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB1839309ECBD484A4BE2E /* GameInvite.swift */; };
+		740B2D4013C0A01B1DB23B19 /* DeucesBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE6783D9772B1C2F79D385 /* DeucesBackend.swift */; };
 		787AD27502835F9CD3B2C6D2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2680E35A6E0FD2864151739C /* MessagesViewController.swift */; };
-		789A50CC23C94240A2B6E5F6 /* GameBubbleCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */; };
 		813FB8CA427242EC77627303 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		8A7CD69C37919DF1238508B4 /* HandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D59761CEFF24D3180C20624 /* HandTests.swift */; };
+		8D3B0B5899AD001EADED6C00 /* LiveServerEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7634EC3EBAD3ADB4883886AF /* LiveServerEndToEndTests.swift */; };
+		8D5AD4D44C2FD2DF2D969E02 /* LanHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932557AC21297FD7D9218E16 /* LanHost.swift */; };
 		92B214C2D399BC0E3D5B4E1B /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		952AC962383393DACBAB15B8 /* HTTPDeucesBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95222ECDD2C9F2B2643F6D60 /* HTTPDeucesBackend.swift */; };
 		B4D930B66F601CCFCA7212C9 /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */; };
 		B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29885A03BD9B071F57B42B0E /* EngineTests.swift */; };
+		BD1104476F752DBF71425E20 /* ServerGameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */; };
 		C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16600B93EBEF694B68EEB395 /* Assets.xcassets */; };
 		CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */; };
 		CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */; };
@@ -36,6 +44,7 @@
 		D66E06B553FEEA5D3B93712C /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		DA9D80509170543BB91D0D8D /* DeucesMessages.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EC4357807AF4237F3CA4F971 /* DeucesEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */; };
+		FD3D26ED79A955DF86414F62 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,36 +126,53 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
+		089B5B3481558F996B7500BC /* ServerGameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerGameModels.swift; sourceTree = "<group>"; };
 		104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesEngine.swift; sourceTree = "<group>"; };
 		16600B93EBEF694B68EEB395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18D9D892FE0322BAD0C98D67 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		2680E35A6E0FD2864151739C /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		272EABF21D87C408EBE3849B /* CodecTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodecTests.swift; sourceTree = "<group>"; };
 		29885A03BD9B071F57B42B0E /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
-		3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateCodec.swift; sourceTree = "<group>"; };
+		3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerGameBoardView.swift; sourceTree = "<group>"; };
 		3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSParityTests.swift; sourceTree = "<group>"; };
 		40B7873F074C01EC1A70E974 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		41B76FD218AF1F103530C141 /* EndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndToEndTests.swift; sourceTree = "<group>"; };
 		4D59761CEFF24D3180C20624 /* HandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTests.swift; sourceTree = "<group>"; };
+		51CD345B5401EE45DE2959FA /* InMemoryDeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDeucesBackend.swift; sourceTree = "<group>"; };
 		547ABEF60AA001636426BFAB /* Hand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
 		5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerIdentity.swift; sourceTree = "<group>"; };
+		61FE6783D9772B1C2F79D385 /* DeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesBackend.swift; sourceTree = "<group>"; };
+		703BCF68A1614DCA6836DC32 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7124E0F8750F74ECA2EB6FA0 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		725F4E507718406E733026C9 /* DeucesCoreTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DeucesCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7634EC3EBAD3ADB4883886AF /* LiveServerEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveServerEndToEndTests.swift; sourceTree = "<group>"; };
 		77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesApp.swift; sourceTree = "<group>"; };
+		932557AC21297FD7D9218E16 /* LanHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanHost.swift; sourceTree = "<group>"; };
+		95222ECDD2C9F2B2643F6D60 /* HTTPDeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDeucesBackend.swift; sourceTree = "<group>"; };
 		A15C74678CB19221BBE4655A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1F9B46FC834E00BC5437A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLabel.swift; sourceTree = "<group>"; };
-		B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBubbleCopy.swift; sourceTree = "<group>"; };
 		C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DeucesMessages.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7250E23D52DB7D62B073348 /* Deuces.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Deuces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionControllerTests.swift; sourceTree = "<group>"; };
 		E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRootView.swift; sourceTree = "<group>"; };
+		E0FB1839309ECBD484A4BE2E /* GameInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInvite.swift; sourceTree = "<group>"; };
 		E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
+		E7302018673E1DFF42DFC487 /* SeatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatStore.swift; sourceTree = "<group>"; };
 		F3BDE40B023539339FD9D093 /* DeucesCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeucesCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2DA0FE4E18F4D091CE31F71F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41695B8EC9D4AC0BEF5EE558 /* SocketIO in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		58E5527C5CD11B0518E7E499 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -190,14 +216,21 @@
 				B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */,
 				40B7873F074C01EC1A70E974 /* Card.swift */,
 				18D9D892FE0322BAD0C98D67 /* CardView.swift */,
+				61FE6783D9772B1C2F79D385 /* DeucesBackend.swift */,
 				104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */,
-				B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */,
+				E0FB1839309ECBD484A4BE2E /* GameInvite.swift */,
 				E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */,
 				E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */,
 				7124E0F8750F74ECA2EB6FA0 /* GameState.swift */,
-				3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */,
 				547ABEF60AA001636426BFAB /* Hand.swift */,
+				95222ECDD2C9F2B2643F6D60 /* HTTPDeucesBackend.swift */,
+				51CD345B5401EE45DE2959FA /* InMemoryDeucesBackend.swift */,
+				932557AC21297FD7D9218E16 /* LanHost.swift */,
 				601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */,
+				E7302018673E1DFF42DFC487 /* SeatStore.swift */,
+				05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */,
+				3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */,
+				089B5B3481558F996B7500BC /* ServerGameModels.swift */,
 			);
 			path = DeucesCore;
 			sourceTree = "<group>";
@@ -218,6 +251,7 @@
 			children = (
 				16600B93EBEF694B68EEB395 /* Assets.xcassets */,
 				77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */,
+				703BCF68A1614DCA6836DC32 /* Info.plist */,
 			);
 			path = Deuces;
 			sourceTree = "<group>";
@@ -230,6 +264,7 @@
 				29885A03BD9B071F57B42B0E /* EngineTests.swift */,
 				4D59761CEFF24D3180C20624 /* HandTests.swift */,
 				3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */,
+				7634EC3EBAD3ADB4883886AF /* LiveServerEndToEndTests.swift */,
 				D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */,
 				5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */,
 			);
@@ -255,6 +290,7 @@
 			buildConfigurationList = 5988C5282FE142C1821E5B8D /* Build configuration list for PBXNativeTarget "DeucesCore" */;
 			buildPhases = (
 				4243BDD96EB4C7E77D19E07B /* Sources */,
+				2DA0FE4E18F4D091CE31F71F /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -262,6 +298,7 @@
 			);
 			name = DeucesCore;
 			packageProductDependencies = (
+				0251D4F1D41711FB3E16A7CB /* SocketIO */,
 			);
 			productName = DeucesCore;
 			productReference = F3BDE40B023539339FD9D093 /* DeucesCore.framework */;
@@ -367,6 +404,9 @@
 			);
 			mainGroup = 7EB8B2B65BF704A5B9302CF2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				383BF4D77EBA80079D92911C /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9BD3105F8F06B1D6E024E4B2 /* Products */;
 			projectDirPath = "";
@@ -415,14 +455,21 @@
 				CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */,
 				4B53AE11E3B6C1BED69E33F2 /* Card.swift in Sources */,
 				4B066994F3BD2109D6F7887E /* CardView.swift in Sources */,
+				740B2D4013C0A01B1DB23B19 /* DeucesBackend.swift in Sources */,
 				EC4357807AF4237F3CA4F971 /* DeucesEngine.swift in Sources */,
-				789A50CC23C94240A2B6E5F6 /* GameBubbleCopy.swift in Sources */,
+				72CB9C862A791838A4C7AD1C /* GameInvite.swift in Sources */,
 				665AB2B8F4E6E97B22328D34 /* GameRootView.swift in Sources */,
 				B4D930B66F601CCFCA7212C9 /* GameSessionController.swift in Sources */,
 				708A38925D132DD2825A7D1E /* GameState.swift in Sources */,
-				3713E007A5513F056147DB19 /* GameStateCodec.swift in Sources */,
+				952AC962383393DACBAB15B8 /* HTTPDeucesBackend.swift in Sources */,
 				D289AED85A0A2A5518492DA2 /* Hand.swift in Sources */,
+				0E015EBD8AC365F7E785FB1B /* InMemoryDeucesBackend.swift in Sources */,
+				8D5AD4D44C2FD2DF2D969E02 /* LanHost.swift in Sources */,
 				2E32D98708852B4DA7655DA4 /* PlayerIdentity.swift in Sources */,
+				082CE90811295B8E967473D8 /* SeatStore.swift in Sources */,
+				FD3D26ED79A955DF86414F62 /* ServerConfig.swift in Sources */,
+				BD1104476F752DBF71425E20 /* ServerGameBoardView.swift in Sources */,
+				1CD4F1B81D888CC69D79B395 /* ServerGameModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +482,7 @@
 				B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */,
 				8A7CD69C37919DF1238508B4 /* HandTests.swift in Sources */,
 				31EF5111672211B820AE853B /* JSParityTests.swift in Sources */,
+				8D3B0B5899AD001EADED6C00 /* LiveServerEndToEndTests.swift in Sources */,
 				CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */,
 				179AAB289779A6B5A447482A /* TestSupport.swift in Sources */,
 			);
@@ -565,11 +613,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Deuces;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Deuces/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -729,11 +774,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Deuces;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Deuces/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -810,6 +852,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		383BF4D77EBA80079D92911C /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0251D4F1D41711FB3E16A7CB /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 383BF4D77EBA80079D92911C /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
 }

@@ -19,7 +19,8 @@ const port = 3012;
 	app.use(cors());
 
 	const server = http.createServer(app);
-	server.listen(port);
+	// Bind all interfaces so phones/iPads on LAN can reach us (not just localhost).
+	server.listen(port, '0.0.0.0');
 
 	// Setup the lobby route
 	app.post('/create_game', onCreateGame);
@@ -28,7 +29,7 @@ const port = 3012;
 	io.on('connection', onClientConnect);
 
 	// Send status message
-	console.log(`Server started on port ${port}`);
+	console.log(`Server started on 0.0.0.0:${port} (LAN clients: http://<this-machine-ip>:${port})`);
 })();
 
 function getNextGameID() {

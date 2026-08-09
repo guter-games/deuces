@@ -2,7 +2,12 @@ import Foundation
 
 public enum ActivityLabel {
     /// Human-readable last-active label, e.g. "active just now", "2m ago".
-    public static func format(lastActiveAt: Date?, now: Date = Date()) -> String {
+    public static func format(
+        lastActiveAt: Date?,
+        claimed: Bool = true,
+        now: Date = Date()
+    ) -> String {
+        guard claimed else { return "waiting to join" }
         guard let lastActiveAt else { return "not yet active" }
         let seconds = max(0, Int(now.timeIntervalSince(lastActiveAt)))
 

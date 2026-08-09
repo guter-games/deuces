@@ -15,12 +15,19 @@ settings:
     CODE_SIGN_STYLE: Automatic
     # Xcode's debug dylib stub breaks Messages extensions on iPadOS 16.
     ENABLE_DEBUG_DYLIB: NO
+packages:
+  SocketIO:
+    url: https://github.com/socketio/socket.io-client-swift
+    from: "16.0.0"
 targets:
   DeucesCore:
     type: framework
     platform: iOS
     sources:
       - DeucesCore
+    dependencies:
+      - package: SocketIO
+        product: SocketIO
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.DeucesCore
@@ -50,14 +57,22 @@ targets:
       - target: DeucesCore
       - target: DeucesMessages
         embed: true
+    info:
+      path: Deuces/Info.plist
+      properties:
+        CFBundleDisplayName: Deuces
+        UILaunchScreen: {}
+        # Local-network privacy prompt is owned by the containing app.
+        NSLocalNetworkUsageDescription: Deuces connects to a game server on your local network.
+        NSBonjourServices:
+          - _http._tcp
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+          NSAllowsLocalNetworking: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.Deuces
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Deuces
-        INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
   DeucesMessages:
@@ -66,8 +81,6 @@ targets:
     sources:
       - DeucesMessages
     dependencies:
-      # Embed into the appex — iPadOS 16 Messages often cannot load frameworks
-      # only from the host app's Frameworks folder.
       - target: DeucesCore
         embed: true
         codeSign: true
@@ -80,6 +93,13 @@ targets:
         NSExtension:
           NSExtensionPointIdentifier: com.apple.message-payload-provider
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MessagesViewController
+        NSLocalNetworkUsageDescription: Deuces connects to a game server on your local network.
+        NSBonjourServices:
+          - _http._tcp
+        # Cleartext http://LAN-IP must be allowed; plain NSAllowsArbitraryLoads=false blocks it.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+          NSAllowsLocalNetworking: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.Deuces.messages

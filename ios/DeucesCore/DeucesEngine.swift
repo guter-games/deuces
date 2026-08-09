@@ -115,9 +115,11 @@ public enum DeucesEngine {
         next.players[seat].claimed = true
         next.players[seat].lastActiveAt = now
 
-        // Before anyone has played, recompute who starts among claimed seats.
-        if next.ply == 0, next.allSeatsClaimed {
+        // Before anyone has played, starter is the claimed seat with the lowest card.
+        if next.ply == 0 {
             next.turn = playerIndexWithMinCard(next.players, claimedOnly: true) ?? seat
+        } else if !next.players[next.turn].claimed {
+            next.turn = advanceTurn(after: next.turn, players: next.players)
         }
 
         next.revision += 1
@@ -133,7 +135,6 @@ public enum DeucesEngine {
         let state = normalized(state)
         guard state.phase != .finished else { throw DeucesError.gameFinished }
         guard state.phase == .playing else { throw DeucesError.gameNotPlaying }
-        guard state.allSeatsClaimed else { throw DeucesError.waitingForPlayers }
         guard let playerIndex = state.playerIndex(for: playerID) else {
             throw DeucesError.seatUnavailable
         }
@@ -160,7 +161,7 @@ public enum DeucesEngine {
             next.phase = .finished
             next.winnerName = next.players[playerIndex].displayName
         } else {
-            next.turn = advanceTurn(after: playerIndex, playerCount: next.players.count)
+            next.turn = advanceTurn(after: playerIndex, players: next.players)
         }
 
         next.revision += 1
@@ -176,7 +177,6 @@ public enum DeucesEngine {
         let state = normalized(state)
         guard state.phase != .finished else { throw DeucesError.gameFinished }
         guard state.phase == .playing else { throw DeucesError.gameNotPlaying }
-        guard state.allSeatsClaimed else { throw DeucesError.waitingForPlayers }
         guard let playerIndex = state.playerIndex(for: playerID) else {
             throw DeucesError.seatUnavailable
         }
@@ -192,7 +192,7 @@ public enum DeucesEngine {
             next.passes = 0
         }
 
-        next.turn = advanceTurn(after: playerIndex, playerCount: next.players.count)
+        next.turn = advanceTurn(after: playerIndex, players: next.players)
 
         if let card = popRandom(from: &next.pool, rng: &rng) {
             next.players[playerIndex].hand.append(card)
@@ -212,10 +212,103 @@ public enum DeucesEngine {
         return try pass(state: state, playerID: playerID, now: now, rng: &rng)
     }
 
-    /// Accept a remote snapshot if it is strictly newer.
+    /// Merge two snapshots of the same game.
+    ///
+    /// Higher revision wins when it already contains the other side's claimed seats.
+    /// Concurrent joins (same revision, different claimants) are reconciled so both
+    /// devices converge to every claimed player instead of staying stuck at 1/N.
     public static func mergeRemote(local: GameState, remote: GameState) -> GameState {
         guard remote.gameID == local.gameID else { return local }
-        return remote.revision > local.revision ? remote : local
+
+        let localClaims = claimedIDs(local)
+        let remoteClaims = claimedIDs(remote)
+
+        if localClaims == remoteClaims {
+            if remote.revision != local.revision {
+                return remote.revision > local.revision ? remote : local
+            }
+            // Same claims + revision: prefer the side that has progressed further in play.
+            if remote.ply != local.ply { return remote.ply > local.ply ? remote : local }
+            return remote
+        }
+
+        if remote.revision > local.revision, remoteClaims.isSuperset(of: localClaims) {
+            return remote
+        }
+        if local.revision > remote.revision, localClaims.isSuperset(of: remoteClaims) {
+            return local
+        }
+
+        return reconcileClaims(local: local, remote: remote)
+    }
+
+    private static func claimedIDs(_ state: GameState) -> Set<UUID> {
+        Set(state.players.filter(\.claimed).map(\.id))
+    }
+
+    /// Union claimed players from both sides onto a shared board snapshot.
+    private static func reconcileClaims(local: GameState, remote: GameState) -> GameState {
+        var next: GameState
+        if remote.ply != local.ply {
+            next = remote.ply > local.ply ? remote : local
+        } else if remote.revision != local.revision {
+            next = remote.revision > local.revision ? remote : local
+        } else {
+            next = remote
+        }
+
+        struct Claim {
+            var id: UUID
+            var displayName: String
+            var lastActiveAt: Date?
+        }
+
+        var claims: [UUID: Claim] = [:]
+        for source in [local, remote] {
+            for player in source.players where player.claimed {
+                if let existing = claims[player.id] {
+                    let existingTime = existing.lastActiveAt ?? .distantPast
+                    let newTime = player.lastActiveAt ?? .distantPast
+                    if newTime >= existingTime {
+                        claims[player.id] = Claim(
+                            id: player.id,
+                            displayName: player.displayName.isEmpty ? existing.displayName : player.displayName,
+                            lastActiveAt: player.lastActiveAt ?? existing.lastActiveAt
+                        )
+                    }
+                } else {
+                    claims[player.id] = Claim(
+                        id: player.id,
+                        displayName: player.displayName,
+                        lastActiveAt: player.lastActiveAt
+                    )
+                }
+            }
+        }
+
+        // Keep dealt hands/pool from the gameplay base; reassign claims deterministically.
+        for index in next.players.indices {
+            next.players[index].claimed = false
+            next.players[index].displayName = ""
+            next.players[index].lastActiveAt = nil
+            next.players[index].id = UUID()
+        }
+
+        let ordered = claims.values.sorted { $0.id.uuidString < $1.id.uuidString }
+        for (seat, claim) in ordered.enumerated() where seat < next.players.count {
+            next.players[seat].id = claim.id
+            next.players[seat].displayName = claim.displayName
+            next.players[seat].claimed = true
+            next.players[seat].lastActiveAt = claim.lastActiveAt
+        }
+
+        next.revision = max(local.revision, remote.revision) + 1
+        if next.ply == 0 {
+            next.turn = playerIndexWithMinCard(next.players, claimedOnly: true) ?? next.turn
+        } else if next.players.indices.contains(next.turn), !next.players[next.turn].claimed {
+            next.turn = advanceTurn(after: next.turn, players: next.players)
+        }
+        return next
     }
 
     public static func validatePlay(
@@ -306,8 +399,18 @@ public enum DeucesEngine {
         return pool.remove(at: index)
     }
 
-    /// Always advance to the next seat index (do not skip). Skipping claimed-only
-    /// seats made solo-joined hosts keep the turn forever.
+    /// Advance to the next claimed seat so play can continue before every seat is filled.
+    public static func advanceTurn(after index: Int, players: [PlayerState]) -> Int {
+        let count = players.count
+        guard count > 0 else { return 0 }
+        var next = index
+        for _ in 0..<count {
+            next = (next + 1) % count
+            if players[next].claimed { return next }
+        }
+        return (index + 1) % count
+    }
+
     public static func advanceTurn(after index: Int, playerCount: Int) -> Int {
         guard playerCount > 0 else { return 0 }
         return (index + 1) % playerCount
@@ -334,7 +437,7 @@ public enum DeucesEngine {
                 numCards: player.hand.count,
                 lastActiveAt: player.lastActiveAt,
                 claimed: player.claimed,
-                isTheirTurn: index == state.turn
+                isTheirTurn: index == state.turn && player.claimed
             )
         }
 
@@ -342,7 +445,7 @@ public enum DeucesEngine {
             state: state,
             me: me,
             others: others,
-            isMyTurn: myIndex == state.turn && state.phase == .playing && state.allSeatsClaimed,
+            isMyTurn: myIndex == state.turn && state.phase == .playing,
             localPlayerIndex: myIndex
         )
     }

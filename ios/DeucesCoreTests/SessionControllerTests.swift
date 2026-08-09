@@ -3,44 +3,37 @@ import XCTest
 
 @MainActor
 final class SessionControllerTests: XCTestCase {
-    func testLocalTransportSyncsJoinAndPlay() async throws {
-        let (leftTransport, rightTransport) = LocalGameTransport.paired()
-
+    func testInMemoryBackendCreateJoinPlay() async {
+        let backend = InMemoryDeucesBackend()
         let left = GameSessionController(
-            transport: leftTransport,
-            identityStore: InMemoryIdentityStore(),
-            membershipStore: TestSupport.ephemeralMembershipStore()
+            backend: backend,
+            seatStore: InMemorySeatStore(),
+            identityStore: InMemoryIdentityStore()
         )
         let right = GameSessionController(
-            transport: rightTransport,
-            identityStore: InMemoryIdentityStore(),
-            membershipStore: TestSupport.ephemeralMembershipStore()
+            backend: backend,
+            seatStore: InMemorySeatStore(),
+            identityStore: InMemoryIdentityStore()
         )
 
         left.createGame(numPlayers: 2, openLocally: true)
-        await TestSupport.waitUntil { right.state?.gameID == left.state?.gameID }
+        await TestSupport.waitUntil { left.invite != nil }
+        let invite = left.invite!
+        await right.openInvite(invite)
 
-        left.setDisplayName("Andrew")
+        left.setDisplayName("A")
         left.joinIfNeeded()
-        await TestSupport.waitUntil { right.state?.players.filter(\.claimed).count == 1 }
+        await TestSupport.waitUntil { left.update?.me != nil }
 
-        right.setDisplayName("Sarah")
+        right.setDisplayName("B")
         right.joinIfNeeded()
-        await TestSupport.waitUntil {
-            left.state?.allSeatsClaimed == true && right.state?.allSeatsClaimed == true
-        }
+        await TestSupport.waitUntil { right.update?.me != nil && left.update?.others.contains(where: { $0.name == "B" }) == true }
 
-        let beforeTurn = left.state!.turn
-        let turnID = left.state!.players[beforeTurn].id
-        let actor = turnID == left.identity!.id ? left : right
-        let lowest = actor.state!.players[beforeTurn].hand.min()!
+        let actor = left.update?.me?.isMyTurn == true ? left : right
+        let lowest = actor.update!.me!.cards.min()!
         actor.play(cards: [lowest])
-
-        await TestSupport.waitUntil {
-            left.state?.ply == 1
-                && right.state?.ply == 1
-                && left.state?.turn == (beforeTurn + 1) % 2
-        }
-        XCTAssertEqual(left.state?.run.last, [lowest])
+        await TestSupport.waitUntil { left.update?.run.isEmpty == false }
+        XCTAssertEqual(left.update?.run.last, [lowest])
+        XCTAssertEqual(right.update?.run.last, [lowest])
     }
 }
