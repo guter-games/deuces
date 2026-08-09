@@ -381,19 +381,19 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					2B7D869DB90BC3209A210510 = {
-						DevelopmentTeam = RTM66M557M;
+						DevelopmentTeam = U253FJED45;
 						ProvisioningStyle = Automatic;
 					};
 					7495EDF31DF2E19A881B0D61 = {
-						DevelopmentTeam = RTM66M557M;
+						DevelopmentTeam = U253FJED45;
 						ProvisioningStyle = Automatic;
 					};
 					C7275F5F427E500C6DBD5C7F = {
-						DevelopmentTeam = RTM66M557M;
+						DevelopmentTeam = U253FJED45;
 						ProvisioningStyle = Automatic;
 					};
 					E79767524DF4068DFF925CDC = {
-						DevelopmentTeam = RTM66M557M;
+						DevelopmentTeam = U253FJED45;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -563,7 +563,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = RTM66M557M;
+				DEVELOPMENT_TEAM = U253FJED45;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -605,7 +605,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.messages;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -714,7 +714,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = RTM66M557M;
+				DEVELOPMENT_TEAM = U253FJED45;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -766,7 +766,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.messages;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

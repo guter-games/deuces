@@ -6,19 +6,20 @@ Use these values in App Store Connect. Privacy Policy URL is live once Render re
 
 | Item | Value |
 |------|-------|
+| Team | Plant Chess Studios, LLC (`U253FJED45`) |
 | Bundle ID (host) | `com.deuces.deuces` |
-| Bundle ID (Messages extension) | `com.deuces.deuces.messages` |
+| Bundle ID (Messages extension) | `com.deuces.deuces.imessage` |
 | SKU | `deuces-imessage` |
 | Primary language | English (U.S.) |
 | Category | Games → Card |
 | Secondary | Games → Board |
 
-**Yes, you need two App IDs:** Apple requires a containing iOS app plus a Messages extension. Create both under the **same** team used for signing (`DEVELOPMENT_TEAM` in `ios/project.yml`, currently `RTM66M557M`):
+**Yes, you need two App IDs** under Plant Chess Studios:
 
-1. `com.deuces.deuces` — host app  
-2. `com.deuces.deuces.messages` — Messages extension (must be a child of the host id)
+1. `com.deuces.deuces` — host app (you already created this)  
+2. `com.deuces.deuces.imessage` — Messages extension (child of the host id)
 
-If Xcode says the host id “cannot be registered / is not available”, it was created under a different Apple team (or taken). Either switch Xcode/Accounts to the team that owns `com.deuces.deuces`, or update `DEVELOPMENT_TEAM` in `project.yml` to that team’s 10-character Team ID.
+`com.deuces.deuces.messages` is **already taken** (Apple IDs are global). Use `.imessage` instead — App Store Connect only cares that the extension id is prefixed by the host id.
 
 ## Listing copy
 
