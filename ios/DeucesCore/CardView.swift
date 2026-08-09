@@ -1,5 +1,10 @@
 import SwiftUI
 
+public enum CardChrome {
+    /// Vertical lift for selected cards; parent layouts must reserve this space.
+    public static let selectionLift: CGFloat = 12
+}
+
 public struct CardView: View {
     public let card: Card?
     public var selected: Bool = false
@@ -44,7 +49,99 @@ public struct CardView: View {
             RoundedRectangle(cornerRadius: width * 0.12, style: .continuous)
                 .stroke(selected ? Color.orange : Color.black.opacity(0.12), lineWidth: selected ? 3 : 1)
         )
-        .offset(y: selected ? -10 : 0)
+        .offset(y: selected ? -CardChrome.selectionLift : 0)
+    }
+}
+
+/// Wraps cards into as many rows as needed so the full hand stays on-screen.
+public struct WrappingCardHand: View {
+    public let cards: [Card]
+    public var selected: Set<Card>
+    public var cardWidth: CGFloat
+    public var spacing: CGFloat = 6
+    public var rowSpacing: CGFloat = 8
+    public var onToggle: (Card) -> Void
+
+    public init(
+        cards: [Card],
+        selected: Set<Card>,
+        cardWidth: CGFloat,
+        spacing: CGFloat = 6,
+        rowSpacing: CGFloat = 8,
+        onToggle: @escaping (Card) -> Void
+    ) {
+        self.cards = cards
+        self.selected = selected
+        self.cardWidth = cardWidth
+        self.spacing = spacing
+        self.rowSpacing = rowSpacing
+        self.onToggle = onToggle
+    }
+
+    public var body: some View {
+        let sorted = cards.sorted()
+        FlowLayout(spacing: spacing, rowSpacing: rowSpacing) {
+            ForEach(sorted, id: \.self) { card in
+                Button {
+                    onToggle(card)
+                } label: {
+                    CardView(
+                        card: card,
+                        selected: selected.contains(card),
+                        width: cardWidth
+                    )
+                }
+                .buttonStyle(.plain)
+                // Reserve lift space so raised cards are not clipped by the row.
+                .padding(.top, CardChrome.selectionLift)
+            }
+        }
+    }
+}
+
+/// Simple left-to-right wrapping layout (iOS 16+).
+struct FlowLayout: Layout {
+    var spacing: CGFloat
+    var rowSpacing: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        arrange(proposal: proposal, subviews: subviews).size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = arrange(proposal: proposal, subviews: subviews)
+        for (index, origin) in result.origins.enumerated() {
+            subviews[index].place(
+                at: CGPoint(x: bounds.minX + origin.x, y: bounds.minY + origin.y),
+                proposal: .unspecified
+            )
+        }
+    }
+
+    private func arrange(proposal: ProposedViewSize, subviews: Subviews) -> (size: CGSize, origins: [CGPoint]) {
+        let maxWidth = proposal.width ?? .infinity
+        var origins: [CGPoint] = []
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        var widthUsed: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > 0, x + size.width > maxWidth {
+                x = 0
+                y += rowHeight + rowSpacing
+                rowHeight = 0
+            }
+            origins.append(CGPoint(x: x, y: y))
+            rowHeight = max(rowHeight, size.height)
+            x += size.width + spacing
+            widthUsed = max(widthUsed, x - spacing)
+        }
+
+        let height = subviews.isEmpty ? 0 : y + rowHeight
+        let width = maxWidth.isFinite ? maxWidth : widthUsed
+        return (CGSize(width: width, height: height), origins)
     }
 }
 

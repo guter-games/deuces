@@ -14,7 +14,9 @@ final class EngineTests: XCTestCase {
         var rng1 = LCG(seed: 1)
         let one = DeucesEngine.createGame(numPlayers: 1, rng: &rng1)
         XCTAssertEqual(one.players.count, 1)
-        XCTAssertEqual(one.players[0].hand.count, 17)
+        XCTAssertEqual(one.players[0].hand.count, 4)
+        XCTAssertEqual(one.pool.count, 0)
+        XCTAssertEqual(Set(one.players[0].hand), Set(DeucesEngine.soloPracticeDeck))
         XCTAssertEqual(one.phase, .playing)
 
         var rng3 = LCG(seed: 7)

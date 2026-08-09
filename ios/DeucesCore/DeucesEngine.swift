@@ -41,8 +41,17 @@ public enum DeucesEngine {
     public static let allowedPlayerCounts = 1...4
 
     public static func cardsToDeal(numPlayers: Int) -> Int {
-        numPlayers == 4 ? 13 : 17
+        if numPlayers == 1 { return 4 }
+        return numPlayers == 4 ? 13 : 17
     }
+
+    /// Fixed 4-card deck for 1-player practice: 3♠, 2♦, J♥, J♣.
+    public static let soloPracticeDeck: [Card] = [
+        Card(suit: .spades, rank: .three),
+        Card(suit: .diamonds, rank: .two),
+        Card(suit: .hearts, rank: .jack),
+        Card(suit: .clubs, rank: .jack),
+    ]
 
     /// Create a new game with all seats open. Everyone (including the sender) claims a
     /// seat the same way — by opening the bubble and joining with a name.
@@ -54,8 +63,13 @@ public enum DeucesEngine {
         precondition(allowedPlayerCounts.contains(numPlayers))
 
         var players = (0..<numPlayers).map { _ in PlayerState() }
-        var pool = fullDeck()
-        pool.shuffle(using: &rng)
+        var pool: [Card]
+        if numPlayers == 1 {
+            pool = soloPracticeDeck
+        } else {
+            pool = fullDeck()
+            pool.shuffle(using: &rng)
+        }
 
         let dealCount = cardsToDeal(numPlayers: numPlayers)
         for playerIndex in 0..<numPlayers {

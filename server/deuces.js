@@ -11,7 +11,18 @@ const GameState = {
 
 // Number of cards players are dealt at the start
 function numCardsToDeal(numPlayers) {
+	if (numPlayers === 1) return 4;
 	return (numPlayers === 4) ? 13 : 17;
+}
+
+// Solo practice deck: fixed 4 cards for 1-player games.
+function soloPracticeDeck() {
+	return [
+		new Card('S', '3'),
+		new Card('D', '2'),
+		new Card('H', 'J'),
+		new Card('C', 'J'),
+	];
 }
 
 class Deuces {
@@ -47,12 +58,16 @@ class Deuces {
 		// Reset the game state
 		this.resetGame();
 
-		// Put all 52 cards into the pool
-		Card.Suits.forEach(suit => {
-			Card.Ranks.forEach(rank => {
-				this.pool.push(new Card(suit, rank));
+		if (this.players.length === 1) {
+			this.pool = soloPracticeDeck();
+		} else {
+			// Put all 52 cards into the pool
+			Card.Suits.forEach(suit => {
+				Card.Ranks.forEach(rank => {
+					this.pool.push(new Card(suit, rank));
+				});
 			});
-		});
+		}
 
 		// Deal cards to each player
 		this.players.forEach((player, playerIdx) => {

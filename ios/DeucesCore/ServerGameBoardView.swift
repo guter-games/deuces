@@ -140,29 +140,21 @@ public struct ServerGameBoardView: View {
     private func meSection(compact: Bool) -> some View {
         Group {
             if let me = update.me {
+                let cardWidth: CGFloat = compact
+                    ? (me.cards.count > 10 ? 34 : 40)
+                    : (me.cards.count > 13 ? 40 : 48)
                 VStack(spacing: compact ? 6 : 8) {
                     Text("\(me.name ?? "You") (you, \(me.cards.count) cards)")
                         .font(compact ? .caption.weight(.semibold) : .subheadline.weight(.semibold))
                         .foregroundColor(me.isMyTurn ? .orange : .white)
 
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 6) {
-                            ForEach(me.cards.sorted(), id: \.self) { card in
-                                Button {
-                                    onToggleCard(card)
-                                } label: {
-                                    CardView(
-                                        card: card,
-                                        selected: selected.contains(card),
-                                        width: compact ? 40 : 48
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                    .frame(height: (compact ? 40 : 48) * 1.4 + 16)
+                    WrappingCardHand(
+                        cards: me.cards,
+                        selected: selected,
+                        cardWidth: cardWidth,
+                        onToggle: onToggleCard
+                    )
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     if me.isMyTurn && update.phase != .finished {
                         HStack(spacing: 10) {
@@ -174,6 +166,17 @@ public struct ServerGameBoardView: View {
                         }
                     }
                 }
+                .padding(8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.black.opacity(me.isMyTurn ? 0.32 : 0.12))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(me.isMyTurn ? Color.orange : Color.clear, lineWidth: 2.5)
+                )
+                .animation(.easeInOut(duration: 0.2), value: me.isMyTurn)
             }
         }
     }
