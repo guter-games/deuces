@@ -1,0 +1,108 @@
+name: Deuces
+options:
+  bundleIdPrefix: com.andrewdeuces
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: "1.0.0"
+    DEVELOPMENT_TEAM: RTM66M557M
+    CODE_SIGN_STYLE: Automatic
+    # Xcode's debug dylib stub breaks Messages extensions on iPadOS 16.
+    ENABLE_DEBUG_DYLIB: NO
+targets:
+  DeucesCore:
+    type: framework
+    platform: iOS
+    sources:
+      - DeucesCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.DeucesCore
+        GENERATE_INFOPLIST_FILE: YES
+        DEFINES_MODULE: YES
+        APPLICATION_EXTENSION_API_ONLY: YES
+
+  DeucesCoreTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - DeucesCoreTests
+    dependencies:
+      - target: DeucesCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.DeucesCoreTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: ""
+
+  Deuces:
+    type: application
+    platform: iOS
+    sources:
+      - Deuces
+    dependencies:
+      - target: DeucesCore
+      - target: DeucesMessages
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.Deuces
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Deuces
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+  DeucesMessages:
+    type: app-extension
+    platform: iOS
+    sources:
+      - DeucesMessages
+    dependencies:
+      # Embed into the appex — iPadOS 16 Messages often cannot load frameworks
+      # only from the host app's Frameworks folder.
+      - target: DeucesCore
+        embed: true
+        codeSign: true
+    info:
+      path: DeucesMessages/Info.plist
+      properties:
+        CFBundleDisplayName: Deuces
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.message-payload-provider
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MessagesViewController
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andrewdeuces.Deuces.messages
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/Frameworks"
+          - "@executable_path/../../Frameworks"
+schemes:
+  Deuces:
+    build:
+      targets:
+        Deuces: all
+        DeucesCore: all
+        DeucesMessages: all
+    test:
+      targets:
+        - DeucesCoreTests
+  DeucesCore:
+    build:
+      targets:
+        DeucesCore: all
+    test:
+      targets:
+        - DeucesCoreTests

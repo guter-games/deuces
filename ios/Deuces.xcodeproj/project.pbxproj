@@ -1,0 +1,815 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		179AAB289779A6B5A447482A /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */; };
+		2988086F214FCDAAEF2E1FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15C74678CB19221BBE4655A /* Assets.xcassets */; };
+		2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */; };
+		2E32D98708852B4DA7655DA4 /* PlayerIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */; };
+		31EF5111672211B820AE853B /* JSParityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */; };
+		3713E007A5513F056147DB19 /* GameStateCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */; };
+		4B066994F3BD2109D6F7887E /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9D892FE0322BAD0C98D67 /* CardView.swift */; };
+		4B121014C8F08C760E5BF5E4 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
+		4B53AE11E3B6C1BED69E33F2 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B7873F074C01EC1A70E974 /* Card.swift */; };
+		58C3A2A4D60EC13DCFA56013 /* CodecTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272EABF21D87C408EBE3849B /* CodecTests.swift */; };
+		6515BE6B175AB9DA4491EC29 /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		665AB2B8F4E6E97B22328D34 /* GameRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */; };
+		708A38925D132DD2825A7D1E /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124E0F8750F74ECA2EB6FA0 /* GameState.swift */; };
+		709795D1EF97474DA824A6AD /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B76FD218AF1F103530C141 /* EndToEndTests.swift */; };
+		787AD27502835F9CD3B2C6D2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2680E35A6E0FD2864151739C /* MessagesViewController.swift */; };
+		789A50CC23C94240A2B6E5F6 /* GameBubbleCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */; };
+		813FB8CA427242EC77627303 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
+		8A7CD69C37919DF1238508B4 /* HandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D59761CEFF24D3180C20624 /* HandTests.swift */; };
+		92B214C2D399BC0E3D5B4E1B /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B4D930B66F601CCFCA7212C9 /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */; };
+		B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29885A03BD9B071F57B42B0E /* EngineTests.swift */; };
+		C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16600B93EBEF694B68EEB395 /* Assets.xcassets */; };
+		CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */; };
+		CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */; };
+		CFE9249752807E4C7C242C0C /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D289AED85A0A2A5518492DA2 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547ABEF60AA001636426BFAB /* Hand.swift */; };
+		D66E06B553FEEA5D3B93712C /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
+		DA9D80509170543BB91D0D8D /* DeucesMessages.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EC4357807AF4237F3CA4F971 /* DeucesEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D599868CD26BA91D25FA76D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B7D869DB90BC3209A210510;
+			remoteInfo = DeucesCore;
+		};
+		38ED6D6C0367A4050466B53D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B7D869DB90BC3209A210510;
+			remoteInfo = DeucesCore;
+		};
+		52E310281FC10AD2836D577D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B7D869DB90BC3209A210510;
+			remoteInfo = DeucesCore;
+		};
+		619C16695E9C89328B75E0C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7275F5F427E500C6DBD5C7F;
+			remoteInfo = DeucesMessages;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8D606ECCFBBDCBDB63CCE223 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6515BE6B175AB9DA4491EC29 /* DeucesCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A27C57D946FC3EB554155A6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CFE9249752807E4C7C242C0C /* DeucesCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE4CCA3814F9A231EEF71D2C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				92B214C2D399BC0E3D5B4E1B /* DeucesCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D05241555B1B955846030861 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DA9D80509170543BB91D0D8D /* DeucesMessages.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesEngine.swift; sourceTree = "<group>"; };
+		16600B93EBEF694B68EEB395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		18D9D892FE0322BAD0C98D67 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		2680E35A6E0FD2864151739C /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		272EABF21D87C408EBE3849B /* CodecTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodecTests.swift; sourceTree = "<group>"; };
+		29885A03BD9B071F57B42B0E /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
+		3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateCodec.swift; sourceTree = "<group>"; };
+		3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSParityTests.swift; sourceTree = "<group>"; };
+		40B7873F074C01EC1A70E974 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		41B76FD218AF1F103530C141 /* EndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndToEndTests.swift; sourceTree = "<group>"; };
+		4D59761CEFF24D3180C20624 /* HandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTests.swift; sourceTree = "<group>"; };
+		547ABEF60AA001636426BFAB /* Hand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
+		5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
+		601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerIdentity.swift; sourceTree = "<group>"; };
+		7124E0F8750F74ECA2EB6FA0 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		725F4E507718406E733026C9 /* DeucesCoreTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DeucesCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesApp.swift; sourceTree = "<group>"; };
+		A15C74678CB19221BBE4655A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1F9B46FC834E00BC5437A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLabel.swift; sourceTree = "<group>"; };
+		B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBubbleCopy.swift; sourceTree = "<group>"; };
+		C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DeucesMessages.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7250E23D52DB7D62B073348 /* Deuces.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Deuces.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionControllerTests.swift; sourceTree = "<group>"; };
+		E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRootView.swift; sourceTree = "<group>"; };
+		E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
+		F3BDE40B023539339FD9D093 /* DeucesCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeucesCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		58E5527C5CD11B0518E7E499 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				813FB8CA427242EC77627303 /* DeucesCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E717C1429FA5F9DA99E1BE2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B121014C8F08C760E5BF5E4 /* DeucesCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F83037933BE0F54B05D566E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D66E06B553FEEA5D3B93712C /* DeucesCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0236B93CF505120A2E3E371F /* DeucesMessages */ = {
+			isa = PBXGroup;
+			children = (
+				A15C74678CB19221BBE4655A /* Assets.xcassets */,
+				A1F9B46FC834E00BC5437A3A /* Info.plist */,
+				2680E35A6E0FD2864151739C /* MessagesViewController.swift */,
+			);
+			path = DeucesMessages;
+			sourceTree = "<group>";
+		};
+		65CC65A66D7AB1EEB10D0A99 /* DeucesCore */ = {
+			isa = PBXGroup;
+			children = (
+				B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */,
+				40B7873F074C01EC1A70E974 /* Card.swift */,
+				18D9D892FE0322BAD0C98D67 /* CardView.swift */,
+				104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */,
+				B8C5EE28319FFD0D2A508D34 /* GameBubbleCopy.swift */,
+				E0A11E3B9A12DFDBCCC01F70 /* GameRootView.swift */,
+				E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */,
+				7124E0F8750F74ECA2EB6FA0 /* GameState.swift */,
+				3E12391DEDFBD1CF6CB33A36 /* GameStateCodec.swift */,
+				547ABEF60AA001636426BFAB /* Hand.swift */,
+				601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */,
+			);
+			path = DeucesCore;
+			sourceTree = "<group>";
+		};
+		7EB8B2B65BF704A5B9302CF2 = {
+			isa = PBXGroup;
+			children = (
+				8D7F7FC7DF2FF3DAB4FC7CE1 /* Deuces */,
+				65CC65A66D7AB1EEB10D0A99 /* DeucesCore */,
+				97BCD7B85B55B5465E044948 /* DeucesCoreTests */,
+				0236B93CF505120A2E3E371F /* DeucesMessages */,
+				9BD3105F8F06B1D6E024E4B2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8D7F7FC7DF2FF3DAB4FC7CE1 /* Deuces */ = {
+			isa = PBXGroup;
+			children = (
+				16600B93EBEF694B68EEB395 /* Assets.xcassets */,
+				77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */,
+			);
+			path = Deuces;
+			sourceTree = "<group>";
+		};
+		97BCD7B85B55B5465E044948 /* DeucesCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				272EABF21D87C408EBE3849B /* CodecTests.swift */,
+				41B76FD218AF1F103530C141 /* EndToEndTests.swift */,
+				29885A03BD9B071F57B42B0E /* EngineTests.swift */,
+				4D59761CEFF24D3180C20624 /* HandTests.swift */,
+				3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */,
+				D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */,
+				5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */,
+			);
+			path = DeucesCoreTests;
+			sourceTree = "<group>";
+		};
+		9BD3105F8F06B1D6E024E4B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C7250E23D52DB7D62B073348 /* Deuces.app */,
+				F3BDE40B023539339FD9D093 /* DeucesCore.framework */,
+				725F4E507718406E733026C9 /* DeucesCoreTests.xctest */,
+				C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B7D869DB90BC3209A210510 /* DeucesCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5988C5282FE142C1821E5B8D /* Build configuration list for PBXNativeTarget "DeucesCore" */;
+			buildPhases = (
+				4243BDD96EB4C7E77D19E07B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeucesCore;
+			packageProductDependencies = (
+			);
+			productName = DeucesCore;
+			productReference = F3BDE40B023539339FD9D093 /* DeucesCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7495EDF31DF2E19A881B0D61 /* DeucesCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 18D11A7FECC9FFF9E3853689 /* Build configuration list for PBXNativeTarget "DeucesCoreTests" */;
+			buildPhases = (
+				45DE46DDBE877BDEF53A12B0 /* Sources */,
+				5E717C1429FA5F9DA99E1BE2 /* Frameworks */,
+				9A27C57D946FC3EB554155A6 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DF659B6C1728325F2E58C9FA /* PBXTargetDependency */,
+			);
+			name = DeucesCoreTests;
+			packageProductDependencies = (
+			);
+			productName = DeucesCoreTests;
+			productReference = 725F4E507718406E733026C9 /* DeucesCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C7275F5F427E500C6DBD5C7F /* DeucesMessages */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96A8E15C1034953CFAF0AB7F /* Build configuration list for PBXNativeTarget "DeucesMessages" */;
+			buildPhases = (
+				DF78FFD6ABEEC7CB5DA4EF80 /* Sources */,
+				9DC3A036A7C49EDE9086050C /* Resources */,
+				58E5527C5CD11B0518E7E499 /* Frameworks */,
+				8D606ECCFBBDCBDB63CCE223 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BD7E6D8611048A06D970A80C /* PBXTargetDependency */,
+			);
+			name = DeucesMessages;
+			packageProductDependencies = (
+			);
+			productName = DeucesMessages;
+			productReference = C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		E79767524DF4068DFF925CDC /* Deuces */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C084D4AAE17173D581E92DB9 /* Build configuration list for PBXNativeTarget "Deuces" */;
+			buildPhases = (
+				064A6E8B82E978D0C0D9A307 /* Sources */,
+				0D25CCEBF14E5273172A7875 /* Resources */,
+				F83037933BE0F54B05D566E8 /* Frameworks */,
+				D05241555B1B955846030861 /* Embed Foundation Extensions */,
+				AE4CCA3814F9A231EEF71D2C /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9848C6F093DBE626B9E352AB /* PBXTargetDependency */,
+				F8E4A91DF1614069157C466A /* PBXTargetDependency */,
+			);
+			name = Deuces;
+			packageProductDependencies = (
+			);
+			productName = Deuces;
+			productReference = C7250E23D52DB7D62B073348 /* Deuces.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		78FDBBAB06B9B5C0806CFEE8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					2B7D869DB90BC3209A210510 = {
+						DevelopmentTeam = RTM66M557M;
+						ProvisioningStyle = Automatic;
+					};
+					7495EDF31DF2E19A881B0D61 = {
+						DevelopmentTeam = RTM66M557M;
+						ProvisioningStyle = Automatic;
+					};
+					C7275F5F427E500C6DBD5C7F = {
+						DevelopmentTeam = RTM66M557M;
+						ProvisioningStyle = Automatic;
+					};
+					E79767524DF4068DFF925CDC = {
+						DevelopmentTeam = RTM66M557M;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CB59229A65C14FFAF5F75698 /* Build configuration list for PBXProject "Deuces" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7EB8B2B65BF704A5B9302CF2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9BD3105F8F06B1D6E024E4B2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B7D869DB90BC3209A210510 /* DeucesCore */,
+				7495EDF31DF2E19A881B0D61 /* DeucesCoreTests */,
+				E79767524DF4068DFF925CDC /* Deuces */,
+				C7275F5F427E500C6DBD5C7F /* DeucesMessages */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0D25CCEBF14E5273172A7875 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9DC3A036A7C49EDE9086050C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2988086F214FCDAAEF2E1FF2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		064A6E8B82E978D0C0D9A307 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4243BDD96EB4C7E77D19E07B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */,
+				4B53AE11E3B6C1BED69E33F2 /* Card.swift in Sources */,
+				4B066994F3BD2109D6F7887E /* CardView.swift in Sources */,
+				EC4357807AF4237F3CA4F971 /* DeucesEngine.swift in Sources */,
+				789A50CC23C94240A2B6E5F6 /* GameBubbleCopy.swift in Sources */,
+				665AB2B8F4E6E97B22328D34 /* GameRootView.swift in Sources */,
+				B4D930B66F601CCFCA7212C9 /* GameSessionController.swift in Sources */,
+				708A38925D132DD2825A7D1E /* GameState.swift in Sources */,
+				3713E007A5513F056147DB19 /* GameStateCodec.swift in Sources */,
+				D289AED85A0A2A5518492DA2 /* Hand.swift in Sources */,
+				2E32D98708852B4DA7655DA4 /* PlayerIdentity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45DE46DDBE877BDEF53A12B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58C3A2A4D60EC13DCFA56013 /* CodecTests.swift in Sources */,
+				709795D1EF97474DA824A6AD /* EndToEndTests.swift in Sources */,
+				B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */,
+				8A7CD69C37919DF1238508B4 /* HandTests.swift in Sources */,
+				31EF5111672211B820AE853B /* JSParityTests.swift in Sources */,
+				CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */,
+				179AAB289779A6B5A447482A /* TestSupport.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF78FFD6ABEEC7CB5DA4EF80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				787AD27502835F9CD3B2C6D2 /* MessagesViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9848C6F093DBE626B9E352AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
+			targetProxy = 38ED6D6C0367A4050466B53D /* PBXContainerItemProxy */;
+		};
+		BD7E6D8611048A06D970A80C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
+			targetProxy = 52E310281FC10AD2836D577D /* PBXContainerItemProxy */;
+		};
+		DF659B6C1728325F2E58C9FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
+			targetProxy = 1D599868CD26BA91D25FA76D /* PBXContainerItemProxy */;
+		};
+		F8E4A91DF1614069157C466A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7275F5F427E500C6DBD5C7F /* DeucesMessages */;
+			targetProxy = 619C16695E9C89328B75E0C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		20AF25FEF0CF7ABB3C916EA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = RTM66M557M;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6B64B5AA1014C9E6C5BFD3E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DeucesMessages/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces.messages;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		78C910CA5E393F197D268C95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Deuces;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		84AA07A470E2921826E60DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		8712E42E7C379A575E620863 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		AF50FCFAEFAB9371AF0C958E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = RTM66M557M;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B7EC781A11F21DF83C3EE663 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCoreTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "";
+			};
+			name = Release;
+		};
+		D4BFDF4C16D7CD4DD6D1AF3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DeucesMessages/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces.messages;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E4A9CE1E0D4A66D10E3FF284 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Deuces;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F3997509C14D3D6155499822 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCoreTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		18D11A7FECC9FFF9E3853689 /* Build configuration list for PBXNativeTarget "DeucesCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3997509C14D3D6155499822 /* Debug */,
+				B7EC781A11F21DF83C3EE663 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5988C5282FE142C1821E5B8D /* Build configuration list for PBXNativeTarget "DeucesCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84AA07A470E2921826E60DDD /* Debug */,
+				8712E42E7C379A575E620863 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		96A8E15C1034953CFAF0AB7F /* Build configuration list for PBXNativeTarget "DeucesMessages" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4BFDF4C16D7CD4DD6D1AF3A /* Debug */,
+				6B64B5AA1014C9E6C5BFD3E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C084D4AAE17173D581E92DB9 /* Build configuration list for PBXNativeTarget "Deuces" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78C910CA5E393F197D268C95 /* Debug */,
+				E4A9CE1E0D4A66D10E3FF284 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CB59229A65C14FFAF5F75698 /* Build configuration list for PBXProject "Deuces" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20AF25FEF0CF7ABB3C916EA0 /* Debug */,
+				AF50FCFAEFAB9371AF0C958E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+}

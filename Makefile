@@ -1,7 +1,26 @@
-.PHONY: start stop restart up-server up-web ssh logs
+.PHONY: start stop restart up-server up-web ssh logs ios-gen ios-test ios-build
 
 # Start all services
 start: | up-web up-server
+
+# Generate / test / build the iMessage app
+ios-gen:
+	@cd ios && xcodegen generate
+
+# Unit + Messages-flow e2e tests (run before device QA)
+ios-test: ios-gen
+	@cd ios && xcodebuild test \
+		-project Deuces.xcodeproj \
+		-scheme DeucesCore \
+		-destination 'platform=iOS Simulator,name=iPhone 17' \
+		CODE_SIGNING_ALLOWED=NO
+
+ios-build: ios-gen
+	@cd ios && xcodebuild build \
+		-project Deuces.xcodeproj \
+		-scheme Deuces \
+		-destination 'platform=iOS Simulator,name=iPhone 17' \
+		CODE_SIGNING_ALLOWED=NO
 
 # Kill all services
 stop:
