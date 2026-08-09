@@ -189,7 +189,7 @@ public final class GameSessionController: ObservableObject {
     private static func friendlyNetworkError(_ error: Error) -> String {
         let ns = error as NSError
         if ns.domain == NSURLErrorDomain, ns.code == NSURLErrorNotConnectedToInternet {
-            return "Local Network blocked. Open the Deuces app, allow Local Network, then retry in Messages."
+            return "Can't reach the Deuces server. Check your connection and try again."
         }
         return error.localizedDescription
     }

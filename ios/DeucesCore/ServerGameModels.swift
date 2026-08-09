@@ -128,15 +128,24 @@ enum ServerWire {
 }
 
 public enum GameStatusCopy {
-    /// Matches web `Stats`: always `"{playerTurnName}'s turn"`.
+    /// Matches web `Stats`: `"{playerTurnName}'s turn"`, with "Your turn" when it's you.
     public static func turnLine(update: ServerGameUpdate) -> String {
         if update.phase == .finished {
             return "Game over"
+        }
+        if update.me?.isMyTurn == true {
+            return "Your turn"
         }
         if let name = update.playerTurnName, !name.isEmpty {
             return "\(name)'s turn"
         }
         return "Waiting…"
+    }
+
+    public static func winnerLine(_ winner: String?) -> String {
+        guard let winner, !winner.isEmpty else { return "Someone wins!" }
+        if winner == "You" { return "You win!" }
+        return "\(winner) wins!"
     }
 
     /// Matches web `Pool`: `Deck (N)`.

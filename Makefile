@@ -1,4 +1,4 @@
-.PHONY: start stop restart up-server stop-server up-server-docker up-web ssh logs ios-gen ios-test ios-build ios-lan-config ios-e2e ios-install
+.PHONY: start stop restart up-server stop-server up-server-docker up-web ssh logs ios-gen ios-test ios-build ios-lan-config ios-e2e ios-install ios-icon ios-screenshots
 
 LAN_IP ?= $(shell ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo 127.0.0.1)
 LAN_PORT ?= 3012
@@ -22,6 +22,12 @@ ios-lan-config:
 	@echo "iOS clients → http://$(LAN_IP):$(LAN_PORT)"
 
 # Generate / test / build the iMessage app
+ios-icon:
+	@ios/scripts/generate_app_icon.sh
+
+ios-screenshots:
+	@ios/scripts/capture_screenshots.sh
+
 ios-gen: ios-lan-config
 	@cd ios && xcodegen generate
 

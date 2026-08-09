@@ -4,7 +4,7 @@ import Messages
 import os.log
 import DeucesCore
 
-private let log = Logger(subsystem: "com.andrewdeuces.Deuces", category: "Messages")
+private let log = Logger(subsystem: "com.deuces.deuces", category: "Messages")
 
 /// Messages UI. The bubble is an immutable game-id invite; all state lives on the server.
 @objc(MessagesViewController)

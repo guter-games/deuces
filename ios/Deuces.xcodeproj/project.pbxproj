@@ -37,6 +37,7 @@
 		B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29885A03BD9B071F57B42B0E /* EngineTests.swift */; };
 		BD1104476F752DBF71425E20 /* ServerGameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */; };
 		C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16600B93EBEF694B68EEB395 /* Assets.xcassets */; };
+		C14AE46D88BDA9CB6F8632F2 /* ScreenshotRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */; };
 		CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */; };
 		CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */; };
 		CFE9249752807E4C7C242C0C /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -128,6 +129,7 @@
 /* Begin PBXFileReference section */
 		05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 		089B5B3481558F996B7500BC /* ServerGameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerGameModels.swift; sourceTree = "<group>"; };
+		0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotRootView.swift; sourceTree = "<group>"; };
 		104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesEngine.swift; sourceTree = "<group>"; };
 		16600B93EBEF694B68EEB395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18D9D892FE0322BAD0C98D67 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				16600B93EBEF694B68EEB395 /* Assets.xcassets */,
 				77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */,
 				703BCF68A1614DCA6836DC32 /* Info.plist */,
+				0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */,
 			);
 			path = Deuces;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */,
+				C14AE46D88BDA9CB6F8632F2 /* ScreenshotRootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +582,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -601,7 +605,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces.messages;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.messages;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -619,7 +623,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -641,7 +645,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -665,7 +669,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -723,7 +727,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -745,7 +749,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCoreTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "";
@@ -762,7 +766,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces.messages;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.messages;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -780,7 +784,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.Deuces;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -796,7 +800,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeuces.DeucesCoreTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "";

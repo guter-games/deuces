@@ -5,7 +5,11 @@ import DeucesCore
 struct DeucesApp: App {
     var body: some Scene {
         WindowGroup {
-            HostRootView()
+            if ProcessInfo.processInfo.arguments.contains("-UITestingScreenshots") {
+                ScreenshotRootView()
+            } else {
+                HostRootView()
+            }
         }
     }
 }
@@ -15,7 +19,7 @@ struct HostRootView: View {
     @StateObject private var left: GameSessionController
     @StateObject private var right: GameSessionController
     @State private var mode: Mode = .info
-    @State private var lanProbe: LanProbeState = .idle
+    @State private var serverProbe: ProbeState = .idle
     private let backend: InMemoryDeucesBackend
 
     enum Mode: String, CaseIterable {
@@ -23,7 +27,7 @@ struct HostRootView: View {
         case local = "Local 2P"
     }
 
-    enum LanProbeState: Equatable {
+    enum ProbeState: Equatable {
         case idle
         case checking
         case ok(String)
@@ -84,12 +88,6 @@ struct HostRootView: View {
             }
             .navigationTitle("Deuces")
             .navigationBarTitleDisplayMode(.inline)
-            .task {
-                // Foreground probe triggers the Local Network permission alert.
-                // Messages extensions are treated as background on older iOS, so they
-                // never show the prompt and fail with "internet appears offline".
-                await probeLanServer()
-            }
         }
     }
 
@@ -99,22 +97,22 @@ struct HostRootView: View {
                 Text("iMessage multiplayer")
                     .font(.title2.bold())
                 Text("This app installs a Messages extension. Open Messages → Apps → Deuces.")
-                Text("On iPad (and older iOS), open this host app once and tap Allow on the Local Network prompt before using Messages. The extension cannot show that prompt itself.")
-                    .foregroundStyle(.primary)
+                Text("Create a game from the composer, send the invite bubble, and play turns live over the Deuces server.")
                 Text("Server: \(ServerConfig.current.createGameURL.host ?? "?")")
                     .font(.footnote.monospaced())
                     .foregroundStyle(.secondary)
 
-                lanStatusRow
+                probeRow
 
-                Button("Test LAN connection") {
-                    Task { await probeLanServer() }
+                Button("Test server connection") {
+                    Task { await probeServer() }
                 }
                 .buttonStyle(.borderedProminent)
 
-                Text("The bubble is only a join link (game id). Live play goes through the game server.")
+                Text("Use Local 2P to try the board against an in-memory server without Messages.")
                     .foregroundStyle(.secondary)
-                Text("Use Local 2P to exercise the flow against an in-memory server without Messages.")
+                Text("Privacy: https://deuces.onrender.com/privacy")
+                    .font(.footnote)
                     .foregroundStyle(.secondary)
             }
             .padding()
@@ -123,15 +121,15 @@ struct HostRootView: View {
     }
 
     @ViewBuilder
-    private var lanStatusRow: some View {
-        switch lanProbe {
+    private var probeRow: some View {
+        switch serverProbe {
         case .idle:
             EmptyView()
         case .checking:
-            Text("Checking Local Network access…")
+            Text("Checking server…")
                 .foregroundStyle(.secondary)
         case .ok(let gameID):
-            Text("LAN OK — created game \(gameID). Messages can use the server now.")
+            Text("Server OK — created game \(gameID).")
                 .foregroundStyle(.green)
         case .failed(let message):
             Text(message)
@@ -140,20 +138,15 @@ struct HostRootView: View {
     }
 
     @MainActor
-    private func probeLanServer() async {
-        lanProbe = .checking
+    private func probeServer() async {
+        serverProbe = .checking
         do {
             let id = try await HTTPDeucesBackend(config: .current).createGame(numPlayers: 2)
-            lanProbe = .ok(id)
+            serverProbe = .ok(id)
         } catch {
-            let ns = error as NSError
-            if ns.domain == NSURLErrorDomain, ns.code == NSURLErrorNotConnectedToInternet {
-                lanProbe = .failed(
-                    "Local Network blocked. Tap Allow if prompted, or enable Deuces in Settings → Privacy & Security → Local Network."
-                )
-            } else {
-                lanProbe = .failed("Could not reach \(ServerConfig.current.createGameURL.absoluteString): \(error.localizedDescription)")
-            }
+            serverProbe = .failed(
+                "Could not reach \(ServerConfig.current.createGameURL.absoluteString): \(error.localizedDescription)"
+            )
         }
     }
 }

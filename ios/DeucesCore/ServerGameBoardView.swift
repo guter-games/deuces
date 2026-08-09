@@ -183,7 +183,7 @@ public struct ServerGameBoardView: View {
 
     private var finishedOverlay: some View {
         VStack(spacing: 8) {
-            Text("\(update.winner ?? "Someone") wins!")
+            Text(GameStatusCopy.winnerLine(update.winner))
                 .font(.title2.bold())
                 .foregroundColor(.yellow)
             if let onRematch {

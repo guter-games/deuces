@@ -1,3 +1,4 @@
+const path = require('path');
 const socketIO = require('socket.io');
 const http = require('http');
 const express = require('express');
@@ -18,13 +19,17 @@ const port = Number(process.env.PORT) || 3012;
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 	app.use(cors());
+	app.use(express.static(path.join(__dirname, 'public')));
 
 	// Health check for Render / load balancers
-	app.get('/', (_req, res) => {
-		res.status(200).send('ok');
-	});
 	app.get('/health', (_req, res) => {
 		res.status(200).json({ ok: true });
+	});
+	app.get('/', (_req, res) => {
+		res.status(200).send('Deuces server — see /privacy and POST /create_game');
+	});
+	app.get('/privacy', (_req, res) => {
+		res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
 	});
 
 	const server = http.createServer(app);
