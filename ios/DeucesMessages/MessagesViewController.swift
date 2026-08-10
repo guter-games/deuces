@@ -14,6 +14,7 @@ final class MessagesViewController: MSMessagesAppViewController {
     private let root = UIView()
     private var selectedCards = Set<Card>()
     private var session: MSSession?
+    private var selectedPlayerCount = 2
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,7 @@ final class MessagesViewController: MSMessagesAppViewController {
             update?.winner ?? "",
             controller.errorMessage ?? "",
             controller.isConnecting ? "1" : "0",
+            "\(selectedPlayerCount)",
             selectedSig,
         ].joined(separator: "|")
         guard fingerprint != lastRenderFingerprint else { return }
@@ -85,6 +87,7 @@ final class MessagesViewController: MSMessagesAppViewController {
     override func willBecomeActive(with conversation: MSConversation) {
         super.willBecomeActive(with: conversation)
         inviteTransport.conversation = conversation
+        applyInferredSeatCount(from: conversation)
         sync(with: conversation)
     }
 
@@ -113,11 +116,18 @@ final class MessagesViewController: MSMessagesAppViewController {
         } else {
             controller.clearGame(keepName: true)
             selectedCards.removeAll()
+            applyInferredSeatCount(from: conversation)
             if presentationStyle == .compact {
                 requestPresentationStyle(.expanded)
             }
             render()
         }
+    }
+
+    private func applyInferredSeatCount(from conversation: MSConversation) {
+        selectedPlayerCount = DeucesEngine.inferredSeatCount(
+            remoteParticipantCount: conversation.remoteParticipantIdentifiers.count
+        )
     }
 
     private func openInvite(from message: MSMessage) {
@@ -235,12 +245,14 @@ final class MessagesViewController: MSMessagesAppViewController {
 
         stack.addArrangedSubview(titleLabel("Deuces", size: 34))
         stack.addArrangedSubview(bodyLabel("How many players?"))
-        for count in DeucesEngine.allowedPlayerCounts {
-            let title = count == 1 ? "1 Player" : "\(count) Players"
-            stack.addArrangedSubview(actionButton(title, orange: true) { [weak self] in
-                self?.controller.createGame(numPlayers: count, openLocally: false)
-            })
-        }
+        stack.addArrangedSubview(playerCountStepper())
+        let createTitle = selectedPlayerCount == 1
+            ? "Create 1 player game"
+            : "Create \(selectedPlayerCount) player game"
+        stack.addArrangedSubview(actionButton(createTitle, orange: true) { [weak self] in
+            guard let self else { return }
+            self.controller.createGame(numPlayers: self.selectedPlayerCount, openLocally: false)
+        })
         stack.addArrangedSubview(bodyLabel(
             "Creates a game on the server and sends a join link into this chat.",
             size: 13
@@ -249,6 +261,72 @@ final class MessagesViewController: MSMessagesAppViewController {
             stack.addArrangedSubview(bodyLabel(error, size: 13, color: .orange))
         }
         return stack
+    }
+
+    private func playerCountStepper() -> UIView {
+        let row = UIStackView()
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 18
+        row.distribution = .fill
+        row.translatesAutoresizingMaskIntoConstraints = false
+
+        let minus = roundIconButton(systemName: "minus") { [weak self] in
+            guard let self else { return }
+            let min = DeucesEngine.allowedPlayerCounts.lowerBound
+            self.selectedPlayerCount = max(min, self.selectedPlayerCount - 1)
+            self.render()
+        }
+        minus.isEnabled = selectedPlayerCount > DeucesEngine.allowedPlayerCounts.lowerBound
+        minus.alpha = minus.isEnabled ? 1 : 0.35
+
+        let count = UILabel()
+        count.text = "\(selectedPlayerCount)"
+        count.textColor = .white
+        count.font = .systemFont(ofSize: 40, weight: .bold)
+        count.textAlignment = .center
+        count.setContentHuggingPriority(.required, for: .horizontal)
+
+        let plus = roundIconButton(systemName: "plus") { [weak self] in
+            guard let self else { return }
+            let max = DeucesEngine.allowedPlayerCounts.upperBound
+            self.selectedPlayerCount = min(max, self.selectedPlayerCount + 1)
+            self.render()
+        }
+        plus.isEnabled = selectedPlayerCount < DeucesEngine.allowedPlayerCounts.upperBound
+        plus.alpha = plus.isEnabled ? 1 : 0.35
+
+        let center = UIStackView(arrangedSubviews: [minus, count, plus])
+        center.axis = .horizontal
+        center.alignment = .center
+        center.spacing = 18
+
+        let wrap = UIView()
+        wrap.addSubview(center)
+        center.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            center.centerXAnchor.constraint(equalTo: wrap.centerXAnchor),
+            center.topAnchor.constraint(equalTo: wrap.topAnchor),
+            center.bottomAnchor.constraint(equalTo: wrap.bottomAnchor),
+            wrap.heightAnchor.constraint(equalToConstant: 56),
+        ])
+        return wrap
+    }
+
+    private func roundIconButton(systemName: String, handler: @escaping () -> Void) -> UIButton {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: systemName)
+        config.baseBackgroundColor = UIColor.white.withAlphaComponent(0.2)
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 14, bottom: 14, trailing: 14)
+        let button = UIButton(configuration: config)
+        button.addAction(UIAction { _ in handler() }, for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 52),
+            button.heightAnchor.constraint(equalToConstant: 52),
+        ])
+        return button
     }
 
     private func joinView() -> UIView {

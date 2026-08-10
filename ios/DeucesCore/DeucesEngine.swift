@@ -40,6 +40,12 @@ public enum DeucesError: Error, Equatable, LocalizedError {
 public enum DeucesEngine {
     public static let allowedPlayerCounts = 1...4
 
+    /// Infer seats from an iMessage thread: local user + remotes, clamped to 1...4.
+    public static func inferredSeatCount(remoteParticipantCount: Int) -> Int {
+        let raw = 1 + max(0, remoteParticipantCount)
+        return min(max(raw, allowedPlayerCounts.lowerBound), allowedPlayerCounts.upperBound)
+    }
+
     public static func cardsToDeal(numPlayers: Int) -> Int {
         if numPlayers == 1 { return 4 }
         return numPlayers == 4 ? 13 : 17

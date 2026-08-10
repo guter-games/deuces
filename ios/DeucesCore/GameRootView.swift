@@ -4,11 +4,23 @@ import SwiftUI
 public struct GameRootView: View {
     @ObservedObject var controller: GameSessionController
     var openCreatedGamesLocally: Bool = false
+    var defaultPlayerCount: Int = 2
     @State private var selected: Set<Card> = []
+    @State private var playerCount: Int
 
-    public init(controller: GameSessionController, openCreatedGamesLocally: Bool = false) {
+    public init(
+        controller: GameSessionController,
+        openCreatedGamesLocally: Bool = false,
+        defaultPlayerCount: Int = 2
+    ) {
         self.controller = controller
         self.openCreatedGamesLocally = openCreatedGamesLocally
+        self.defaultPlayerCount = defaultPlayerCount
+        let clamped = min(
+            max(defaultPlayerCount, DeucesEngine.allowedPlayerCounts.lowerBound),
+            DeucesEngine.allowedPlayerCounts.upperBound
+        )
+        _playerCount = State(initialValue: clamped)
     }
 
     public var body: some View {
@@ -70,12 +82,11 @@ public struct GameRootView: View {
         VStack(spacing: 14) {
             Text("Deuces").font(.largeTitle.bold()).foregroundColor(.white)
             Text("How many players?").foregroundColor(.white.opacity(0.9))
-            ForEach(Array(DeucesEngine.allowedPlayerCounts), id: \.self) { count in
-                Button(count == 1 ? "1 Player" : "\(count) Players") {
-                    controller.createGame(numPlayers: count, openLocally: openCreatedGamesLocally)
-                }
-                .buttonStyle(PrimaryButtonStyle())
+            playerCountStepper
+            Button(playerCount == 1 ? "Create 1 player game" : "Create \(playerCount) player game") {
+                controller.createGame(numPlayers: playerCount, openLocally: openCreatedGamesLocally)
             }
+            .buttonStyle(PrimaryButtonStyle())
             if let status = controller.statusMessage {
                 Text(status).foregroundColor(.orange)
             }
@@ -84,6 +95,41 @@ public struct GameRootView: View {
             }
         }
         .padding()
+    }
+
+    private var playerCountStepper: some View {
+        HStack(spacing: 18) {
+            Button {
+                playerCount = max(DeucesEngine.allowedPlayerCounts.lowerBound, playerCount - 1)
+            } label: {
+                Image(systemName: "minus")
+                    .font(.title2.weight(.bold))
+                    .frame(width: 52, height: 52)
+                    .background(Color.white.opacity(0.2))
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+            }
+            .disabled(playerCount <= DeucesEngine.allowedPlayerCounts.lowerBound)
+            .opacity(playerCount <= DeucesEngine.allowedPlayerCounts.lowerBound ? 0.35 : 1)
+
+            Text("\(playerCount)")
+                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .foregroundColor(.white)
+                .frame(minWidth: 48)
+
+            Button {
+                playerCount = min(DeucesEngine.allowedPlayerCounts.upperBound, playerCount + 1)
+            } label: {
+                Image(systemName: "plus")
+                    .font(.title2.weight(.bold))
+                    .frame(width: 52, height: 52)
+                    .background(Color.white.opacity(0.2))
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+            }
+            .disabled(playerCount >= DeucesEngine.allowedPlayerCounts.upperBound)
+            .opacity(playerCount >= DeucesEngine.allowedPlayerCounts.upperBound ? 0.35 : 1)
+        }
     }
 
     private var joinForm: some View {

@@ -2,6 +2,15 @@ import XCTest
 @testable import DeucesCore
 
 final class EngineTests: XCTestCase {
+    func testInferredSeatCountFromThread() {
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: 0), 1)
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: 1), 2)
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: 2), 3)
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: 3), 4)
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: 8), 4)
+        XCTAssertEqual(DeucesEngine.inferredSeatCount(remoteParticipantCount: -1), 1)
+    }
+
     func testCreateDealsExpectedCounts() {
         var rng = LCG(seed: 42)
         let two = DeucesEngine.createGame(numPlayers: 2, rng: &rng)
