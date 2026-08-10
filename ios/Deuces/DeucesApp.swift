@@ -157,6 +157,7 @@ final class LocalInviteBus: InviteTransport {
     func sendInvite(_ invite: GameInvite) {
         onInvite?(invite)
     }
+    func bumpInvite(_ invite: GameInvite) {}
 }
 
 final class InMemoryIdentityStore: PlayerIdentityStore {

@@ -23,10 +23,11 @@ final class MessagesViewController: MSMessagesAppViewController {
         inviteTransport.onInviteInserted = { [weak self] in
             guard let self else { return }
             self.controller.clearGame(keepName: true)
-            if self.presentationStyle != .compact {
-                self.requestPresentationStyle(.compact)
-            }
+            self.collapseToChat()
             self.render()
+        }
+        inviteTransport.onInviteBumped = { [weak self] in
+            self?.collapseToChat()
         }
 
         controller = GameSessionController(
@@ -285,6 +286,12 @@ final class MessagesViewController: MSMessagesAppViewController {
 
     // MARK: - Controls
 
+    private func collapseToChat() {
+        if presentationStyle != .compact {
+            requestPresentationStyle(.compact)
+        }
+    }
+
     private func titleLabel(_ text: String, size: CGFloat) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -348,21 +355,40 @@ final class MessagesViewController: MSMessagesAppViewController {
     private static let felt = UIColor(red: 0.07, green: 0.28, blue: 0.18, alpha: 1)
 }
 
-/// Sends the initial invite bubble only. Never used for turn/state sync.
+/// Inserts invite bubbles and re-inserts them (same MSSession) after moves.
 final class MessagesInviteTransport: InviteTransport {
     var onInviteInserted: (() -> Void)?
+    var onInviteBumped: (() -> Void)?
     weak var conversation: MSConversation?
     var session: MSSession?
 
     func sendInvite(_ invite: GameInvite) {
+        // Fresh session per game; rematches create a new session/bubble.
+        insert(invite, session: MSSession(), subcaption: GameBubbleCopy.subtitle(for: invite)) { [weak self] in
+            self?.onInviteInserted?()
+        }
+    }
+
+    func bumpInvite(_ invite: GameInvite) {
+        // Reuse the opened/created session so Messages advances the same chip.
+        let session = self.session ?? MSSession()
+        insert(invite, session: session, subcaption: "Tap to open") { [weak self] in
+            self?.onInviteBumped?()
+        }
+    }
+
+    private func insert(
+        _ invite: GameInvite,
+        session: MSSession,
+        subcaption: String,
+        onSuccess: @escaping () -> Void
+    ) {
         guard let conversation else {
-            log.error("sendInvite: no conversation")
+            log.error("insert: no conversation")
             return
         }
         do {
             let url = try GameInviteURL.makeURL(invite)
-            // Fresh session per game; rematches create a new session/bubble.
-            let session = MSSession()
             self.session = session
             let message = MSMessage(session: session)
             message.url = url
@@ -370,18 +396,16 @@ final class MessagesInviteTransport: InviteTransport {
 
             let layout = MSMessageTemplateLayout()
             layout.caption = GameBubbleCopy.title(for: invite)
-            layout.subcaption = GameBubbleCopy.subtitle(for: invite)
+            layout.subcaption = subcaption
             message.layout = layout
 
-            log.info("inserting invite \(invite.gameID, privacy: .public)")
-            conversation.insert(message) { [weak self] error in
+            log.info("inserting bubble \(invite.gameID, privacy: .public)")
+            conversation.insert(message) { error in
                 if let error {
                     log.error("insert failed: \(String(describing: error), privacy: .public)")
                     return
                 }
-                DispatchQueue.main.async {
-                    self?.onInviteInserted?()
-                }
+                DispatchQueue.main.async(execute: onSuccess)
             }
         } catch {
             log.error("invite url failed: \(String(describing: error), privacy: .public)")

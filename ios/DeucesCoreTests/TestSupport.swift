@@ -30,11 +30,17 @@ final class InMemoryIdentityStore: PlayerIdentityStore {
 @MainActor
 final class CaptureInviteTransport: InviteTransport {
     private(set) var last: GameInvite?
+    private(set) var bumpCount = 0
     var onInvite: ((GameInvite) -> Void)?
 
     func sendInvite(_ invite: GameInvite) {
         last = invite
         onInvite?(invite)
+    }
+
+    func bumpInvite(_ invite: GameInvite) {
+        last = invite
+        bumpCount += 1
     }
 }
 

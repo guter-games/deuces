@@ -9,7 +9,7 @@ The iMessage bubble is only an immutable **game-id invite** — no game state is
 |-------|------|
 | `POST /create_game` | Create a server game → short id |
 | Socket.IO | `new_identity` / `identify_as` / `play_cards` / `pass` / `game_update` |
-| `MSMessage` + `MSSession` | One-shot invite bubble pointing at that game id |
+| `MSMessage` + `MSSession` | Invite bubble pointing at that game id; re-inserted (same session) after each move |
 | Rematch | Brand-new `create_game` + new bubble (ignores server `playAgainGameID`) |
 
 ```
@@ -62,5 +62,5 @@ Uses an in-memory backend that mirrors the web protocol (no network). Covers cre
 1. Force-quit Messages on both devices  
 2. Create a 2-player game → bubble should say `Deuces (2 players)`  
 3. Tap bubble on each device → enter name → join  
-4. Plays should appear on the other device **while both have the extension open** (live socket), without the bubble URL changing  
+4. Plays should appear on the other device **while both have the extension open** (live socket); after each successful move the same bubble is re-inserted so it advances in the thread  
 5. Rematch sends a **new** bubble with a new game id  

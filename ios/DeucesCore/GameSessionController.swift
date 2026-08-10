@@ -20,6 +20,8 @@ public final class GameSessionController: ObservableObject {
 
     private var socket: (any GameSocket)?
     private var playerIndex: Int?
+    /// After a local play/pass, bump the Messages chip once the server confirms the update.
+    private var bumpOnNextUpdate = false
 
     public init(
         backend: DeucesBackend,
@@ -74,13 +76,21 @@ public final class GameSessionController: ObservableObject {
         let socket = backend.openSocket(gameID: invite.gameID)
         self.socket = socket
         socket.onGameUpdate = { [weak self] update in
-            self?.update = update
-            self?.isConnecting = false
+            guard let self else { return }
+            self.update = update
+            self.isConnecting = false
             if update.me?.name != nil {
-                self?.needsToJoin = false
+                self.needsToJoin = false
+            }
+            if self.bumpOnNextUpdate {
+                self.bumpOnNextUpdate = false
+                if let invite = self.invite {
+                    self.inviteTransport?.bumpInvite(invite)
+                }
             }
         }
         socket.onBadPlay = { [weak self] message in
+            self?.bumpOnNextUpdate = false
             self?.errorMessage = message
         }
         socket.onConnected = { [weak self] in
@@ -145,11 +155,13 @@ public final class GameSessionController: ObservableObject {
 
     public func play(cards: [Card]) {
         errorMessage = nil
+        bumpOnNextUpdate = true
         socket?.playCards(cards)
     }
 
     public func pass() {
         errorMessage = nil
+        bumpOnNextUpdate = true
         socket?.pass()
     }
 
@@ -166,6 +178,7 @@ public final class GameSessionController: ObservableObject {
         playerIndex = nil
         needsToJoin = false
         isConnecting = false
+        bumpOnNextUpdate = false
         errorMessage = nil
         statusMessage = nil
         if !keepName { displayName = "" }
@@ -198,8 +211,10 @@ public final class GameSessionController: ObservableObject {
     }
 }
 
-/// One-shot Messages invite delivery. Never used for state sync.
+/// Messages bubble delivery. Invite URL stays a game-id pointer; bumps reuse the session
+/// so the chip advances to the end of the thread after a move.
 @MainActor
 public protocol InviteTransport: AnyObject {
     func sendInvite(_ invite: GameInvite)
+    func bumpInvite(_ invite: GameInvite)
 }
