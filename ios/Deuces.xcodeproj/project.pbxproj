@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05A5C7E13DE6E9485DF7AF8D /* ScreenshotRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3651D878096651077FE6C008 /* ScreenshotRootView.swift */; };
 		082CE90811295B8E967473D8 /* SeatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7302018673E1DFF42DFC487 /* SeatStore.swift */; };
 		0E015EBD8AC365F7E785FB1B /* InMemoryDeucesBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD345B5401EE45DE2959FA /* InMemoryDeucesBackend.swift */; };
 		179AAB289779A6B5A447482A /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */; };
 		1CD4F1B81D888CC69D79B395 /* ServerGameModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5B3481558F996B7500BC /* ServerGameModels.swift */; };
+		27A7DD10240B143C6C2A0435 /* DeucesScreenshotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1F20DBC39909D07AB9C03 /* DeucesScreenshotApp.swift */; };
 		2988086F214FCDAAEF2E1FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15C74678CB19221BBE4655A /* Assets.xcassets */; };
-		2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */; };
+		2991C3FFED56311CAF5B472B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16600B93EBEF694B68EEB395 /* Assets.xcassets */; };
 		2E32D98708852B4DA7655DA4 /* PlayerIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */; };
 		31EF5111672211B820AE853B /* JSParityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */; };
 		41695B8EC9D4AC0BEF5EE558 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 0251D4F1D41711FB3E16A7CB /* SocketIO */; };
@@ -25,6 +27,7 @@
 		709795D1EF97474DA824A6AD /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B76FD218AF1F103530C141 /* EndToEndTests.swift */; };
 		72CB9C862A791838A4C7AD1C /* GameInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB1839309ECBD484A4BE2E /* GameInvite.swift */; };
 		740B2D4013C0A01B1DB23B19 /* DeucesBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE6783D9772B1C2F79D385 /* DeucesBackend.swift */; };
+		77E1D1BBCD0AE66379E70089 /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		787AD27502835F9CD3B2C6D2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2680E35A6E0FD2864151739C /* MessagesViewController.swift */; };
 		813FB8CA427242EC77627303 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		8A7CD69C37919DF1238508B4 /* HandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D59761CEFF24D3180C20624 /* HandTests.swift */; };
@@ -36,13 +39,13 @@
 		B9998A7CFC723A9AA754EBA9 /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29885A03BD9B071F57B42B0E /* EngineTests.swift */; };
 		BD1104476F752DBF71425E20 /* ServerGameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */; };
 		C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16600B93EBEF694B68EEB395 /* Assets.xcassets */; };
-		C14AE46D88BDA9CB6F8632F2 /* ScreenshotRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */; };
 		CCB961F161BA8077E2CB8FDC /* ActivityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC025DA0C0AAD77A31609C /* ActivityLabel.swift */; };
 		CD4BBBC2D704E5BE900506EA /* SessionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3522FE57C9467DFD3A331F3 /* SessionControllerTests.swift */; };
 		CFE9249752807E4C7C242C0C /* DeucesCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D289AED85A0A2A5518492DA2 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547ABEF60AA001636426BFAB /* Hand.swift */; };
 		D66E06B553FEEA5D3B93712C /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		DA9D80509170543BB91D0D8D /* DeucesMessages.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E6BB462399492EC36F237368 /* DeucesCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BDE40B023539339FD9D093 /* DeucesCore.framework */; };
 		EC4357807AF4237F3CA4F971 /* DeucesEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */; };
 		FD3D26ED79A955DF86414F62 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */; };
 /* End PBXBuildFile section */
@@ -76,9 +79,27 @@
 			remoteGlobalIDString = C7275F5F427E500C6DBD5C7F;
 			remoteInfo = DeucesMessages;
 		};
+		7FE55F455CEC019E9AD57DC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78FDBBAB06B9B5C0806CFEE8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B7D869DB90BC3209A210510;
+			remoteInfo = DeucesCore;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3D0998A81F36058F2CD401AC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				77E1D1BBCD0AE66379E70089 /* DeucesCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9A27C57D946FC3EB554155A6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,7 +138,6 @@
 /* Begin PBXFileReference section */
 		05A17F61B89B8E87A95C6E7D /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 		089B5B3481558F996B7500BC /* ServerGameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerGameModels.swift; sourceTree = "<group>"; };
-		0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotRootView.swift; sourceTree = "<group>"; };
 		104AA6CCE9904C203AB390A0 /* DeucesEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesEngine.swift; sourceTree = "<group>"; };
 		16600B93EBEF694B68EEB395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18D9D892FE0322BAD0C98D67 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -125,12 +145,14 @@
 		272EABF21D87C408EBE3849B /* CodecTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodecTests.swift; sourceTree = "<group>"; };
 		29885A03BD9B071F57B42B0E /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
 		3564503A37104D23A9184DA4 /* ServerGameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerGameBoardView.swift; sourceTree = "<group>"; };
+		3651D878096651077FE6C008 /* ScreenshotRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotRootView.swift; sourceTree = "<group>"; };
 		3F491A7DE166048D8AEAB5FC /* JSParityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSParityTests.swift; sourceTree = "<group>"; };
 		40B7873F074C01EC1A70E974 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		41B76FD218AF1F103530C141 /* EndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndToEndTests.swift; sourceTree = "<group>"; };
 		4D59761CEFF24D3180C20624 /* HandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTests.swift; sourceTree = "<group>"; };
 		51CD345B5401EE45DE2959FA /* InMemoryDeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDeucesBackend.swift; sourceTree = "<group>"; };
 		547ABEF60AA001636426BFAB /* Hand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
+		58B1F20DBC39909D07AB9C03 /* DeucesScreenshotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesScreenshotApp.swift; sourceTree = "<group>"; };
 		5A77EBF3676A68E8F1F6F6B2 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		601F6FE607C5E430510B40C4 /* PlayerIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerIdentity.swift; sourceTree = "<group>"; };
 		61FE6783D9772B1C2F79D385 /* DeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesBackend.swift; sourceTree = "<group>"; };
@@ -138,7 +160,7 @@
 		7124E0F8750F74ECA2EB6FA0 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		725F4E507718406E733026C9 /* DeucesCoreTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DeucesCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7634EC3EBAD3ADB4883886AF /* LiveServerEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveServerEndToEndTests.swift; sourceTree = "<group>"; };
-		77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeucesApp.swift; sourceTree = "<group>"; };
+		899E68A5A0E5A2592B230276 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		932557AC21297FD7D9218E16 /* LanHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanHost.swift; sourceTree = "<group>"; };
 		95222ECDD2C9F2B2643F6D60 /* HTTPDeucesBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDeucesBackend.swift; sourceTree = "<group>"; };
 		A15C74678CB19221BBE4655A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -152,6 +174,7 @@
 		E38AAD7D6028E834D92B64F5 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
 		E7302018673E1DFF42DFC487 /* SeatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatStore.swift; sourceTree = "<group>"; };
 		F3BDE40B023539339FD9D093 /* DeucesCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeucesCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFE320FC9D19AA39850A593C /* DeucesScreenshot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DeucesScreenshot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +207,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D66E06B553FEEA5D3B93712C /* DeucesCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE7FED7E0BF0C7E111E05C23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6BB462399492EC36F237368 /* DeucesCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +263,7 @@
 				65CC65A66D7AB1EEB10D0A99 /* DeucesCore */,
 				97BCD7B85B55B5465E044948 /* DeucesCoreTests */,
 				0236B93CF505120A2E3E371F /* DeucesMessages */,
+				999C86A476F4B1D19AA63445 /* DeucesScreenshot */,
 				9BD3105F8F06B1D6E024E4B2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -240,9 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				16600B93EBEF694B68EEB395 /* Assets.xcassets */,
-				77D1BCC0D1BCD332FD49A0D5 /* DeucesApp.swift */,
 				703BCF68A1614DCA6836DC32 /* Info.plist */,
-				0B25FE1D77B494C699F733A9 /* ScreenshotRootView.swift */,
 			);
 			path = Deuces;
 			sourceTree = "<group>";
@@ -262,6 +292,16 @@
 			path = DeucesCoreTests;
 			sourceTree = "<group>";
 		};
+		999C86A476F4B1D19AA63445 /* DeucesScreenshot */ = {
+			isa = PBXGroup;
+			children = (
+				58B1F20DBC39909D07AB9C03 /* DeucesScreenshotApp.swift */,
+				899E68A5A0E5A2592B230276 /* Info.plist */,
+				3651D878096651077FE6C008 /* ScreenshotRootView.swift */,
+			);
+			path = DeucesScreenshot;
+			sourceTree = "<group>";
+		};
 		9BD3105F8F06B1D6E024E4B2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +309,7 @@
 				F3BDE40B023539339FD9D093 /* DeucesCore.framework */,
 				725F4E507718406E733026C9 /* DeucesCoreTests.xctest */,
 				C4921C5BA9055F059A6FB40F /* DeucesMessages.appex */,
+				FFE320FC9D19AA39850A593C /* DeucesScreenshot.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -339,7 +380,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C084D4AAE17173D581E92DB9 /* Build configuration list for PBXNativeTarget "Deuces" */;
 			buildPhases = (
-				064A6E8B82E978D0C0D9A307 /* Sources */,
 				0D25CCEBF14E5273172A7875 /* Resources */,
 				F83037933BE0F54B05D566E8 /* Frameworks */,
 				D05241555B1B955846030861 /* Embed Foundation Extensions */,
@@ -356,6 +396,27 @@
 			);
 			productName = Deuces;
 			productReference = C7250E23D52DB7D62B073348 /* Deuces.app */;
+			productType = "com.apple.product-type.application.messages";
+		};
+		FC4B69B7E482BBAD3FE2FCF8 /* DeucesScreenshot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E401A8CE0A2096150575BE29 /* Build configuration list for PBXNativeTarget "DeucesScreenshot" */;
+			buildPhases = (
+				33725F2B8AA9C054AABA81B5 /* Sources */,
+				92BAAC1B05C14B2E0608306A /* Resources */,
+				FE7FED7E0BF0C7E111E05C23 /* Frameworks */,
+				3D0998A81F36058F2CD401AC /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B6BD0F391D1B2649520F952A /* PBXTargetDependency */,
+			);
+			name = DeucesScreenshot;
+			packageProductDependencies = (
+			);
+			productName = DeucesScreenshot;
+			productReference = FFE320FC9D19AA39850A593C /* DeucesScreenshot.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -383,6 +444,10 @@
 						DevelopmentTeam = U253FJED45;
 						ProvisioningStyle = Automatic;
 					};
+					FC4B69B7E482BBAD3FE2FCF8 = {
+						DevelopmentTeam = U253FJED45;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = CB59229A65C14FFAF5F75698 /* Build configuration list for PBXProject "Deuces" */;
@@ -406,6 +471,7 @@
 				7495EDF31DF2E19A881B0D61 /* DeucesCoreTests */,
 				E79767524DF4068DFF925CDC /* Deuces */,
 				C7275F5F427E500C6DBD5C7F /* DeucesMessages */,
+				FC4B69B7E482BBAD3FE2FCF8 /* DeucesScreenshot */,
 			);
 		};
 /* End PBXProject section */
@@ -416,6 +482,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0BD86FBAD5DB1BE24171E49 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92BAAC1B05C14B2E0608306A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2991C3FFED56311CAF5B472B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,12 +504,12 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		064A6E8B82E978D0C0D9A307 /* Sources */ = {
+		33725F2B8AA9C054AABA81B5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CA0C68697CEA5290C4891C7 /* DeucesApp.swift in Sources */,
-				C14AE46D88BDA9CB6F8632F2 /* ScreenshotRootView.swift in Sources */,
+				27A7DD10240B143C6C2A0435 /* DeucesScreenshotApp.swift in Sources */,
+				05A5C7E13DE6E9485DF7AF8D /* ScreenshotRootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +569,11 @@
 			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
 			targetProxy = 38ED6D6C0367A4050466B53D /* PBXContainerItemProxy */;
 		};
+		B6BD0F391D1B2649520F952A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
+			targetProxy = 7FE55F455CEC019E9AD57DC1 /* PBXContainerItemProxy */;
+		};
 		BD7E6D8611048A06D970A80C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2B7D869DB90BC3209A210510 /* DeucesCore */;
@@ -548,7 +627,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = U253FJED45;
 				ENABLE_DEBUG_DYLIB = NO;
@@ -582,6 +661,40 @@
 			};
 			name = Debug;
 		};
+		25DB01D3944DE02B0F66FDA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DeucesScreenshot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.screenshot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		32CE1C735D215AB98DE1DE3B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DeucesScreenshot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.screenshot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6B64B5AA1014C9E6C5BFD3E1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -593,7 +706,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.extension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -604,14 +717,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Deuces/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -633,7 +745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.core;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -657,7 +769,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.core;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -700,7 +812,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U253FJED45;
 				ENABLE_DEBUG_DYLIB = NO;
@@ -737,7 +849,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.core.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "";
@@ -755,7 +867,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.extension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -766,14 +878,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Deuces/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -789,7 +900,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.core.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deuces.deuces.imessage.core.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "";
@@ -840,6 +951,15 @@
 			buildConfigurations = (
 				20AF25FEF0CF7ABB3C916EA0 /* Debug */,
 				AF50FCFAEFAB9371AF0C958E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E401A8CE0A2096150575BE29 /* Build configuration list for PBXNativeTarget "DeucesScreenshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25DB01D3944DE02B0F66FDA4 /* Debug */,
+				32CE1C735D215AB98DE1DE3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

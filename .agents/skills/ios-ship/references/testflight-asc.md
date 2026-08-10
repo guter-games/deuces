@@ -1,6 +1,13 @@
 # TestFlight / App Store Connect
 
-ASC app: https://appstoreconnect.apple.com/apps/6799698932/testflight/ios
+App: **Deuces With Friends** · SKU `deuces-imessage-2` · bundle `com.deuces.deuces.imessage`  
+(Find the app in [App Store Connect](https://appstoreconnect.apple.com/apps) — old host+extension TestFlight apps were deleted.)
+
+## Product type
+
+This record is a **standalone iMessage app**. Builds must be `application.messages` + Messages appex. Do not upload a containing-app (`application` + extension) binary to this SKU.
+
+Install path for testers: **Messages → Apps → Deuces With Friends** (no Home Screen icon).
 
 ## Internal vs External
 
@@ -18,9 +25,23 @@ For “no review” shipping: **Internal only**. Never add the build to External
 2. Create an **Internal** group if needed (current ASC requires a group)
 3. Add testers from **Users and Access** (Admin / App Manager / Developer / Marketing) — not free-typed emails alone
 4. Group → Builds → add the new build
-5. Tester opens invite email on device (same Apple ID) → TestFlight
+5. Tester opens invite email on device (same Apple ID) → TestFlight → install → open in **Messages**
 
 Internal does **not** require Distribution App Information, screenshots, or age rating.
+
+## Upload warnings (safe to ignore)
+
+- *Apple Vision Pro / Macs with Apple silicon support issue* because `LSApplicationLaunchProhibited` is true — expected for standalone iMessage.
+
+## Upload failures
+
+### Invalid Bundle OS Type code (`CFBundlePackageType` must be `APPL`)
+
+Standalone container Info.plist omitted `CFBundlePackageType`. Fix in `project.yml`, regenerate, re-archive. See [standalone-packaging.md](standalone-packaging.md).
+
+### Missing iMessage icons
+
+See [imessage-icons.md](imessage-icons.md).
 
 ## Stuck states
 
@@ -47,6 +68,10 @@ Invite accepted but build not actually available (often after cancel/review mess
 ### Add Existing Testers to Build errors
 
 Skip that dialog. Attach the **group** to the build (or build to the group) instead.
+
+### Installed but “no app” on Home Screen
+
+Expected. Open **Messages → Apps** drawer.
 
 ## Encryption
 

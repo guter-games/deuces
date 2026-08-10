@@ -32,4 +32,5 @@ plus `Assets.car` (marketing 1024×768).
 
 - Put a stray 1024×1024 PNG in the stickersiconset (actool “unassigned child”)
 - Set Messages product type back to generic `app-extension`
+- Change the container from `application.messages` to generic `application` (that’s a different ASC product type)
 - Embed DeucesCore inside the appex

@@ -1,4 +1,4 @@
-# App Store listing — Deuces
+# App Store listing — Deuces With Friends
 
 Use these values in App Store Connect. Privacy Policy URL is live once Render redeploys.
 
@@ -7,31 +7,32 @@ Use these values in App Store Connect. Privacy Policy URL is live once Render re
 | Item | Value |
 |------|-------|
 | Team | Plant Chess Studios, LLC (`U253FJED45`) |
-| Bundle ID (host) | `com.deuces.deuces` |
-| Bundle ID (Messages extension) | `com.deuces.deuces.imessage` |
-| SKU | `deuces-imessage` |
+| Bundle ID (standalone container / ASC primary) | `com.deuces.deuces.imessage` |
+| Bundle ID (Messages extension) | `com.deuces.deuces.imessage.extension` |
+| SKU | `deuces-imessage-2` |
 | Primary language | English (U.S.) |
 | Category | Games → Card |
 | Secondary | Games → Board |
+| Product type | **Standalone iMessage app** (Messages only; no Home Screen app) |
 
-**Yes, you need two App IDs** under Plant Chess Studios:
+**Two App IDs** under Plant Chess Studios:
 
-1. `com.deuces.deuces` — host app (you already created this)  
-2. `com.deuces.deuces.imessage` — Messages extension (child of the host id)
+1. `com.deuces.deuces.imessage` — ASC app / standalone iMessage container (you created this)  
+2. `com.deuces.deuces.imessage.extension` — Messages extension (create in [Certificates, Identifiers & Profiles](https://developer.apple.com/account/resources/identifiers/list) if Xcode Automatic Signing doesn’t)
 
-`com.deuces.deuces.messages` is **already taken** (Apple IDs are global). Use `.imessage` instead — App Store Connect only cares that the extension id is prefixed by the host id.
+Extension id **must** be prefixed by the container id.
 
 ## Listing copy
 
-**Name:** Deuces  
+**Name:** Deuces With Friends  
 **Subtitle:** Big Two for iMessage  
 **Promotional text:** Classic Big Two in iMessage. Create a table, invite friends, and play turns live on a shared board.
 
 **Description:**
 ```
-Deuces is the classic climbing card game (also known as Big Two), built for iMessage.
+Deuces With Friends is the classic climbing card game (also known as Big Two / Deuces), built for iMessage.
 
-Start a game from the Deuces Messages app, send a join invite into the chat, and play turns in real time. The bubble is just your game link — the action happens on the shared Deuces board.
+Start a game from the Messages app drawer, send a join invite into the chat, and play turns in real time. The bubble is just your game link — the action happens on the shared board.
 
 Features:
 • 1–4 players
@@ -39,7 +40,7 @@ Features:
 • Live turns over the game server
 • Clean felt board with Play and Pass
 
-Open Messages → Apps → Deuces to begin.
+Open Messages → Apps → Deuces With Friends to begin.
 ```
 
 **Keywords:** (100-char max; omit words already in Name/Subtitle)  
@@ -80,7 +81,7 @@ No Location, Contacts, Health, Financial, Sensitive Info, Purchases, Advertising
 ## Review notes
 
 ```
-Deuces is an iMessage app. After install, open Messages, start (or open) a conversation, tap Apps → Deuces.
+Deuces With Friends is a standalone iMessage app (no Home Screen icon). After install, open Messages, start (or open) a conversation, tap Apps → Deuces With Friends.
 
 For a quick review path:
 1. Choose “1 Player”
@@ -88,7 +89,7 @@ For a quick review path:
 3. Enter any display name and join
 4. Select cards and tap Play / Pass
 
-The host “Deuces” app is only a container / local practice board. Multiplayer is entirely in Messages.
+All gameplay is in Messages.
 
 Privacy policy: https://deuces.onrender.com/privacy
 Production server: https://deuces.onrender.com
@@ -114,4 +115,4 @@ Upload in **App Store Connect → App Information / Media Manager**. iMessage ap
 | iPhone 6.5" | 1284×2778 | `asc_imessage_iphone65_1_your_turn.png`, `asc_imessage_iphone65_2_you_win.png` |
 | iPad 13" | 2064×2752 | `asc_imessage_ipad13_1_your_turn.png`, `asc_imessage_ipad13_2_you_win.png` |
 
-Same board UI is fine for iMessage slots (Messages extension uses the shared board). Optional third per set: `*_frame1.png` (waiting).
+Same board UI is fine for iMessage slots (Messages extension uses the shared board). Regenerate with `make ios-screenshots` if you need fresh captures.

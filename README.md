@@ -12,7 +12,7 @@ See **Makefile** for more commands.
 
 ## iMessage app (server-backed)
 
-The `ios/` Messages extension uses the **same create_game + Socket.IO protocol** as `web/`.  
+Standalone iMessage app in `ios/` (Messages only; no Home Screen companion). Uses the **same create_game + Socket.IO protocol** as `web/`.  
 `MSMessage` / `MSSession` only carry an immutable **game-id invite** — no state updates go through iMessage.
 
 ```bash

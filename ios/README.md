@@ -1,7 +1,7 @@
 # Deuces for iMessage
 
 Turn-based Deuces over the **same Express + Socket.IO server** as the web app.  
-The iMessage bubble is only an immutable **game-id invite** — no game state is ever written into `MSMessage.url`.
+Standalone iMessage app (no home-screen companion). The bubble is only an immutable **game-id invite** — no game state is ever written into `MSMessage.url`.
 
 ## Architecture
 
@@ -33,11 +33,14 @@ make ios-install    # build + install on connected devices
 `LanHost` is refreshed by `make ios-lan-config` from this Mac's Wi‑Fi IP.  
 Devices and this Mac must be on the same network; allow Local Network for Deuces when prompted.
 
+After install, open **Messages → Apps → Deuces** (nothing appears on the Home Screen).
+
 ## Project layout
 
 - `DeucesCore` — cards/rules helpers, server client, session controller, SwiftUI board
-- `DeucesMessages` — Messages extension UI
-- `Deuces` — host app + Local 2P (in-memory server stand-in)
+- `DeucesMessages` — Messages extension UI (the product)
+- `Deuces` — standalone iMessage container (AppIcon assets only)
+- `DeucesScreenshot` — local harness for `make ios-screenshots` (not shipped)
 
 ## Setup
 

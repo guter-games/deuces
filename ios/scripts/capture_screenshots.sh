@@ -43,22 +43,22 @@ capture_on() {
   local udid
   udid="$(boot_device "$device_name")"
   echo "Building for $device_name ($udid)"
+  # Standalone iMessage container has no home-screen UI — use the local harness.
   xcodebuild build \
     -project "$IOS/Deuces.xcodeproj" \
-    -scheme Deuces \
+    -scheme DeucesScreenshot \
     -destination "id=$udid" \
     -configuration Debug \
     CODE_SIGNING_ALLOWED=NO \
     >/tmp/deuces-screenshot-build.log
 
-  APP="$(ls -d "$HOME"/Library/Developer/Xcode/DerivedData/Deuces-*/Build/Products/Debug-iphonesimulator/Deuces.app | head -1)"
-  xcrun simctl uninstall "$udid" com.deuces.deuces 2>/dev/null || true
+  APP="$(ls -d "$HOME"/Library/Developer/Xcode/DerivedData/Deuces-*/Build/Products/Debug-iphonesimulator/DeucesScreenshot.app | head -1)"
+  xcrun simctl uninstall "$udid" com.deuces.deuces.imessage.screenshot 2>/dev/null || true
   xcrun simctl install "$udid" "$APP"
 
   for frame in 0 1 2; do
-    xcrun simctl terminate "$udid" com.deuces.deuces 2>/dev/null || true
-    xcrun simctl launch "$udid" com.deuces.deuces \
-      -UITestingScreenshots \
+    xcrun simctl terminate "$udid" com.deuces.deuces.imessage.screenshot 2>/dev/null || true
+    xcrun simctl launch "$udid" com.deuces.deuces.imessage.screenshot \
       -UITestingScreenshotFrame "$frame" >/dev/null
     sleep 1.5
     local file="$OUT/${slug}_frame${frame}.png"

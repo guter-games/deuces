@@ -2,7 +2,7 @@ import SwiftUI
 import DeucesCore
 
 /// Deterministic board frames for App Store screenshot automation.
-/// Launch with `-UITestingScreenshots` (optional `-UITestingScreenshotFrame=0|1|2`).
+/// Launch with optional `-UITestingScreenshotFrame=0|1|2`.
 struct ScreenshotRootView: View {
     private var frame: Int {
         let args = ProcessInfo.processInfo.arguments

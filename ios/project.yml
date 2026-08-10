@@ -9,7 +9,7 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     TARGETED_DEVICE_FAMILY: "1,2"
-    CURRENT_PROJECT_VERSION: 5
+    CURRENT_PROJECT_VERSION: 6
     MARKETING_VERSION: "1.0"
     # Plant Chess Studios, LLC
     DEVELOPMENT_TEAM: U253FJED45
@@ -31,7 +31,7 @@ targets:
         product: SocketIO
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         APPLICATION_EXTENSION_API_ONLY: YES
@@ -45,15 +45,20 @@ targets:
       - target: DeucesCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.core.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage.core.tests
         GENERATE_INFOPLIST_FILE: YES
         TEST_HOST: ""
 
+  # Standalone iMessage container: assets only (no home-screen UI / no Swift).
+  # Product type must be application.messages — not application.
+  # ASC primary bundle ID is this container id.
   Deuces:
-    type: application
+    type: application.messages
     platform: iOS
     sources:
-      - Deuces
+      - path: Deuces
+        excludes:
+          - "**/*.swift"
     dependencies:
       - target: DeucesCore
         embed: true
@@ -63,7 +68,9 @@ targets:
     info:
       path: Deuces/Info.plist
       properties:
-        CFBundleDisplayName: Deuces
+        CFBundleDisplayName: Deuces With Friends
+        # ASC requires APPL even for application.messages (standalone).
+        CFBundlePackageType: APPL
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         ITSAppUsesNonExemptEncryption: false
@@ -77,9 +84,10 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces
+        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage
         GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
 
   DeucesMessages:
     # Must be messages-specific so actool gets --stickers-icon-role extension
@@ -89,14 +97,14 @@ targets:
     sources:
       - DeucesMessages
     dependencies:
-      # Link only — host app embeds DeucesCore (Messages forbids nested Frameworks).
+      # Link only — container embeds DeucesCore (Messages forbids nested Frameworks).
       - target: DeucesCore
         embed: false
         link: true
     info:
       path: DeucesMessages/Info.plist
       properties:
-        CFBundleDisplayName: Deuces
+        CFBundleDisplayName: Deuces With Friends
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         ITSAppUsesNonExemptEncryption: false
@@ -108,8 +116,8 @@ targets:
           NSAllowsArbitraryLoads: false
     settings:
       base:
-        # `.messages` is already taken globally; suffix must still be under the host id.
-        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage
+        # Must be a child of the ASC/container id.
+        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage.extension
         GENERATE_INFOPLIST_FILE: NO
         SKIP_INSTALL: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: "iMessage App Icon"
@@ -117,6 +125,34 @@ targets:
           - "$(inherited)"
           - "@executable_path/Frameworks"
           - "@executable_path/../../Frameworks"
+
+  # Local-only harness for `make ios-screenshots` (not shipped).
+  DeucesScreenshot:
+    type: application
+    platform: iOS
+    sources:
+      - DeucesScreenshot
+      - path: Deuces/Assets.xcassets
+    dependencies:
+      - target: DeucesCore
+        embed: true
+        codeSign: true
+    info:
+      path: DeucesScreenshot/Info.plist
+      properties:
+        CFBundleDisplayName: Deuces Screenshots
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage.screenshot
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
 schemes:
   Deuces:
     build:
@@ -134,3 +170,8 @@ schemes:
     test:
       targets:
         - DeucesCoreTests
+  DeucesScreenshot:
+    build:
+      targets:
+        DeucesScreenshot: all
+        DeucesCore: all
