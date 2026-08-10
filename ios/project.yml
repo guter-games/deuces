@@ -9,7 +9,7 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     TARGETED_DEVICE_FAMILY: "1,2"
-    CURRENT_PROJECT_VERSION: 1
+    CURRENT_PROJECT_VERSION: 3
     MARKETING_VERSION: "1.0"
     # Plant Chess Studios, LLC
     DEVELOPMENT_TEAM: U253FJED45
@@ -56,15 +56,25 @@ targets:
       - Deuces
     dependencies:
       - target: DeucesCore
+        embed: true
+        codeSign: true
       - target: DeucesMessages
         embed: true
     info:
       path: Deuces/Info.plist
       properties:
         CFBundleDisplayName: Deuces
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces
@@ -72,20 +82,25 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
   DeucesMessages:
-    type: app-extension
+    # Must be messages-specific so actool gets --stickers-icon-role extension
+    # (generic app-extension omits iMessage icon PNGs from the appex).
+    type: app-extension.messages
     platform: iOS
     sources:
       - DeucesMessages
     dependencies:
+      # Link only — host app embeds DeucesCore (Messages forbids nested Frameworks).
       - target: DeucesCore
-        embed: true
-        codeSign: true
+        embed: false
+        link: true
     info:
       path: DeucesMessages/Info.plist
       properties:
         CFBundleDisplayName: Deuces
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        ITSAppUsesNonExemptEncryption: false
+        MSMessagesExtensionStoreIconName: iMessage App Icon
         NSExtension:
           NSExtensionPointIdentifier: com.apple.message-payload-provider
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MessagesViewController
@@ -97,6 +112,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.deuces.deuces.imessage
         GENERATE_INFOPLIST_FILE: NO
         SKIP_INSTALL: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: "iMessage App Icon"
         LD_RUNPATH_SEARCH_PATHS:
           - "$(inherited)"
           - "@executable_path/Frameworks"

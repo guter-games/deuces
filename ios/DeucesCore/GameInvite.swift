@@ -62,9 +62,10 @@ public enum GameInviteURL {
 
 public enum GameBubbleCopy {
     public static func title(for invite: GameInvite) -> String {
-        invite.numPlayers == 1
-            ? "Deuces (1 player)"
-            : "Deuces (\(invite.numPlayers) players)"
+        let players = invite.numPlayers == 1
+            ? "1 player"
+            : "\(invite.numPlayers) players"
+        return "Deuces (\(players) - \(invite.gameID))"
     }
 
     public static func subtitle(for invite: GameInvite) -> String {

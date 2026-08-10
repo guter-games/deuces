@@ -18,7 +18,7 @@ final class CodecTests: XCTestCase {
 
     func testBubbleCopy() {
         let invite = GameInvite(gameID: "x", numPlayers: 2)
-        XCTAssertEqual(GameBubbleCopy.title(for: invite), "Deuces (2 players)")
+        XCTAssertEqual(GameBubbleCopy.title(for: invite), "Deuces (2 players - x)")
         XCTAssertEqual(GameBubbleCopy.subtitle(for: invite), "Tap to join")
     }
 

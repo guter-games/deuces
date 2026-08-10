@@ -122,7 +122,7 @@ final class SocketIOGameSocket: GameSocket {
         connects.forEach { $0.resume(throwing: DeucesBackendError.notConnected) }
     }
 
-    func waitUntilConnected(timeout: TimeInterval = 5) async throws {
+    func waitUntilConnected(timeout: TimeInterval = 65) async throws {
         if socket?.status == .connected { return }
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask { @MainActor in

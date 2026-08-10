@@ -156,10 +156,12 @@ final class MessagesViewController: MSMessagesAppViewController {
         let content: UIView
         if controller.invite == nil {
             content = composerView()
+        } else if controller.isConnecting {
+            content = connectingView(status: controller.statusMessage)
         } else if controller.needsToJoin {
             content = joinView()
         } else {
-            content = centeredLabel(controller.statusMessage ?? "Connecting to server…")
+            content = connectingView(status: controller.statusMessage)
         }
 
         let scroll = UIScrollView()
@@ -305,10 +307,30 @@ final class MessagesViewController: MSMessagesAppViewController {
         return label
     }
 
-    private func centeredLabel(_ text: String) -> UIView {
-        let label = bodyLabel(text)
-        label.textAlignment = .center
-        return label
+    private func connectingView(status: String?) -> UIView {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 12
+        stack.alignment = .center
+
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.color = .white
+        spinner.startAnimating()
+        stack.addArrangedSubview(spinner)
+
+        let title = bodyLabel(status ?? "Connecting…")
+        title.textAlignment = .center
+        title.font = .systemFont(ofSize: 17, weight: .semibold)
+        stack.addArrangedSubview(title)
+
+        let warning = bodyLabel(
+            "This can take up to 1min if you haven't played for >15min",
+            size: 13,
+            color: UIColor.white.withAlphaComponent(0.75)
+        )
+        warning.textAlignment = .center
+        stack.addArrangedSubview(warning)
+        return stack
     }
 
     private func actionButton(_ title: String, orange: Bool, handler: @escaping () -> Void) -> UIButton {

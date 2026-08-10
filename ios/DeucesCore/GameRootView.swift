@@ -22,6 +22,8 @@ public struct GameRootView: View {
     private var content: some View {
         if controller.invite == nil {
             composer
+        } else if controller.isConnecting {
+            connecting
         } else if controller.needsToJoin {
             joinForm
         } else if let update = controller.update {
@@ -44,9 +46,23 @@ public struct GameRootView: View {
                 errorMessage: controller.errorMessage
             )
         } else {
-            ProgressView("Connecting…")
+            connecting
+        }
+    }
+
+    private var connecting: some View {
+        VStack(spacing: 14) {
+            ProgressView()
                 .tint(.white)
+                .scaleEffect(1.2)
+            Text("Connecting…")
+                .font(.headline)
                 .foregroundColor(.white)
+            Text("This can take up to 1min if you haven't played for >15min")
+                .font(.footnote)
+                .foregroundColor(.white.opacity(0.75))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
         }
     }
 

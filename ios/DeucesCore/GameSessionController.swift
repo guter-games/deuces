@@ -122,11 +122,13 @@ public final class GameSessionController: ObservableObject {
             errorMessage = "Enter a display name first"
             return
         }
+        isConnecting = true
         Task {
             do {
                 guard let socket else { throw DeucesBackendError.notConnected }
                 let idx = try await socket.requestNewIdentity(name: name)
                 if idx < 0 {
+                    isConnecting = false
                     errorMessage = DeucesBackendError.seatUnavailable.errorDescription
                     return
                 }
@@ -135,6 +137,7 @@ public final class GameSessionController: ObservableObject {
                 needsToJoin = false
                 socket.identifyAs(player: idx)
             } catch {
+                isConnecting = false
                 errorMessage = Self.friendlyNetworkError(error)
             }
         }
